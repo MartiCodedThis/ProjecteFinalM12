@@ -5,8 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-
-class admin
+use Log;
+class Admin
 {
     /**
      * Handle an incoming request.
@@ -15,7 +15,8 @@ class admin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if($request->user()->name != 'admin'){
+        Log::info($request);
+        if($request->user() != 'admin'){
             return back()
             ->with('error', 'Operation denied, not an admin');
         }

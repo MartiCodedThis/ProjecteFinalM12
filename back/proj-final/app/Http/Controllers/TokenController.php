@@ -6,14 +6,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 
 class TokenController extends Controller{
     public function user(Request $request)
     {
+        Log::info($request);
+        
         $user = User::where('email', $request->user()->email)->first();
-       
+        
         return response()->json([
             "success" => true,
             "user"    => $request->user(),
@@ -59,6 +61,7 @@ class TokenController extends Controller{
     }
 
     public function logout(Request $request){
+        Log::info($request->user());
         $request->user()->currentAccessToken()->delete();
     
         return response()->json([
@@ -97,29 +100,32 @@ class TokenController extends Controller{
     }
 
     public function authorize(Request $request){
-        Log::info($request->input('email'));
         $user = User::where('email', $request->input("email"))->first();
         if($user){
-            Log::info($user);
-            if($user->authorized == 0){
-                $user->update([
-                    'authorized' => 1
-                ]);
+            // Gate::authorize('authorizeUser', User::class);
+            if($request->user()->cannot('authorizeUser', User::class)){
                 return response()->json([
-                    "success"=>true,
-                    "user" => $user,
-                    "message" => "User is now authorized"
+                    "success"=>false,
+                    "message"=>"Only admin users can authorize"
                 ]);
             }
-            else if($user->authorized == 1){
-                $user->update([
-                    'authorized' => 0
-                ]);
-                return response()->json([
-                    "success"=>true,
-                    "user" => $user,
-                    "message" => "User is now unauthorized"
-                ]);
+            else{
+                if($user->authorized == 0){
+                    $user->update([
+                        'authorized' => 1
+                    ]);
+                    return response()->json([
+                        "success"=>true,
+                        "user" => $user,
+                        "message" => "User is now authorized"
+                    ]);
+                }
+                else if ($user->authorized == 0){
+                    return response()->json([
+                        "success"=>false,
+                        "message"=>"User already authorized"
+                    ]);
+                }
             }
         }
         else {
@@ -129,5 +135,44 @@ class TokenController extends Controller{
             ]);
         }
     }
+
+    public function unauthorize(Request $request){
+        $user = User::where('email', $request->input("email"))->first();
+        if($user){
+            // Gate::authorize('authorizeUser', User::class);
+            if($request->user()->cannot('authorizeUser', User::class)){
+                return response()->json([
+                    "success"=>false,
+                    "message"=>"Only admin users can authorize and unauthorize"
+                ]);
+            }
+            else{
+            if($user->authorized == 1){
+                $user->update([
+                    'authorized' => 0
+                ]);
+                return response()->json([
+                    "success"=>true,
+                    "user" => $user,
+                    "message" => "User is now unauthorized"
+                ]);
+            }
+            else if ($user->authorized == 0){
+                return response()->json([
+                    "success"=>false,
+                    "message"=>"User wasn't authorized initially"
+                ]);
+            }
+            }
+        }
+        else {
+            return response()->json([
+                "success"=>false,
+                "message"=>"User not found"
+            ]);
+        }
+    }
+
+
 
 }
