@@ -12,6 +12,7 @@ export default {
       "appsep": "#7A989F",
       "appbutton": "#729B79",
       "apperror": "#AF685A",
+      "appwhite": "#FFFFFF",
     },
     extend: {},
   },

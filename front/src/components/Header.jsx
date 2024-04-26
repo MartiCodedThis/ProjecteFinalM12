@@ -11,7 +11,7 @@ export const Header = () => {
 
     return (
         <>
-            <nav className="flex items-center justify-between flex-wrap text-apptext bg-appfg px-10 py-5 fixed w-full z-10 top-0">
+            <nav className="flex items-center justify-between flex-wrap text-apptext bg-appfg shadow-xl px-10 py-5 fixed w-full z-10 top-0">
                 <div className="flex items-center flex-shrink-0">
                     <a className="no-underline hover:no-underline" href="#">
                         <span className="text-3xl font-black italic md:text-4xl underline decoration-appbg">Header</span>
