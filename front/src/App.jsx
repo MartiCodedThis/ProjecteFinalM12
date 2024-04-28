@@ -10,6 +10,18 @@ import { Register } from "./pages/auth/Register.jsx"
 
 function App() {
 
+  if (process.env.APP_ENV) {
+    console.log("Environment: " + process.env.APP_ENV)
+  }
+  
+  if (process.env.APP_DEBUG) {
+    console.log("Debug enabled")
+  }
+
+  if(process.env.API_URL && process.env.APP_DEBUG){
+    console.log("API online, url is " + process.env.API_URL)
+  }
+
   return (
     <>
       <Layout>

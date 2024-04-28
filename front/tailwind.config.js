@@ -6,11 +6,11 @@ export default {
   ],
   theme: {
     colors: {
-      "appfg": "#DEE7DA",
-      "appbg": "#B7D7E1",
+      "appfg": "#d9e0cc",
+      "appbg": "#abcad4",
       "apptext": "#2E2C2F",
       "appsep": "#7A989F",
-      "appbutton": "#729B79",
+      "appbutton": "#508f5a",
       "apperror": "#AF685A",
       "appwhite": "#FFFFFF",
     },
