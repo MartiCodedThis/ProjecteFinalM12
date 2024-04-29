@@ -23,7 +23,8 @@ class User extends Authenticatable
         'email',
         'password',
         'branca',
-        'authorized'
+        'authorized',
+        'role_id'
     ];
 
     /**

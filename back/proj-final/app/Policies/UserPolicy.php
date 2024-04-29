@@ -18,6 +18,6 @@ class UserPolicy
     public function authorizeUser(User $user): bool
     {
         Log::info($user);
-        return $user->name == "admin";
+        return $user->role_id == 1;
     }
 }

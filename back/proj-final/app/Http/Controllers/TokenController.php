@@ -6,20 +6,17 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 
 class TokenController extends Controller{
     public function user(Request $request)
-    {
-        Log::info($request);
-        
+    {        
         $user = User::where('email', $request->user()->email)->first();
         
         return response()->json([
             "success" => true,
             "user"    => $request->user(),
-            "roles"   => [$user->role->name],
+            "role"   => [$user->role_id],
         ]);
     }
     
@@ -61,7 +58,6 @@ class TokenController extends Controller{
     }
 
     public function logout(Request $request){
-        Log::info($request->user());
         $request->user()->currentAccessToken()->delete();
     
         return response()->json([
@@ -102,11 +98,10 @@ class TokenController extends Controller{
     public function authorize(Request $request){
         $user = User::where('email', $request->input("email"))->first();
         if($user){
-            // Gate::authorize('authorizeUser', User::class);
             if($request->user()->cannot('authorizeUser', User::class)){
                 return response()->json([
                     "success"=>false,
-                    "message"=>"Only admin users can authorize"
+                    "message"=>"Only administrators can authorize"
                 ]);
             }
             else{
@@ -120,7 +115,7 @@ class TokenController extends Controller{
                         "message" => "User is now authorized"
                     ]);
                 }
-                else if ($user->authorized == 0){
+                else if ($user->authorized == 1){
                     return response()->json([
                         "success"=>false,
                         "message"=>"User already authorized"
