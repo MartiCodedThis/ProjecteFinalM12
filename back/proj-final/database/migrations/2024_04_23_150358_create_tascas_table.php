@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('description');
             $table->string('responsable');
             $table->string('visibility');
-            $table->string('status');
+            $table->integer('status');
             $table->integer('author_id');
             $table->integer('event_id');
             $table->string('data_limit');

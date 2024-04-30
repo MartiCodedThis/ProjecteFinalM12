@@ -54,6 +54,7 @@ class EventController extends Controller
             'description'   => $description,
             'author_id'     => auth()->user()->id,
             'visibility'    => $visibility,
+            'status'        => 0
         ]);
         // Patró PRG amb missatge d'èxit
         return redirect()->route('places.show', $place)
