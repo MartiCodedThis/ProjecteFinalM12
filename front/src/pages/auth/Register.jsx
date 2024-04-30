@@ -1,15 +1,39 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
+import React from 'react' 
+import { useForm } from 'react-hook-form'
+
+import useServicesContext from '../../hooks/useServicesContext'
 
 export const Register = () => {
 
-    const { register, handleSubmit, formState: { errors }, reset, watch } = useForm();
+    const nav = useNavigate()
 
-    const password = watch("password"); // Watch the password field
+    const { services: {authService}} = useServicesContext()
 
-    const onSubmit = (data) => {
-        console.log(data);
-    };
+    const { register, handleSubmit, formState: { errors }, reset, watch } = useForm() 
+    const password = watch("password")  // Watch the password field
+
+    const onSubmit = async (data) => {
+        console.log(data) 
+        try {
+            const request = await fetch(process.env.URL_API + "/register", {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                },
+                method: "POST",
+                body: JSON.stringify({ name: data.username, email: data.email, password: data.password })
+            })
+            const response = await request.json()
+            if (response.success) {
+                nav("/")
+            } else {
+                setError(resposta.message)
+            }
+        } catch (error) {
+            console.log(error)
+            alert(error)
+        }
+    } 
 
     return (
         <>
