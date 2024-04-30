@@ -13,24 +13,11 @@ export const Register = () => {
     const password = watch("password")  // Watch the password field
 
     const onSubmit = async (data) => {
-        console.log(data) 
+        console.debug(data) 
         try {
-            const request = await fetch(process.env.URL_API + "/register", {
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json"
-                },
-                method: "POST",
-                body: JSON.stringify({ name: data.username, email: data.email, password: data.password })
-            })
-            const response = await request.json()
-            if (response.success) {
-                nav("/")
-            } else {
-                setError(resposta.message)
-            }
+            
         } catch (error) {
-            console.log(error)
+            console.debug(error)
             alert(error)
         }
     } 

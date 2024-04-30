@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react' 
-import { useForm } from 'react-hook-form' 
+import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
 import useUserContext from '../../hooks/useUserContext'
@@ -10,37 +10,26 @@ export const Login = () => {
 
     const nav = useNavigate()
 
-    const { services: {authService, localService, sessionService}} = useServicesContext()
-    const { setUser, setAuthToken, setRemember } = useUserContext()
+    const { services: { authService, sessionService, storedSessionService } } = useServicesContext()
+    const { setUser, authToken, setAuthToken, remember, setRemember } = useUserContext()
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm()
-    const [error, setError] = useState("")
 
     const onSubmit = async (data) => {
-        console.log(data) 
-        try {
-            const request = await fetch(process.env.URL_API + "/login", {
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json"
-                },
-                method: "POST",
-                body: JSON.stringify({ email: data.email, password: data.password })
-            })
-            const response = await request.json()
-            if (response.success) {
-                if(data.remember){
-                    console.log("Remember my session")
-                }
-                nav("/")
-            } else {
-                setError(resposta.message)
-            }
-        } catch (error) {
-            console.log(error)
-            alert(error)
+        console.debug(data)
+        let token = await authService.login(data)
+        if (token) {
+            console.log(data.remember)
+            let session = data.remember ? storedSessionService : sessionService
+            setAuthToken(token)
+            session.setToken(token)
+            let user = await authService.getUser(token)
+            setUser(user.name)
+            session.setUser(user.name)
+            
+            nav("/")
         }
-    } 
+    }
 
     return (
         <>

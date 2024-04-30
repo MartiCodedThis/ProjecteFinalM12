@@ -1,11 +1,11 @@
 import { createContext, useState } from 'react';
-import AuthService from '../services/IndexedDB/AuthService';
-import LocalSessionService from '../services/LocalStorage/SessionService';
-import SessionService from '../services/SessionStorage/SessionService';
+import AuthService from '../services/AuthService'
+import StoredSessionService from '../services/StoredSessionService';
+import SessionService from '../services/SessionService';
 
 const services = {
   authService: new AuthService(),
-  localService: new LocalSessionService(),
+  storedSessionService: new StoredSessionService(),
   sessionService: new SessionService()
 };
 const ServicesContext = createContext();

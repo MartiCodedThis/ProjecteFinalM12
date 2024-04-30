@@ -1,35 +1,72 @@
-import { v4 as uuidv4 } from 'uuid'
-
 export default class AuthService {
-    async register(username, email, password) {
+    async register(data) {
         try {
-            // Call API to fetch user
-            if (existingUser) {
-                throw new Error('User already exists!')
-            }
             // Call API to register new user
-            return true
+            request = await fetch(process.env.URL_API + "/register", {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                },
+                method: "POST",
+                body: { name: data.username, email: data.email, password: data.password }
+            })
+            const response = await request.json()
+            if (response.success) {
+                console.debug("registered")
+                return true
+            } else {
+                throw new Error(response.message)
+            }
         } catch (error) {
-            console.error(`Error during registration: ${error.message}`)
+            console.log(`Error d'enregistrament: ${error.message}`)
+            alert(`Error d'enregistrament': ${error.message}`)
             return false
         }
     }
 
-    async login(email, password, token) {
+    async login(data) {
         try {
-            // Call API to log in user
-            if (user && user.password === password) {
-                const token = uuidv4()
-                const txToken = db.transaction(['user_tokens'], 'readwrite')
-                const userTokensStore = txToken.objectStore('user_tokens')
-                await userTokensStore.add({ token, user_id: user.id })
-                await txToken.done
-                return token
+            const request = await fetch("http://127.0.0.1:8000/api" + "/login", {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                },
+                method: "POST",
+                body: JSON.stringify({ email: data.email, password: data.password })
+            })
+            const response = await request.json()
+            if (response.success) {
+                console.debug("logging in")
+                return response.authToken
             } else {
-                throw new Error('User credentials do not match records!')
+                throw new Error(response.message)
             }
         } catch (error) {
-            console.error(`Error during login: ${error.message}`)
+            console.log(`Error d'autenticació: ${error.message}`)
+            alert(`Error d'autenticació: ${error.message}`)
+            return false
+        }
+    }
+
+    async getUser(token) {
+        try {
+            const request = await fetch("http://127.0.0.1:8000/api" + "/user", {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    Authorization:`Bearer ${token}`,
+                },
+                method: "GET",
+            })
+            const response = await request.json()
+            if (response) {
+                return response
+            } else {
+                throw new Error(response.message)
+            }
+        } catch (error) {
+            console.log(`Error d'autenticació: ${error.message}`)
+            alert(`Error d'autenticació: ${error.message}`)
             return false
         }
     }
@@ -37,10 +74,17 @@ export default class AuthService {
     async logout(token) {
         // Call API to log out user
         try {
-            
-            if (existingToken) {
-                await userTokensStore.delete(token)
-                console.log("User logout successful")
+            const request = await fetch("http://127.0.0.1:8000/api" + "/logout", {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    Authorization:`Bearer ${token}`,
+                },
+                method: "GET",
+            })
+            const response = await request.json()
+            if (response) {
+                console.debug("User logout successful")
                 return true
             } else {
                 throw new Error("Could not log user out!")

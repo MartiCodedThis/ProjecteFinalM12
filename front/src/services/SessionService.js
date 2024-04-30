@@ -11,16 +11,15 @@ export default class SessionService {
     sessionStorage.removeItem('token');
   }
 
-
   setUser(user) {
-    localStorage.setItem('user', user);
+    sessionStorage.setItem('user', user);
   }
 
   getUser() {
-    return localStorage.getItem('user');
+    return sessionStorage.getItem('user');
   }
 
   clearUser() {
-    localStorage.removeItem('user');
+    sessionStorage.removeItem('user');
   }
 }

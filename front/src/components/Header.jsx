@@ -1,9 +1,29 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+
+import { useNavigate } from 'react-router-dom'
+
+import useUserContext from '../hooks/useUserContext'
+import useServicesContext from '../hooks/useServicesContext'
 
 export const Header = () => {
+    const nav = useNavigate()
+
     const [isNavOpen, setIsNavOpen] = useState(false)
 
-    const user = false
+    const { services: { authService, sessionService, storedSessionService } } = useServicesContext()
+    const { user, setUser, authToken, remember } = useUserContext()
+
+    let session =  remember ? storedSessionService : sessionService
+    
+    const handleLogout = () => {
+        let logout = authService.logout(authToken)
+        if (logout) {
+            session.clearToken()
+            session.clearUser()
+            setUser(null)
+            nav("/login")
+        }
+    }
 
     const toggleNav = () => {
         setIsNavOpen(!isNavOpen)
@@ -33,7 +53,7 @@ export const Header = () => {
                                     <a className="inline-block no-underline hover:text-apptext hover:text-underline py-2 px-4" href="/profile">{user}</a>
                                 </li>
                                 <li>
-                                    <p className="inline-block no-underline hover:text-apptext hover:text-underline py-2 px-4" onClick={() => {}}>Logout</p>
+                                    <p className="inline-block no-underline hover:text-apptext hover:text-underline py-2 px-4" onClick={() => {handleLogout(authToken)}}>Logout</p>
                                 </li>
                             </>
                         ) : (
