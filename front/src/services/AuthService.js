@@ -84,14 +84,15 @@ export default class AuthService {
             })
             const response = await request.json()
             if (response) {
-                console.debug("User logout successful")
+                console.debug("S'ha pogut tancar la sessió")
                 return true
             } else {
-                throw new Error("Could not log user out!")
+                throw new Error("Ha sorgit un error al tancar la sessió!")
             }
         }
         catch (error) {
-            console.error('Error during logout:' + error)
+            console.error('Error de logout:' + error)
+            alert(`Error de logout: ${error.message}`)
             return false
         }
     }

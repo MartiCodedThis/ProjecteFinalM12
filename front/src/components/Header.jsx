@@ -53,7 +53,7 @@ export const Header = () => {
                                     <a className="inline-block no-underline hover:text-apptext hover:text-underline py-2 px-4" href="/profile">{user}</a>
                                 </li>
                                 <li>
-                                    <p className="inline-block no-underline hover:text-apptext hover:text-underline py-2 px-4" onClick={() => {handleLogout(authToken)}}>Logout</p>
+                                    <button className="inline-block no-underline hover:text-apptext hover:text-underline py-2 px-4" onClick={() => {handleLogout(authToken)}}>Logout</button>
                                 </li>
                             </>
                         ) : (
