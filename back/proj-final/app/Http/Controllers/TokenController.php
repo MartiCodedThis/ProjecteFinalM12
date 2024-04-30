@@ -167,7 +167,4 @@ class TokenController extends Controller{
             ]);
         }
     }
-
-
-
 }
