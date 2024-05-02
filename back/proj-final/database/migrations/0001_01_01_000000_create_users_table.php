@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('role_id');
             $table->integer('authorized');
             $table->integer('branca')->nullable();
+            $table->integer('carrec')->nullable();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

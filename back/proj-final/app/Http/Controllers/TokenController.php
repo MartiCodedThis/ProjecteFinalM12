@@ -114,6 +114,26 @@ class TokenController extends Controller{
         }
     }
 
+    public function carrec(Request $request){
+        $user = User::find($request->user()->id);
+        if($user){
+            $carrec = $request->get('carrec');
+            $user->carrec = $carrec;
+            $user->save();
+            return response()->json([
+                "success"=>true,
+                "user" => $user,
+                "carrec" => $carrec
+            ]);
+        }
+        else{
+            return response()->json([
+                "success"=>false,
+                "message"=>"User not found"
+            ]);
+        }
+    }
+
     public function authorize(Request $request){
         $user = User::where('email', $request->input("email"))->first();
         if($user){
