@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route, Navigate } from "react-router-dom"
 
 import { Layout } from "./components/Layout.jsx"
 
@@ -8,31 +8,36 @@ import { Home } from "./pages/Home.jsx"
 import { Login } from "./pages/auth/Login.jsx"
 import { Register } from "./pages/auth/Register.jsx"
 
+import { UserContextProvider } from './contexts/UserContext.jsx'
+import { ServicesContextProvider } from './contexts/ServicesContext.jsx'
+
 function App() {
 
   if (process.env.APP_ENV) {
     console.log("Environment: " + process.env.APP_ENV)
   }
-  
+
   if (process.env.APP_DEBUG) {
     console.log("Debug enabled")
   }
 
-  if(process.env.API_URL && process.env.APP_DEBUG){
+  if (process.env.API_URL && process.env.APP_DEBUG) {
     console.log("API online, url is " + process.env.API_URL)
   }
 
   return (
-    <>
-      <Layout>
-        <Routes>
-          <Route path="*" element={<NotFound/>}/>
-          <Route path="/" element={<Home/>}/>
-          <Route path="/login" element={<Login/>}/>
-          <Route path="/register" element={<Register/>}/>
-        </Routes>
-      </Layout>
-    </>
+    <ServicesContextProvider>
+      <UserContextProvider>
+        <Layout>
+          <Routes>
+            <Route path="*" element={<NotFound />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={ <Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </Layout>
+      </UserContextProvider>
+    </ServicesContextProvider>
   )
 }
 

@@ -31,7 +31,7 @@ export const Header = () => {
 
     return (
         <>
-            <nav className="flex items-center justify-between flex-wrap text-apptext bg-appfg shadow-xl px-10 py-5 fixed w-full z-10 top-0">
+            <nav className="flex items-center justify-between flex-wrap *:text-apptext2 bg-appfg shadow-xl px-10 py-5 fixed w-full z-10 top-0">
                 <div className="flex items-center flex-shrink-0">
                     <a className="no-underline hover:no-underline" href="#">
                         <span className="text-3xl font-black italic md:text-4xl underline decoration-appbg">Header</span>
@@ -43,10 +43,7 @@ export const Header = () => {
                     </button>
                 </div>
                 <div className={`w-full flex-grow lg:flex lg:items-center lg:w-auto ${isNavOpen ? '' : 'hidden'} lg:block pt-6 lg:pt-0`} id="nav-content">
-                    <ul className="list-reset lg:flex justify-end flex-1 items-center">
-                        <li className="mr-3">
-                            <a className="inline-block no-underline hover:text-apptext hover:text-underline py-2 px-4" href="/">Home</a>
-                        </li>
+                    <ul className="list-reset lg:flex justify-end flex-1 items-center divide-x divide-appsep2">
                         {user ? (
                             <>
                                 <li className="mr-3">
@@ -59,10 +56,10 @@ export const Header = () => {
                         ) : (
                             <>
                                 <li className="mr-3">
-                                    <a className="inline-block no-underline hover:text-apptext hover:text-underline py-2 px-4" href="/login">Login</a>
+                                    <a className="inline-block no-underline hover:text-apptext hover:text-underline py-2 px-4" href="/login">Iniciar sessió</a>
                                 </li>
                                 <li>
-                                    <a className="inline-block no-underline hover:text-apptext hover:text-underline py-2 px-4" href="/register">Register</a>
+                                    <a className="inline-block no-underline hover:text-apptext hover:text-underline py-2 px-4" href="/register">Enregistrar-se</a>
                                 </li>
                             </>
                         )}

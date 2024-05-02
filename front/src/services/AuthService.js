@@ -1,8 +1,8 @@
 export default class AuthService {
     async register(data) {
         try {
-            // Call API to register new user
-            request = await fetch(process.env.URL_API + "/register", {
+            const url = process.env.API_URL  + "/register"
+            request = await fetch(url, {
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json"
@@ -26,7 +26,8 @@ export default class AuthService {
 
     async login(data) {
         try {
-            const request = await fetch("http://127.0.0.1:8000/api" + "/login", {
+			const url = process.env.API_URL  + "/login"
+            const request = await fetch(url, {
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json"
@@ -50,7 +51,8 @@ export default class AuthService {
 
     async getUser(token) {
         try {
-            const request = await fetch("http://127.0.0.1:8000/api" + "/user", {
+            const url = process.env.API_URL  + "/user"
+            const request = await fetch(url, {
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json",
@@ -72,15 +74,15 @@ export default class AuthService {
     }
 
     async logout(token) {
-        // Call API to log out user
         try {
-            const request = await fetch("http://127.0.0.1:8000/api" + "/logout", {
+            const url = process.env.API_URL  + "/logout"
+            const request = await fetch(url, {
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json",
                     Authorization:`Bearer ${token}`,
                 },
-                method: "GET",
+                method: "POST",
             })
             const response = await request.json()
             if (response) {

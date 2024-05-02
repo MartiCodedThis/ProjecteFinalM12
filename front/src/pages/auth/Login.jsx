@@ -39,7 +39,7 @@ export const Login = () => {
                 <form className='flex flex-col items-center w-full md:w-2/3' onSubmit={handleSubmit(onSubmit)}>
                     <div className='flex w-full flex-col mb-4'>
                         <label className='font-bold mb-1'>E-mail</label>
-                        <input className='rounded-lg px-4 py-1 shadow-inner'
+                        <input className='rounded-lg px-4 py-1 shadow-inner border border-appsep'
                             type="text" {...register("email", {
                                 required: 'Adreça d\'e-mail obligatòria',
                                 pattern: {
@@ -51,7 +51,7 @@ export const Login = () => {
                     </div>
                     <div className='flex w-full flex-col mb-4'>
                         <label className='font-bold mb-1'>Contrasenya</label>
-                        <input className='rounded-lg px-4 py-1 shadow-inner'
+                        <input className='rounded-lg px-4 py-1 shadow-inner border border-appsep'
                             type="password"  {...register("password", {
                                 required: 'Contrasenya obligatòria',
                                 minLength: {
