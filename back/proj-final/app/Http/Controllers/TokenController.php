@@ -95,6 +95,26 @@ class TokenController extends Controller{
             ], 200);
     }
 
+    public function branca(Request $request){
+        $user = User::find($request->user()->id);
+        if($user){
+            $branca = $request->get('branca');
+            $user->branca = $branca;
+            $user->save();
+            return response()->json([
+                "success"=>true,
+                "user" => $user,
+                "branca" => $branca
+            ]);
+        }
+        else{
+            return response()->json([
+                "success"=>false,
+                "message"=>"User not found"
+            ]);
+        }
+    }
+
     public function authorize(Request $request){
         $user = User::where('email', $request->input("email"))->first();
         if($user){

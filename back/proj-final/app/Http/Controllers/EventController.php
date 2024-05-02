@@ -29,23 +29,16 @@ class EventController extends Controller
         ]);
     }
     public function create()
-    // protected $fillable = [
-    //     'id',
-    //     'name',
-    //     'description',
-    //     'visibility',
-    //     'status',
-    //     'author_id',
-    //     'date'
-    // ];
     {
         // Validar dades del formulari
         $validatedData = $request->validated();
-        
+        Log::info($request->user())
         // Obtenir dades del formulari
         $name        = $request->get('name');
         $description = $request->get('description');
         $visibility  = $request->get('visibility');
+        $author_id = $request->user()->id,
+        $date = $request->get('date')
 
         // Desar dades a BD
         Log::debug("Saving place at DB...");
@@ -54,7 +47,8 @@ class EventController extends Controller
             'description'   => $description,
             'author_id'     => auth()->user()->id,
             'visibility'    => $visibility,
-            'status'        => 0
+            'status'        => 0,
+            'date'          => $date,
         ]);
         // Patró PRG amb missatge d'èxit
         return redirect()->route('places.show', $place)
