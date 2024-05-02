@@ -18,7 +18,7 @@ Route::post('branca', [TokenController::class, 'branca'])->middleware('auth:sanc
 //Events routes
 Route::get('events/list', [EventController::class, 'index'])->middleware('auth:sanctum');
 Route::get('events/{event}', [EventController::class, 'show'])->middleware('auth:sanctum');
-Route::post('events', [EventController::class, 'create'])->middleware('auth:sanctum');
+Route::post('events/create', [EventController::class, 'create'])->middleware('auth:sanctum');
 Route::post('events/{event}', [EventController::class, 'update'])->middleware('auth:sanctum');
 Route::delete('events/{event}', [EventController::class, 'delete'])->middleware('auth:sanctum');
 //Tasques routes

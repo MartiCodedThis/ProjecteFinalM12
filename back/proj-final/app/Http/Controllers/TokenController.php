@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use App\Models\User;
 
 class TokenController extends Controller{
@@ -78,7 +77,7 @@ class TokenController extends Controller{
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => bcrypt($data['password']),
-                'role_id' => 1,
+                'role_id' => 0,
                 'authorized' => false
             ]);
     
