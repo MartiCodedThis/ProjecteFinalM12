@@ -5,21 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 
 class TokenController extends Controller{
     public function user(Request $request)
-    {
-        Log::info($request);
-        
+    {        
         $user = User::where('email', $request->user()->email)->first();
         
         return response()->json([
             "success" => true,
             "user"    => $request->user(),
-            "roles"   => [$user->role->name],
+            "role"   => [$user->role_id],
         ]);
     }
     
@@ -61,7 +57,6 @@ class TokenController extends Controller{
     }
 
     public function logout(Request $request){
-        Log::info($request->user());
         $request->user()->currentAccessToken()->delete();
     
         return response()->json([
@@ -82,7 +77,7 @@ class TokenController extends Controller{
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => bcrypt($data['password']),
-                'role_id' => 1,
+                'role_id' => 0,
                 'authorized' => false
             ]);
     
@@ -99,14 +94,53 @@ class TokenController extends Controller{
             ], 200);
     }
 
+    public function branca(Request $request){
+        $user = User::find($request->user()->id);
+        if($user){
+            $branca = $request->get('branca');
+            $user->branca = $branca;
+            $user->save();
+            return response()->json([
+                "success"=>true,
+                "user" => $user,
+                "branca" => $branca
+            ]);
+        }
+        else{
+            return response()->json([
+                "success"=>false,
+                "message"=>"User not found"
+            ]);
+        }
+    }
+
+    public function carrec(Request $request){
+        $user = User::find($request->user()->id);
+        if($user){
+            $carrec = $request->get('carrec');
+            $user->carrec = $carrec;
+            $user->save();
+            return response()->json([
+                "success"=>true,
+                "user" => $user,
+                "carrec" => $carrec
+            ]);
+        }
+        else{
+            return response()->json([
+                "success"=>false,
+                "message"=>"User not found"
+            ]);
+        }
+    }
+
     public function authorize(Request $request){
         $user = User::where('email', $request->input("email"))->first();
         if($user){
-            // Gate::authorize('authorizeUser', User::class);
             if($request->user()->cannot('authorizeUser', User::class)){
                 return response()->json([
                     "success"=>false,
-                    "message"=>"Only admin users can authorize"
+                    "message"=>"Only administrators can authorize"
                 ]);
             }
             else{
@@ -120,7 +154,7 @@ class TokenController extends Controller{
                         "message" => "User is now authorized"
                     ]);
                 }
-                else if ($user->authorized == 0){
+                else if ($user->authorized == 1){
                     return response()->json([
                         "success"=>false,
                         "message"=>"User already authorized"
@@ -172,7 +206,4 @@ class TokenController extends Controller{
             ]);
         }
     }
-
-
-
 }

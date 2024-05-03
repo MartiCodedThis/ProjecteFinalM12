@@ -5,19 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Event extends Model
+class Carrec extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'id',
         'name',
-        'description',
-        'visibility',
-        'status',
-        'author_id',
-        'date',
-        'branca',
-        'carrec'
+        'color'
     ];
 }
