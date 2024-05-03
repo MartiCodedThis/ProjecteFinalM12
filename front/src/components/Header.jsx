@@ -46,20 +46,20 @@ export const Header = () => {
                     <ul className="list-reset lg:flex justify-end flex-1 items-center divide-x divide-appsep2">
                         {user ? (
                             <>
-                                <li className="mr-3">
-                                    <a className="inline-block no-underline hover:text-apptext hover:text-underline py-2 px-4" href="/profile">{user}</a>
+                                <li>
+                                    <a className="inline-block no-underline hover:text-apptext hover:text-underline py-2 px-8" href="/profile">{user}</a>
                                 </li>
                                 <li>
-                                    <button className="inline-block no-underline hover:text-apptext hover:text-underline py-2 px-4" onClick={() => {handleLogout(authToken)}}>Logout</button>
+                                    <button className="inline-block no-underline hover:text-apptext hover:text-underline py-2 px-8" onClick={() => {handleLogout(authToken)}}>Logout</button>
                                 </li>
                             </>
                         ) : (
                             <>
-                                <li className="mr-3">
-                                    <a className="inline-block no-underline hover:text-apptext hover:text-underline py-2 px-4" href="/login">Iniciar sessió</a>
+                                <li>
+                                    <a className="inline-block no-underline hover:text-apptext hover:text-underline py-2 px-8" href="/login">Iniciar sessió</a>
                                 </li>
                                 <li>
-                                    <a className="inline-block no-underline hover:text-apptext hover:text-underline py-2 px-4" href="/register">Enregistrar-se</a>
+                                    <a className="inline-block no-underline hover:text-apptext hover:text-underline py-2 px-8" href="/register">Enregistrar-se</a>
                                 </li>
                             </>
                         )}
