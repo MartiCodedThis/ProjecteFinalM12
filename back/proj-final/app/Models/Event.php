@@ -16,6 +16,8 @@ class Event extends Model
         'visibility',
         'status',
         'author_id',
-        'date'
+        'date',
+        'branca',
+        'carrec'
     ];
 }

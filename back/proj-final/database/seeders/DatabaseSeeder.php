@@ -15,17 +15,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-        $admin = User::where('name','like', 'admin');
-        if(!$admin){
-            User::factory()->create([
-                'name' => 'admin',
-                'email' => 'tcp@admin.com',
-                'password' => bcrypt('adminadmin'),
-                'role_id' => 1,
-                'authorized' => true
-            ]);
-        }
+
+        User::factory()->create([
+            'name' => 'admin',
+            'email' => 'tcp@admin.com',
+            'password' => bcrypt('adminadmin'),
+            'role_id' => 1,
+            'authorized' => true
+        ]);
 
         $b = new Branca;
         $b->create([
@@ -44,6 +41,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'rangers',
             'color'=>'#f5e50c'
         ]);
+
 
         $c = new Carrec;
         $c->create([

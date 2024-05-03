@@ -12,4 +12,14 @@ class CarrecTask extends Model
         'task_id',
         'carrec_id'
     ];
+
+    public function responsable()
+    {
+        return $this->belongsTo(Carrec::class);
+    }
+    
+    public function task()
+    {
+        return $this->belongsTo(Task::class);
+    }
 }

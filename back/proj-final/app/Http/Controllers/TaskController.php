@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BrancaTask;
+use App\Models\CarrecTask;
+use App\Models\UserTask;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -89,8 +92,18 @@ class TaskController extends Controller
     {
         // Validar dades del formulari
         $validatedData = $request->validate([
-
+            'name'          => 'required',
+            'description'   => 'required',
+            'event_id'      => 'required',
+            'visibility'    => 'required',
+            'data_limit'    => 'required',
         ]);
+        if(!$validatedData){
+            return response()->json([
+                "success" => false,
+                "message" => "Missing form fields"
+            ]);
+        }
         // Obtenir dades del formulari
         $name = $request->get('name');
         $description = $request->get('description');
@@ -98,10 +111,7 @@ class TaskController extends Controller
         $event_id = $request->get('event_id');
         $author_id = $request->user()->id; //auth()->user()->id
         $date = $request->get('data_limit');
-        
 
-        // Desar dades a BD
-        Log::debug("Saving place at DB...");
         $task = Task::create([
             'name'          => $name,
             'description'   => $description,
@@ -112,34 +122,77 @@ class TaskController extends Controller
             'data_limit'    => $date,
         ]);
 
+        Log::info($task);
+
+        $branca_id = $request->get('branca_id');
+        $carrec_id = $request->get('carrec_id');
+        $responsables = $request->get('responsables');
+        if(!$branca_id && !$carrec_id && !$responsables){
+            return response()->json([
+                "success" => false,
+                "message"    => "There must be at least one responsible entity",
+            ]);
+        }
+        $relations = [];
+        if($branca_id){
+            $newTask = new BrancaTask;
+            $relation = $newTask->create([
+                'task_id' => $task->id,
+                'branca_id' => $branca_id
+            ]);
+            array_push($relations, $relation);
+        }
+
+        if($carrec_id){
+            $newTask = new CarrecTask;
+            $relation = $newTask->create([
+                'task_id' => $task->id,
+                'carrec_id' => $carrec_id
+            ]);
+            array_push($relations, $relation);
+        }
+
+        if($responsables){
+            Log::info($responsables);
+            foreach ($responsables as $responsable) {
+                $newTask = new UserTask;
+                $relation = $newTask->create([
+                    'task_id' => $task->id,
+                    'user_id' => $responsable
+                ]);
+                array_push($relations, $relation);
+            }
+        }
         return response()->json([
             "success" => true,
-            "task" => $task
+            "task" => $task,
+            "relations" => $relations
         ]);
     }
 
     public function update(Request $request, $id){
         $task = Task::find($id);
-
         $name = $request->get('name');
-        $responsable = $request->get('responsable');
         $description = $request->get('description');
         $visibility  = $request->get('visibility');
         $date = $request->get('data_limit');
+        $status = $request->get('status');
+
+        $branca_id = $request->get('branca_id');
+        $carrec_id = $request->get('carrec_id');
+        $responsables = $request->get('responsables');
+        $relations = [];
 
         if (empty($task)) {
             return response()->json([
                 'success'  => false,
-                'message' => 'event not found'
+                'message' => 'Task not found'
             ], 404);
         }
         if (!empty($name)) {
             $task->name = $name;
         }
         if (!empty($description)) {
-            $task->description = $description;
-        }
-        if (!empty($responsable)) {
             $task->description = $description;
         }
         if (!empty($visibility)) {
@@ -150,6 +203,50 @@ class TaskController extends Controller
         }
         if (!empty($status)) {
             $task->status = $status;
+        }
+        if (!empty($branca_id)) {
+            $taskExists = BrancaTask::where([
+                'branca_id' => $branca_id,
+                'task_id' => $task->id
+            ])->exists();
+            if(!$taskExists){
+                $newTask = new BrancaTask;
+                $relation = $newTask->create([
+                    'branca_id' => $branca_id,
+                    'task_id' => $task->id
+                ]);
+                array_push($relations, $relation);
+            }
+        }
+        if (!empty($carrec_id)) {
+            $taskExists = CarrecTask::where([
+                'carrec_id' => $carrec_id,
+                'task_id' => $task->id
+            ])->exists();
+            if(!$taskExists){
+                $newTask = new CarrecTask;
+                $relation = $newTask->create([
+                    'carrec_id' => $carrec_id,
+                    'task_id' => $task->id
+                ]);
+                array_push($relations, $relation);
+            }
+        }
+        if (!empty($responsables)) {
+            foreach ($responsables as $responsable) {
+                $taskExists = UserTask::where([
+                    'user_id' => $responsable,
+                    'task_id' => $task->id
+                ])->exists();
+                if(!$taskExists){
+                    $newTask = new UserTask;
+                    $relation = $newTask->create([
+                        'user_id' => $responsable,
+                        'task_id' => $task->id
+                    ]);
+                    array_push($relations, $relation);
+                }
+            }
         }
         $task->save();
         
@@ -170,6 +267,31 @@ class TaskController extends Controller
             ], 404);
         }
         if($task->author_id == $author_id || $role == 1){
+            $brancaRelation = BrancaTask::where([
+                'task_id' => $task->id
+            ])->get();
+            $carrecRelation = CarrecTask::where([
+                'task_id' => $task->id
+            ])->get();
+            $userRelation = UserTask::where([
+                'task_id' => $task->id
+            ])->get();
+            if($brancaRelation){
+                foreach($brancaRelation as $b){
+                    $b->delete();
+                } 
+            }
+            if($carrecRelation){
+                foreach($carrecRelation as $c){
+                    $c->delete();
+                }
+            }
+            if($userRelation){
+                foreach ($userRelation as $u){
+                    $u->delete();
+                }
+            }
+
             $task->delete();
             return response()->json([
                 'success'  => true,

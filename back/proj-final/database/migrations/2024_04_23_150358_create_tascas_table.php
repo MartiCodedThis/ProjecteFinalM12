@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->string('responsable');
             $table->string('visibility');
             $table->integer('status');
             $table->integer('author_id');

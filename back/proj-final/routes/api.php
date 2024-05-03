@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\EventController;
-use App\Http\Controllers\TascaController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TokenController;
@@ -22,10 +22,10 @@ Route::post('events/create', [EventController::class, 'create'])->middleware('au
 Route::post('events/{event}', [EventController::class, 'update'])->middleware('auth:sanctum');
 Route::delete('events/{event}', [EventController::class, 'delete'])->middleware('auth:sanctum');
 //Tasques routes
-Route::get('tasques/list', [TascaController::class, 'index'])->middleware('auth:sanctum');
-Route::get('tasques/{event}/list', [TascaController::class, 'event_tasks'])->middleware('auth:sanctum');
-Route::get('tasques/{user}/list', [TascaController::class, 'user_tasks'])->middleware('auth:sanctum');
-Route::get('tasques/{tasca}', [TascaController::class, 'show'])->middleware('auth:sanctum');
-Route::post('tasques', [TascaController::class, 'create'])->middleware('auth:sanctum');
-Route::post('tasques/{tasca}', [TascaController::class, 'update'])->middleware('auth:sanctum');
-Route::delete('tasques/{tasca}', [TascaController::class, 'delete'])->middleware('auth:sanctum');
+Route::get('tasks/list', [TaskController::class, 'index'])->middleware('auth:sanctum');
+Route::get('tasks/{event}/list', [TaskController::class, 'event_tasks'])->middleware('auth:sanctum');
+Route::get('tasks/{user}/list', [TaskController::class, 'user_tasks'])->middleware('auth:sanctum');
+Route::get('tasks/{task}', [TaskController::class, 'show'])->middleware('auth:sanctum');
+Route::post('tasks/create', [TaskController::class, 'create'])->middleware('auth:sanctum');
+Route::post('tasks/{task}', [TaskController::class, 'update'])->middleware('auth:sanctum');
+Route::delete('tasks/{task}', [TaskController::class, 'delete'])->middleware('auth:sanctum');

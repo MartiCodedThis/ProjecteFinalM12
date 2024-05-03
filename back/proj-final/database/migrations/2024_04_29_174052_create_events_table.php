@@ -20,7 +20,8 @@ return new class extends Migration
             $table->integer('author_id');
             $table->datetime('date');
             $table->timestamps();
-
+            $table->integer('branca_id')->nullable();
+            $table->integer('carrec_id')->nullable();
             $table->foreign('author_id')
                 ->references('id')->on('users')
                 ->onUpdate('cascade')

@@ -50,8 +50,4 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    public function tasca(){
-        return $this->belongsToMany(Tasca::class, 'tasques_usuari');
-    }
 }

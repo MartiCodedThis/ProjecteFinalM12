@@ -12,4 +12,14 @@ class BrancaTask extends Model
         'task_id',
         'branca_id'
     ];
+
+    public function responsable()
+    {
+        return $this->belongsTo(Branca::class);
+    }
+    
+    public function task()
+    {
+        return $this->belongsTo(Task::class);
+    }
 }
