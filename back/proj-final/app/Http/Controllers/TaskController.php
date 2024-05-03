@@ -36,42 +36,6 @@ class TaskController extends Controller
         ]);
     }
 
-    public function event_tasks(Request $request, $id)
-    {
-        // Order and count
-        $taskList = Task::all();
-        $eventTasques = $taskList->where('event_id', 'like', $id);
-        if(!$eventTasques){
-            return response()->json([
-                "success" => false,
-                "message"    => "Cap event correspon amb la teva cerca",
-            ]);
-        }
-
-        return response()->json([
-            "success" => true,
-            "tasques"    =>$eventTasques,
-        ]);
-    }
-    public function user_tasks(Request $request, $id)
-    {
-        // Order and count
-        $user = User::find($id);
-        $taskList = Task::all();
-        $userTasques = $taskList->where('responsable', 'like', $user->name || $user->branca || $user->carrec);
-        if(!$userTasques){
-            return response()->json([
-                "success" => false,
-                "message"    => "Cap usuari correspon amb la teva cerca",
-            ]);
-        }
-
-        return response()->json([
-            "success" => true,
-            "tasques"    =>$userTasques,
-        ]);
-    }
-
     public function show(Request $request, $id){
         $task = Task::find($id);
         if($task){
