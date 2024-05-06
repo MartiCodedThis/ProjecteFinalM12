@@ -25,7 +25,7 @@ class TaskController extends Controller
                 return response()->json([
                     "success" => false,
                     "message"    => "Cap event correspon amb la teva cerca",
-                ]);
+                ],404);
             }
             $taskList->where('description', 'like', "%{$search}%");
         }
@@ -33,7 +33,7 @@ class TaskController extends Controller
         return response()->json([
             "success" => true,
             "tasques"    =>$taskList,
-        ]);
+        ],200);
     }
 
     public function show(Request $request, $id){
@@ -42,13 +42,13 @@ class TaskController extends Controller
             return response()->json([
                 "success" => true,
                 "task"    =>$task
-            ]);
+            ],200);
         }
         else{
             return response()->json([
                 "success" => false,
                 "message"    => "Task not found",
-            ]);
+            ],404);
         }
     }
 
@@ -66,7 +66,7 @@ class TaskController extends Controller
             return response()->json([
                 "success" => false,
                 "message" => "Missing form fields"
-            ]);
+            ],400);
         }
         // Obtenir dades del formulari
         $name = $request->get('name');
@@ -95,7 +95,7 @@ class TaskController extends Controller
             return response()->json([
                 "success" => false,
                 "message"    => "There must be at least one responsible entity",
-            ]);
+            ],400);
         }
         $relations = [];
         if($branca_id){
@@ -131,7 +131,7 @@ class TaskController extends Controller
             "success" => true,
             "task" => $task,
             "relations" => $relations
-        ]);
+        ],201);
     }
 
     public function update(Request $request, $id){
@@ -260,13 +260,13 @@ class TaskController extends Controller
             return response()->json([
                 'success'  => true,
                 'task' => $task,
-            ],);
+            ],200);
         }
         else{
             return response()->json([
                 'success'  => false,
                 'message' => 'User not authorized to delete this task'
-            ],);
+            ],401);
         }
 
     }

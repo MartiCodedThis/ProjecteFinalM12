@@ -11,7 +11,12 @@ class TokenController extends Controller{
     public function user(Request $request)
     {        
         $user = User::where('email', $request->user()->email)->first();
-        
+        if(!$user){
+            return response()->json([
+                "success" => false,
+                "message" => "User not found",
+            ],404);
+        }
         return response()->json([
             "success" => true,
             "user"    => $request->user(),
@@ -46,13 +51,13 @@ class TokenController extends Controller{
                 return response()->json([
                     "success" => false,
                     "message" => "User not authorized by admin"
-                ], 401);
+                ], 403);
             }
         } else {
             return response()->json([
                 "success" => false,
                 "message" => "Invalid login credentials"
-            ], 401);
+            ], 400);
         }
     }
 
@@ -104,13 +109,13 @@ class TokenController extends Controller{
                 "success"=>true,
                 "user" => $user,
                 "branca" => $branca
-            ]);
+            ],200);
         }
         else{
             return response()->json([
                 "success"=>false,
                 "message"=>"User not found"
-            ]);
+            ],404);
         }
     }
 
@@ -124,13 +129,13 @@ class TokenController extends Controller{
                 "success"=>true,
                 "user" => $user,
                 "carrec" => $carrec
-            ]);
+            ],200);
         }
         else{
             return response()->json([
                 "success"=>false,
                 "message"=>"User not found"
-            ]);
+            ],404);
         }
     }
 
@@ -141,7 +146,7 @@ class TokenController extends Controller{
                 return response()->json([
                     "success"=>false,
                     "message"=>"Only administrators can authorize"
-                ]);
+                ],403);
             }
             else{
                 if($user->authorized == 0){
@@ -152,13 +157,13 @@ class TokenController extends Controller{
                         "success"=>true,
                         "user" => $user,
                         "message" => "User is now authorized"
-                    ]);
+                    ],200);
                 }
                 else if ($user->authorized == 1){
                     return response()->json([
                         "success"=>false,
                         "message"=>"User already authorized"
-                    ]);
+                    ],400);
                 }
             }
         }
@@ -166,7 +171,7 @@ class TokenController extends Controller{
             return response()->json([
                 "success"=>false,
                 "message"=>"User not found"
-            ]);
+            ],404);
         }
     }
 
@@ -178,7 +183,7 @@ class TokenController extends Controller{
                 return response()->json([
                     "success"=>false,
                     "message"=>"Only admin users can authorize and unauthorize"
-                ]);
+                ],403);
             }
             else{
             if($user->authorized == 1){
@@ -189,13 +194,13 @@ class TokenController extends Controller{
                     "success"=>true,
                     "user" => $user,
                     "message" => "User is now unauthorized"
-                ]);
+                ],200);
             }
             else if ($user->authorized == 0){
                 return response()->json([
                     "success"=>false,
                     "message"=>"User wasn't authorized initially"
-                ]);
+                ],400);
             }
             }
         }
@@ -203,7 +208,7 @@ class TokenController extends Controller{
             return response()->json([
                 "success"=>false,
                 "message"=>"User not found"
-            ]);
+            ],404);
         }
     }
 }

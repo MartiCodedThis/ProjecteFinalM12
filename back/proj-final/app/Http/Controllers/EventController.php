@@ -19,7 +19,7 @@ class EventController extends Controller
                 return response()->json([
                     "success" => false,
                     "message"    => "Cap event correspon amb la teva cerca",
-                ]);
+                ],404);
             }
             $eventList->where('description', 'like', "%{$search}%");
         }
@@ -27,7 +27,7 @@ class EventController extends Controller
         return response()->json([
             "success" => true,
             "events"    =>$eventList,
-        ]);
+        ],200);
     }
 
     public function show(Request $request, $id){
@@ -36,13 +36,13 @@ class EventController extends Controller
             return response()->json([
                 "success" => true,
                 "event"    =>$event
-            ]);
+            ],200);
         }
         else{
             return response()->json([
                 "success" => false,
                 "message"    => "Event not found",
-            ]);
+            ],404);
         }
     }
     public function create(Request $request)
@@ -75,7 +75,7 @@ class EventController extends Controller
         return response()->json([
             "success" => true,
             "event" => $event
-        ]);
+        ],201);
     }
 
     public function update(Request $request, $id){
@@ -113,7 +113,7 @@ class EventController extends Controller
         return response()->json([
             "success" => true,
             "event" => $event
-        ]);
+        ],200);
     }
 
     public function delete(Request $request, $id){
@@ -131,13 +131,13 @@ class EventController extends Controller
             return response()->json([
                 'success'  => true,
                 'event' => $event,
-            ],);
+            ],200);
         }
         else{
             return response()->json([
                 'success'  => false,
                 'message' => 'User not authorized to delete this event'
-            ],);
+            ],401);
         }
 
     }
