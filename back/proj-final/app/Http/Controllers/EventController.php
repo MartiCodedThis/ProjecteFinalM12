@@ -1,140 +1,91 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-
-use App\Http\Requests\EventStoreRequest;
-use App\Http\Requests\EventUpdateRequest;
-
 use App\Models\Event;
-use App\Models\File;
-use App\Http\Resources\EventResource;
-use App\Http\Resources\PaginateCollection;
+use Illuminate\Support\Facades\Log;
 
 class EventController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
-        $this->authorize('viewAny', Event::class);
+        // Order and count
+        $eventList = Event::all();
 
-        $query = Event::withCount(['comments']);
-
-        // Filters
-        if ($body = $request->get('body')) {
-            $query->where('body', 'like', `%{$body}%`);
+        // Filter?
+        if ($search = $request->get('search')) {
+            if(!$eventList->where('description', 'like', "%{$search}%")){
+                return response()->json([
+                    "success" => false,
+                    "message"    => "Cap event correspon amb la teva cerca",
+                ],404);
+            }
+            $eventList->where('description', 'like', "%{$search}%");
         }
         
-        if ($visibility = $request->get('visibility')) {
-            $query->where('visibility_id', $visibility); 
-        }
-        
-        if ($author = $request->get('author')) {
-            $query->where('author_id', $author); 
-        }
+        return response()->json([
+            "success" => true,
+            "events"    =>$eventList,
+        ],200);
+    }
 
-        // Pagination
-        $paginate = $request->get('paginate', 0);
-        $data = $paginate ? $query->paginate() : $query->get();
+    public function show(Request $request, $id){
+        $event = Event::find($id);
+        if($event){
+            return response()->json([
+                "success" => true,
+                "event"    =>$event
+            ],200);
+        }
+        else{
+            return response()->json([
+                "success" => false,
+                "message"    => "Event not found",
+            ],404);
+        }
+    }
+    public function create(Request $request)
+    {
+        // Validar dades del formulari
+        $validatedData = $request->validate([
+            'name'=> 'required',
+            'description'=> 'required',
+            'visibility'=> 'required',
+            'date'=>'required'
+        ]);
+        // Obtenir dades del formulari
+        $name = $request->get('name');
+        $description = $request->get('description');
+        $visibility  = $request->get('visibility');
+        $author_id = $request->user()->id; //auth()->user()->id
+        $date = $request->get('date');
+
+        // Desar dades a BD
+        Log::debug("Saving place at DB...");
+        $event = Event::create([
+            'name'          => $name,
+            'description'   => $description,
+            'author_id'     => $author_id,
+            'visibility'    => $visibility,
+            'status'        => 0,
+            'date'          => $date,
+        ]);
 
         return response()->json([
-            'success' => true,
-            'data'    => new PaginateCollection($data, EventResource::class)
-        ], 200);
+            "success" => true,
+            "event" => $event
+        ],201);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  EventStoreRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(EventStoreRequest $request)
-    {
-        $this->authorize('create', Event::class);
-
-        $validatedData = $request->validated();
-        $upload        = $request->file('upload');
-
-        $file = new File();
-        $fileOk = $file->diskSave($upload);
-
-        if ($fileOk) {
-            Log::debug("Saving Event at DB...");
-            $event = Event::create([
-                'body'          => $validatedData['body'],
-                'file_id'       => $file->id,
-                'visibility_id' => $validatedData['visibility'],
-                'author_id'     => auth()->user()->id,
-            ]);
-            Log::debug("DB storage OK");
-            return response()->json([
-                'success' => true,
-                'data'    => new EventResource($event)
-            ], 201);
-        } else {
-            return response()->json([
-                'success'  => false,
-                'message' => 'Error uploading file'
-            ], 500);
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
+    public function update(Request $request, $id){
         $event = Event::find($id);
-        
-        if ($event) {
-            $this->authorize('view', $event);
-            $event->loadCount(['comments']);
-            return response()->json([
-                'success' => true,
-                'data'    => new EventResource($event)
-            ], 200);
-        } else {
-            return response()->json([
-                'success'  => false,
-                'message' => 'Event not found'
-            ], 404);
-        }
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  EventUpdateRequest  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update_workaround(EventUpdateRequest $request, $id)
-    {
-        // File upload workaround
-        return $this->update($request, $id);
-    }
-    
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  EventUpdateRequest  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(EventUpdateRequest $request, $id)
-    {
-        $event = Event::find($id);
+        $name = $request->get('name');
+        $description = $request->get('description');
+        $visibility  = $request->get('visibility');
+        $date = $request->get('date');
+        $status = $request->get('status');
 
         if (empty($event)) {
             return response()->json([
@@ -142,63 +93,52 @@ class EventController extends Controller
                 'message' => 'event not found'
             ], 404);
         }
-        
-        $this->authorize('update', $event);
-        $validatedData = $request->validated();
-        $upload        = $request->file('upload');
-        
-        if (is_null($upload) || $event->file->diskSave($upload)) {
-            Log::debug("Updating DB...");
-            if (!empty($validatedData['body'])) {
-                $event->body = $validatedData['body'];
-            }
-            if (!empty($validatedData['latitude'])) {
-                $event->latitude = $validatedData['latitude'];
-            }
-            if (!empty($validatedData['longitude'])) {
-                $event->longitude = $validatedData['longitude'];
-            }
-            if (!empty($validatedData['visibility'])) {
-                $event->visibility_id = $validatedData['visibility'];
-            }
-            $event->save();
-            Log::debug("DB storage OK");
-            return response()->json([
-                'success' => true,
-                'data'    => new EventResource($event)
-            ], 200);
-        } else {
-            return response()->json([
-                'success'  => false,
-                'message' => 'Error uploading file'
-            ], 500);
+        if (!empty($name)) {
+            $event->name = $name;
         }
+        if (!empty($description)) {
+            $event->description = $description;
+        }
+        if (!empty($visibility)) {
+            $event->visibility = $visibility;
+        }
+        if (!empty($date)) {
+            $event->date = $date;
+        }
+        if (!empty($status)) {
+            $event->status = $status;
+        }
+        $event->save();
+        
+        return response()->json([
+            "success" => true,
+            "event" => $event
+        ],200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
+    public function delete(Request $request, $id){
         $event = Event::find($id);
-
-        if (empty($event)) {
+        $author_id = $request->user()->id;
+        $role = $request->user()->role_id;
+        if(!$event){
             return response()->json([
                 'success'  => false,
                 'message' => 'Event not found'
             ], 404);
         }
+        if($event->author_id == $author_id || $role == 1){
+            $event->delete();
+            return response()->json([
+                'success'  => true,
+                'event' => $event,
+            ],200);
+        }
+        else{
+            return response()->json([
+                'success'  => false,
+                'message' => 'User not authorized to delete this event'
+            ],401);
+        }
 
-        $this->authorize('delete', $event);
-        $event->delete();
-        $event->file->diskDelete();
-        
-        return response()->json([
-            'success' => true,
-            'data'    => new EventResource($event)
-        ], 200);
     }
 }

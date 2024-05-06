@@ -5,14 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tasca extends Model
+class Task extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'id',
         'name',
-        'responsable',
         'description',
         'visibility',
         'status',
@@ -21,7 +20,4 @@ class Tasca extends Model
         'data_limit'
     ];
 
-    public function user(){
-        return $this->belongsToMany(User::class, 'tasques_usuari');
-    }
 }

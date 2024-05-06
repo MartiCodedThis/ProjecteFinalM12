@@ -11,33 +11,29 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('description');
             $table->string('visibility');
-            $table->integer('status');
+            $table->string('status');
             $table->integer('author_id');
-            $table->integer('event_id');
-            $table->string('data_limit');
+            $table->datetime('date');
             $table->timestamps();
-
-
+            $table->integer('branca_id')->nullable();
+            $table->integer('carrec_id')->nullable();
             $table->foreign('author_id')
                 ->references('id')->on('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-             $table->foreign('event_id')
-                ->references('id')->on('events')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
         });
     }
+
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('tasks');
+        //
     }
 };

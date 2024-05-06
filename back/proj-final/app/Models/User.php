@@ -23,7 +23,9 @@ class User extends Authenticatable
         'email',
         'password',
         'branca',
-        'authorized'
+        'authorized',
+        'role_id',
+        'carrec'
     ];
 
     /**
@@ -47,9 +49,5 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function tasca(){
-        return $this->belongsToMany(Tasca::class, 'tasques_usuari');
     }
 }
