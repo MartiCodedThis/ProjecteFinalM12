@@ -1,9 +1,18 @@
 
 import {PostList} from "../components/widgets/PostList"
 import {TasksView} from "../components/widgets/TasksView"
+import { useNavigate } from 'react-router-dom'
+import useUserContext from "../hooks/useUserContext"
+
+
 
 export const Home = () => {
-
+    const nav = useNavigate()
+    const { authToken} = useUserContext()
+    console.log(authToken)
+    if(!authToken){
+        nav("/login")
+    }
     return (
         <>
             <div className="mb-12">
@@ -20,7 +29,7 @@ export const Home = () => {
                         <PostList/>
                     </div>
                     <div className="w-1/3 flex flex-col ml-5 text-l divide-y divide-appsep2 *:text-apptext2 overflow-wrap break-word">
-                        <a href="" className="w-full p-4">Calendari</a>
+                        <a href="/calendar" className="w-full p-4">Calendari</a>
                         <a href="" className="w-full p-4">Branques</a>
                         <a href="" className="w-full p-4">Càrrecs</a>
                     </div>
