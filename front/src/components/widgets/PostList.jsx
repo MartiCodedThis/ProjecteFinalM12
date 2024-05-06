@@ -5,7 +5,6 @@ import ReactPaginate from 'react-paginate'
 import sanitizeHtml from 'sanitize-html';
 
 const ITEMS_PER_PAGE = 5
-const MAX_WORDS = 50
 
 export const PostList = () => {
     const nav = useNavigate() 
@@ -29,29 +28,37 @@ export const PostList = () => {
     const prepareInnerHTML = (content) => {
         // Sanitize HTML content
         const sanitized = sanitizeHtml(content, {
-            allowedTags: sanitizeHtml.defaults.allowedTags.concat(['b']), // Allow <b> tag
-            allowedAttributes: {}, // Allow no attributes
+            allowedTags: sanitizeHtml.defaults.allowedTags.concat(['b','i','u','s','ol','ul','li']),
+            allowedAttributes: {},
         });
-    
-        // Return the sanitized HTML content
+
         return sanitized;
     }
 
     const truncateText = (post) => {
-        // Find the index of the first closing </p> tag
-        const closingTagIndex = post.indexOf('</p>');
+        // Find the index of the first closing tag for <p>, <ol>, or <ul>
+        const closingTags = ['</p>', '</ol>', '</ul>'];
+        let closingTagIndex = -1;
     
-        // If closing </p> tag exists, slice the string up to that point
+        for (const tag of closingTags) {
+            closingTagIndex = post.indexOf(tag);
+            if (closingTagIndex !== -1) {
+                // Found a closing tag, break the loop
+                break;
+            }
+        }
+    
+        // If closing tag exists, slice the string up to that point
         if (closingTagIndex !== -1) {
-            // Add 4 to include the length of the closing tag itself
-            const truncatedPost = post.slice(0, closingTagIndex + 4);
+            // Add the length of the closing tag itself
+            const truncatedPost = post.slice(0, closingTagIndex + closingTags.find(tag => closingTagIndex !== -1).length);
             // Add " ..." at the end
             return truncatedPost + " ...";
         } else {
-            // If closing </p> tag doesn't exist, return the original post
+            // If closing tag doesn't exist, return the original post
             return post;
         }
-    };
+    }
 
     const renderedData = data.slice(currentPage * ITEMS_PER_PAGE, (currentPage + 1) * ITEMS_PER_PAGE)
 
@@ -66,7 +73,7 @@ export const PostList = () => {
                                 <p>Timestamp</p>
                             </div>
                             <div className="mb-4"
-                            dangerouslySetInnerHTML={{ __html: prepareInnerHTML(truncateText("<p>Lorem ipsum <b>dolor</b> sit amet, consectetur adipiscing elit. Sed aliquam, mi vel iaculis scelerisque, lacus neque congue sem, ac dignissim dolor ipsum at lorem. Aenean quis congue nisl, quis volutpat nisi. Sed eleifend lacinia euismod. Morbi id diam vel orci interdum porta. Proin interdum ligula sit amet semper aliquet. Donec sit amet pellentesque ex, nec condimentum dolor. Mauris molestie sagittis fringilla. Nulla eu purus blandit, eleifend orci hendrerit, consectetur arcu. Cras efficitur efficitur auctor. Mauris in mauris mattis, suscipit enim ac, aliquam massa. In varius justo feugiat diam condimentum facilisis. In auctor lacus vel arcu sollicitudin, sit amet semper lorem aliquet. Vestibulum vestibulum finibus ultricies.</p> <p>Quisque vel eros nec metus eleifend hendrerit. Phasellus blandit, orci iaculis molestie aliquam, dui arcu faucibus nunc, a fringilla libero mi at diam. Sed vel augue sollicitudin, tincidunt nibh non, vehicula libero. Proin posuere sodales purus eu consequat. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras placerat lorem nec pellentesque scelerisque. Nulla facilisi. Praesent eu vestibulum mauris. Donec congue nunc ac nunc suscipit laoreet.</p>")) }} />
+                            dangerouslySetInnerHTML={{ __html: prepareInnerHTML(truncateText("<p>Lorem <u>ipsum</u> <b>dolor</b> sit amet, <i>consectetur adipiscing elit</i>. Sed aliquam, mi vel iaculis scelerisque, lacus neque congue sem ac dignissim dolor ipsum at lorem. Aenean quis congue nisl, quis volutpat nisi. Sed eleifend lacinia euismod. Morbi id diam vel orci interdum porta. Proin interdum ligula sit amet semper aliquet. Donec sit amet pellentesque ex, nec condimentum dolor. Mauris molestie sagittis fringilla. Nulla eu purus blandit, eleifend orci hendrerit, consectetur arcu. Cras efficitur efficitur auctor. Mauris in mauris mattis, suscipit enim ac, aliquam massa. In varius justo feugiat diam condimentum facilisis. In auctor lacus vel arcu sollicitudin, sit amet semper lorem aliquet. Vestibulum vestibulum finibus ultricies.</p> <p>Quisque vel eros nec metus eleifend hendrerit. Phasellus blandit, orci iaculis molestie aliquam, dui arcu faucibus nunc, a fringilla libero mi at diam. Sed vel augue sollicitudin, tincidunt nibh non, vehicula libero. Proin posuere sodales purus eu consequat. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras placerat lorem nec pellentesque scelerisque. Nulla facilisi. Praesent eu vestibulum mauris. Donec congue nunc ac nunc suscipit laoreet.</p>")) }} />
                             <button onClick={() => nav("/")} className='bg-appbutton text-appwhite w-36 rounded-xl shadow-md py-2 font-bold'>Veure més</button>
                         </div>
                     ))}
