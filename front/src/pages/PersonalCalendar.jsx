@@ -21,6 +21,7 @@ export const PersonalCalendar = () => {
         eventService.list(token).then((e)=>{
             e.forEach(event => {
                 let a = {}
+                a.id = event.id
                 a.title = event.name
                 a.start = event.date 
                 a.end = event.date
