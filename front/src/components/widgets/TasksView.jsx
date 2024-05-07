@@ -25,10 +25,10 @@ export const TasksView = () => {
 
     return (
         <>
-            <div className='flex flex-col bg-appfg justify-center rounded-2xl shadow-xl p-16 my-16 mx-0 md:mx-20 *:text-apptext2'>
+            
                 <div className="flex flex-col justify-center mb-7">
                     {renderedData.map(item => (
-                        <div key={item.id} className="p-2 border border-gray-300 mb-2 rounded-md">
+                        <div key={item.id} className="p-2 border border-apptext2 mb-2 rounded-md">
                             <p>{item.name}</p>
                         </div>
                     ))}
@@ -45,7 +45,6 @@ export const TasksView = () => {
                     renderOnZeroPageCount={null}
                     className='flex justify-center *:px-3'
                 />
-            </div>
 
         </>
     )

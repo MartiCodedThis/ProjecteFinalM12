@@ -17,7 +17,6 @@ export default {
         "appsep2": "#A4AC95",
         "appbutton": "#508F5A",
         "apperror": "#AF685A",
-        "appwhite": "#FFFFFF",
       },
       typography: ({ theme }) => ({
         appprose: {

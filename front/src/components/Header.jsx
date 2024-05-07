@@ -34,16 +34,16 @@ export const Header = () => {
             <nav className="flex items-center justify-between flex-wrap *:text-apptext2 bg-appfg shadow-xl px-10 py-2 fixed w-full z-10 top-0">
                 <div className="flex items-center flex-shrink-0">
                     <a className="no-underline hover:no-underline" href="/">
-                        <img className="object-cover object-center h-16" src="../../static/web/headerlogo.png" alt="TCP Organitza"/>
+                        <img className="object-cover object-center h-12 sm:h-16" src="../../static/web/headerlogo.png" alt="TCP Organitza"/>
                     </a>
                 </div>
-                <div className="block lg:hidden">
+                <div className="block sm:hidden">
                     <button id="nav-toggle" onClick={toggleNav} className="flex items-center px-3 py-2 border rounded text-apptext2 border-apptext2 hover:text-apptext hover:border-apptext">
                         <svg className="fill-apptext2 hover:fill-apptext h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
                     </button>
                 </div>
-                <div className={`w-full flex-grow lg:flex lg:items-center lg:w-auto ${isNavOpen ? '' : 'hidden'} lg:block pt-6 lg:pt-0`} id="nav-content">
-                    <ul className="list-reset lg:flex justify-end flex-1 items-center lg:divide-x divide-appsep2">
+                <div className={`w-full flex-grow sm:flex sm:items-center sm:w-auto ${isNavOpen ? '' : 'hidden'} sm:block pt-6 sm:pt-0`} id="nav-content">
+                    <ul className="list-reset sm:flex justify-end flex-1 items-center sm:divide-x divide-appsep2">
                         {user ? (
                             <>
                                 <li>

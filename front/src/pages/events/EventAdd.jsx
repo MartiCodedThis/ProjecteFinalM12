@@ -52,7 +52,7 @@ export const EventAdd = () => {
             {errors.date && <p className="text-apperror">{errors.date.message}</p>}
         </div>
 
-        <button type="submit" className='bg-appbutton text-appwhite w-48 rounded-xl shadow-md my-4 px-6 py-3 font-bold'>Crea l'esdeveniment</button>
+        <button type="submit" className='bg-appbutton text-white w-48 rounded-xl shadow-md my-4 px-6 py-3 font-bold'>Crea l'esdeveniment</button>
     </form>
   )
 }

@@ -67,7 +67,7 @@ export const Login = () => {
                             type="checkbox"  {...register("remember")} />
                         <label>Recorda la meva sessió</label>
                     </div>
-                    <button type="submit" className='bg-appbutton text-appwhite w-48 rounded-xl shadow-md my-4 px-6 py-3 font-bold'>Iniciar sessió</button>
+                    <button type="submit" className='bg-appbutton text-white w-48 rounded-xl shadow-md my-4 px-6 py-3 font-bold'>Iniciar sessió</button>
                 </form>
             </div>
         </>
