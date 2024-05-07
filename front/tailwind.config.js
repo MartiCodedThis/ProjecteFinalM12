@@ -19,13 +19,21 @@ export default {
         "apperror": "#AF685A",
         "appwhite": "#FFFFFF",
       },
+      typography: ({ theme }) => ({
+        appprose: {
+          css: {
+            '--tw-prose-body': theme('colors.apptext'),
+            '--tw-prose-headings': theme('colors.apptext2'),
+            '--tw-prose-lead': theme('colors.apptext'),
+            '--tw-prose-links': theme('colors.appbutton'),
+            '--tw-prose-counters': theme('colors.appbutton'),
+            '--tw-prose-bullets': theme('colors.appbutton'),
+          },
+        },
+      }),
     },
   },
   plugins: [
-    plugin(function({ addBase, theme }) {
-      addBase({
-        
-      })
-    })
+    require('@tailwindcss/typography'),
   ],
 }
