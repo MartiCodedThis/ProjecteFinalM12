@@ -11,7 +11,7 @@ export const Home = () => {
     const { authToken} = useUserContext()
     console.log(authToken)
     if(!authToken){
-        nav("/login")
+        nav("/login")   
     }
     return (
         <>

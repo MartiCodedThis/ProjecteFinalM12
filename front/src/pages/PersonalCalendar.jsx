@@ -7,17 +7,33 @@ export const PersonalCalendar = () => {
     const { services: { sessionService, eventService } } = useServicesContext()
 
     const [isNavOpen, setIsNavOpen] = useState(false)
+    const [eventList, setEventList] = useState()
+    const [refresh, setRefresh] = useState()
+
 
     const toggleNav = () => {
         setIsNavOpen(!isNavOpen)
     }
     let token = sessionService.getToken()
-    let eventList
+    let eventArray = []
 
-    // useEffect(()=>{
-    //     eventList = eventService.list(token)
-    //     console.log(eventList)
-    // })
+    useEffect(()=>{
+        eventService.list(token).then((e)=>{
+            e.forEach(event => {
+                let a = {}
+                a.title = event.name
+                a.start = event.date 
+                a.end = event.date
+                a.allDay = true
+                eventArray.push(a)
+            })
+
+            setEventList(eventArray)
+
+        })
+        console.log(eventArray)
+    },[])
+
 
     return (
         <>
@@ -33,7 +49,7 @@ export const PersonalCalendar = () => {
                 <hr className="border-appsep mb-4"></hr>
             </div>
             <div className='flex flex-col bg-appfg justify-center rounded-2xl shadow-xl divide-y divide-appsep2 p-16 my-16 mx-0 md:mx-20 *:text-apptext2'>
-                {eventList ? <CalendarWidget eventList={eventList} ></CalendarWidget> : <p className='text-lg font-bold'>Carregant events, espera un moment...</p>}
+                {eventList ? <CalendarWidget eventList={eventList} refresh = {refresh}></CalendarWidget> : <p className='text-lg font-bold'>Carregant events, espera un moment...</p>}
                 <form className='flex justify-center divide-x divide-appsep2 pt-8 mt-8 *:w-full *:text-apptext2 *:text-xs *:sm:text-sm'>
                     <div className='*:text-apptext2 *:flex *:no-underline *:px-2 pr-0 sm:pr-4'>
                         <div>
@@ -77,7 +93,7 @@ export const PersonalCalendar = () => {
                 <svg className="fill-apptext2 hover:fill-apptext h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Add</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" /></svg>
             </button>
             <div className={`w-full flex-grow flex items-center w-auto ${isNavOpen ? '' : 'hidden'} block pt-6 lg:pt-0`} id="nav-content">
-                <EventAdd></EventAdd>
+                <EventAdd refresh = {() => setRefresh}></EventAdd>
             </div>
         </>
     )

@@ -5,13 +5,11 @@ import useServicesContext from '../../hooks/useServicesContext'
 
 export const EventAdd = () => {
     const { services: { sessionService, eventService } } = useServicesContext()
-    const { register, handleSubmit, formState: { errors } } = useForm()
+    const { register, handleSubmit, reset, formState: { errors } } = useForm()
     let token = sessionService.getToken()
     const onSubmit = async (data) => {
-        data.date = new Date(data.date)
-        console.log(data)
-        console.log(token)
         eventService.create(token, data)
+        reset()
     }
 
   return (
