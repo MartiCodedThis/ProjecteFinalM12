@@ -17,7 +17,7 @@ export const Home = () => {
         <>
             <div className="flex flex-row justify-center w-full mb-10">
                 <div className='flex w-96 bg-appfg justify-center divide-x divide-appsep2 rounded-2xl shadow-xl p-3'>
-                    <a href="" className="text-apptext2 inline-block no-underline hover:text-apptext px-8">Calendari</a>
+                    <a href="/calendar" className="text-apptext2 inline-block no-underline hover:text-apptext px-8">Calendari</a>
                     <a href="" className="text-apptext2 inline-block no-underline hover:text-apptext px-8">Branca</a>
                     <a href="" className="text-apptext2 inline-block no-underline hover:text-apptext px-8">Càrrec</a>
                 </div>    

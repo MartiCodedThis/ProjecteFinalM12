@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Event;
 use Illuminate\Support\Facades\Log;
@@ -48,12 +49,13 @@ class EventController extends Controller
     public function create(Request $request)
     {
         // Validar dades del formulari
-        $validatedData = $request->validate([
+        $request->validate([
             'name'=> 'required',
             'description'=> 'required',
             'visibility'=> 'required',
             'date'=>'required'
         ]);
+
         // Obtenir dades del formulari
         $name = $request->get('name');
         $description = $request->get('description');

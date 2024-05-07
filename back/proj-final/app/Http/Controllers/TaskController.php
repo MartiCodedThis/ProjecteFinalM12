@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\BrancaTask;
 use App\Models\CarrecTask;
 use App\Models\UserTask;

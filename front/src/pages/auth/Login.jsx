@@ -23,9 +23,10 @@ export const Login = () => {
             let session = data.remember ? storedSessionService : sessionService
             setAuthToken(token)
             session.setToken(token)
-            let user = await authService.getUser(token)
-            setUser(user.name)
-            session.setUser(user.name)
+            let response = await authService.getUser(token)
+            
+            setUser(response.user.name)
+            session.setUser(response.user.name)
             
             nav("/")
         }

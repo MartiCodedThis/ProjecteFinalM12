@@ -16,11 +16,7 @@ Route::post('authorize', [TokenController::class, 'authorize'])->middleware('aut
 Route::post('unauthorize', [TokenController::class, 'unauthorize'])->middleware('auth:sanctum');
 Route::post('branca', [TokenController::class, 'branca'])->middleware('auth:sanctum');
 //Events routes
-Route::get('events/list', [EventController::class, 'index'])->middleware('auth:sanctum');
-Route::get('events/{event}', [EventController::class, 'show'])->middleware('auth:sanctum');
-Route::post('events/create', [EventController::class, 'create'])->middleware('auth:sanctum');
-Route::post('events/{event}', [EventController::class, 'update'])->middleware('auth:sanctum');
-Route::delete('events/{event}', [EventController::class, 'delete'])->middleware('auth:sanctum');
+Route::apiResource('events', EventController::class)->middleware('auth:sanctum');
 //Tasques routes
 Route::get('tasks/list', [TaskController::class, 'index'])->middleware('auth:sanctum');
 Route::get('tasks/{task}', [TaskController::class, 'show'])->middleware('auth:sanctum');

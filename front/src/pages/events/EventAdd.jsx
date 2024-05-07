@@ -1,16 +1,17 @@
-import React, {useState} from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
-import DatePicker from 'react-datepicker'
 import useServicesContext from '../../hooks/useServicesContext'
 
 
 export const EventAdd = () => {
     const { services: { sessionService, eventService } } = useServicesContext()
-    const [selectedDate, setSelectedDate] = useState(null)
     const { register, handleSubmit, formState: { errors } } = useForm()
     let token = sessionService.getToken()
     const onSubmit = async (data) => {
-        let event = eventService.create(token, data)
+        data.date = new Date(data.date)
+        console.log(data)
+        console.log(token)
+        eventService.create(token, data)
     }
 
   return (
@@ -50,11 +51,6 @@ export const EventAdd = () => {
         <div className='flex w-full flex-col mb-4'>
             <label className='font-bold mb-1'>Data</label>
             <input type="date" {...register("date", { required: 'Has de seleccionar una data!' })} />
-            {/* <DatePicker
-                selected={selectedDate}
-                onChange={date => setSelectedDate(date)}
-                {...register("date", { required: 'Has de seleccionar una data!' })}
-            /> */}
             {errors.date && <p className="text-apperror">{errors.date.message}</p>}
         </div>
 

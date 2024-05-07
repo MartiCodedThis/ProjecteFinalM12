@@ -13,6 +13,7 @@ import { EventAdd } from "./pages/events/EventAdd.jsx"
 
 import { UserContextProvider } from './contexts/UserContext.jsx'
 import { ServicesContextProvider } from './contexts/ServicesContext.jsx'
+import { PersonalCalendar } from "./pages/PersonalCalendar.jsx"
 
 
 function App() {
@@ -38,7 +39,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={ <Login />} />
             <Route path="/register" element={<Register />} />
-            {/* <Route path="/calendar" element={<CalendarWidget/>}/> */}
+            <Route path="/calendar" element={<PersonalCalendar/>}/>
             <Route path="/addevent" element ={ <EventAdd/> }/>
           </Routes>
         </Layout>

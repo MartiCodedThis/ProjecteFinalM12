@@ -24,7 +24,7 @@ export default class EventService {
     }
     async list(token){
         try {
-            const url = process.env.API_URL  + "/events/list"
+            const url = process.env.API_URL  + "/events"
             let request = await fetch(url, {
                 headers: {
                     Accept: "application/json",
@@ -46,7 +46,6 @@ export default class EventService {
         }
     }
     async create(token, data){
-        console.log(token)
         try {
             const url = process.env.API_URL  + "/events/create"
             let request = await fetch(url, {
@@ -56,7 +55,7 @@ export default class EventService {
                     Authorization:`Bearer ${token}`,
                 },
                 method: "POST",
-                body: data,
+                body: JSON.stringify(data),
             })
             const response = await request.json()
             if (response.success) {
@@ -65,8 +64,7 @@ export default class EventService {
                 throw new Error(response.message)
             }
         } catch (error) {
-            console.log(`Error al accedir als esdeveniments: ${error.message}`)
-            alert(`Error al accedir als esdeveniments': ${error.message}`)
+            console.log(`Error al crear l'esdeveniment: ${error.message}`)
             return false
         }
     }
