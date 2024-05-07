@@ -63,7 +63,7 @@ export const Login = () => {
                         {errors.password && <p className="text-apperror">{errors.password.message}</p>}
                     </div>
                     <div className='w-full flex-col mb-4'>
-                        <input className='w-4 h-4 mr-1 shadow-inner'
+                        <input className='w-4 h-4 mr-1'
                             type="checkbox"  {...register("remember")} />
                         <label>Recorda la meva sessió</label>
                     </div>

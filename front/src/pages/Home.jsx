@@ -16,11 +16,11 @@ export const Home = () => {
     return (
         <>
             <div className="flex flex-row justify-center w-full mb-10">
-                <div className='flex w-96 bg-appfg justify-center divide-x divide-appsep2 rounded-2xl shadow-xl p-3'>
-                    <a href="/calendar" className="text-apptext2 inline-block no-underline hover:text-apptext px-8">Calendari</a>
-                    <a href="" className="text-apptext2 inline-block no-underline hover:text-apptext px-8">Branca</a>
-                    <a href="" className="text-apptext2 inline-block no-underline hover:text-apptext px-8">Càrrec</a>
-                </div>    
+                <div className='flex w-min-96 bg-appfg justify-center divide-x divide-appsep2 rounded-2xl shadow-xl p-3 *:min-w-48 *:text-center *:text-apptext2 *:inline-block *:no-underline *:px-8'>
+                    <a href="/calendar" className="hover:text-apptext">Calendari</a>
+                    <a href="" className="hover:text-apptext">Branca</a>
+                    <a href="" className="hover:text-apptext">Càrrec</a>
+                </div>  
             </div>
             <div className="mb-12">
                 <h2 className="text-5xl font-bold mb-4">Tasques setmanals</h2>
