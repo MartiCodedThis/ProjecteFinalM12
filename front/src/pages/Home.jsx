@@ -1,9 +1,18 @@
 
-import { PostList } from "../components/widgets/PostList"
-import { TasksView } from "../components/widgets/TasksView"
+import {PostList} from "../components/widgets/PostList"
+import {TasksView} from "../components/widgets/TasksView"
+import { useNavigate } from 'react-router-dom'
+import useUserContext from "../hooks/useUserContext"
+
+
 
 export const Home = () => {
-
+    const nav = useNavigate()
+    const { authToken} = useUserContext()
+    console.log(authToken)
+    if(!authToken){
+        nav("/login")
+    }
     return (
         <>
             <div className="flex flex-row justify-center w-full mb-10">

@@ -7,9 +7,13 @@ import { Home } from "./pages/Home.jsx"
 
 import { Login } from "./pages/auth/Login.jsx"
 import { Register } from "./pages/auth/Register.jsx"
+import { EventAdd } from "./pages/events/EventAdd.jsx"
+
+// import { CalendarWidget } from "./components/widgets/CalendarWidget.jsx"
 
 import { UserContextProvider } from './contexts/UserContext.jsx'
 import { ServicesContextProvider } from './contexts/ServicesContext.jsx'
+
 
 function App() {
 
@@ -34,6 +38,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={ <Login />} />
             <Route path="/register" element={<Register />} />
+            {/* <Route path="/calendar" element={<CalendarWidget/>}/> */}
+            <Route path="/addevent" element ={ <EventAdd/> }/>
           </Routes>
         </Layout>
       </UserContextProvider>
