@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { CalendarWidget } from '../components/widgets/CalendarWidget'
-import { EventAdd } from './events/EventAdd'
+import { EventAdd } from '../components/widgets/EventAdd'
 import useServicesContext from '../hooks/useServicesContext'
+import useUserContext from '../hooks/useUserContext'
 
 export const PersonalCalendar = () => {
     const { services: { sessionService, eventService } } = useServicesContext()
@@ -9,6 +10,7 @@ export const PersonalCalendar = () => {
     const [addMenu, setAddMenu] = useState(false)
     const [eventList, setEventList] = useState()
     const [refresh, setRefresh] = useState()
+    const { authToken } = useUserContext()
 
 
     const toggleNav = () => {
@@ -18,13 +20,13 @@ export const PersonalCalendar = () => {
     let token = sessionService.getToken()
     let eventArray = []
     //This is firing twice somehow
-    useEffect(()=>{
-        eventService.list(token).then((e)=>{
+    useEffect(() => {
+        eventService.list(token).then((e) => {
             e.forEach(event => {
                 let a = {}
                 a.id = event.id
                 a.title = event.name
-                a.start = event.date 
+                a.start = event.date
                 a.end = event.date
                 a.allDay = true
                 eventArray.push(a)
@@ -33,7 +35,7 @@ export const PersonalCalendar = () => {
             eventArray = []
         })
         console.log("eventArray has been loaded")
-    },[])
+    }, [])
 
 
     return (
@@ -49,49 +51,51 @@ export const PersonalCalendar = () => {
                 <h2 className="text-3xl md:text-5xl font-bold mb-4">Calendari d'events</h2>
                 <hr className="border-appsep mb-4"></hr>
             </div>
-            <div className='flex flex-col bg-appfg justify-center rounded-2xl shadow-xl p-8 md:p-16 my-8 sm:my-16 mx-0 lg:mx-10 text-apptext2 divide-y divide-appsep2'>
+            <div className='flex flex-col bg-appfg justify-center rounded-2xl shadow-xl p-8 md:p-16 my-8 sm:my-16 mx-0 lg:mx-10 text-apptext2'>
                 {eventList ? <CalendarWidget eventList={eventList} ></CalendarWidget> : <p className='text-md font-bold'>Carregant events, espera un moment...</p>}
-                <button id="nav-toggle" onClick={toggleNav} className='bg-appbutton text-white w-48 rounded-xl shadow-md my-4 px-6 py-3 font-bold'>Afegir event</button>
-                <form className='flex justify-center divide-x divide-appsep2 pt-8 mt-8 *:w-full *:text-apptext2 *:text-xs *:sm:text-sm'>
+                <button id="nav-toggle" onClick={toggleNav} className='bg-appbutton self-center text-white w-48 rounded-xl shadow-md mt-4 px-6 py-3 font-bold'>Afegir event</button>                
+                {/* <h3 className='font-bold'>Filtres</h3>
+                <hr className="border-appsep2 mb-4"></hr>
+                <form className='flex justify-center divide-x divide-appsep2 pt-4 *:w-full *:text-apptext2 *:text-xs *:sm:text-sm'>
                     <div className='*:text-apptext2 *:flex *:no-underline *:px-2 pr-0 sm:pr-4'>
                         <div>
-                            <input className='w-4 h-4 mr-1' type="checkbox" id="pedagògic" name="pedagògic" value="0" />
-                            <label htmlFor="pedagògic">Càrrec Pedagògic</label>
+                            <input className='w-4 h-4 mr-2' type="checkbox" id="pedagògic" name="pedagògic" value="0" />
+                            <label htmlFor="pedagògic">Càrrec pedagògic</label>
                         </div>
                         <div>
-                            <input className='w-4 h-4 mr-1' type="checkbox" id="equip_agrupament" name="equip_agrupament" value="1" />
+                            <input className='w-4 h-4 mr-2' type="checkbox" id="equip_agrupament" name="equip_agrupament" value="1" />
                             <label htmlFor="equip_agrupament">Equip d'agrupament</label>
                         </div>
                         <div>
-                            <input className='w-4 h-4 mr-1' type="checkbox" id="tresoreria" name="tresoreria" value="2" />
+                            <input className='w-4 h-4 mr-2' type="checkbox" id="tresoreria" name="tresoreria" value="2" />
                             <label htmlFor="tresoreria">Tresoreria</label>
                         </div>
                         <div>
-                            <input className='w-4 h-4 mr-1' type="checkbox" id="secretaria" name="secretaria" value="3" />
+                            <input className='w-4 h-4 mr-2' type="checkbox" id="secretaria" name="secretaria" value="3" />
                             <label htmlFor="secretaria">Secretaria</label>
                         </div>
                     </div>
                     <div className='*:text-apptext2 *:flex *:no-underline *:px-2 pl-0 sm:pl-4'>
                         <div>
-                            <input className='w-4 h-4 mr-1' type="checkbox" id="follets" name="follets" value="0" />
+                            <input className='w-4 h-4 mr-2' type="checkbox" id="follets" name="follets" value="0" />
                             <label htmlFor="follets">Follets</label>
                         </div>
                         <div>
-                            <input className='w-4 h-4 mr-1' type="checkbox" id="llobatons" name="llobatons" value="1" />
+                            <input className='w-4 h-4 mr-2' type="checkbox" id="llobatons" name="llobatons" value="1" />
                             <label htmlFor="llobatons">Llobatons</label>
                         </div>
                         <div>
-                            <input className='w-4 h-4 mr-1' type="checkbox" id="puputs" name="puputs" value="2" />
+                            <input className='w-4 h-4 mr-2' type="checkbox" id="puputs" name="puputs" value="2" />
                             <label htmlFor="puputs">Puputs</label>
                         </div>
                         <div>
-                            <input className='w-4 h-4 mr-1' type="checkbox" id="rangers" name="rangers" value="3" />
+                            <input className='w-4 h-4 mr-2' type="checkbox" id="rangers" name="rangers" value="3" />
                             <label htmlFor="puputs">Rangers</label>
                         </div>
                     </div>
-                </form>
+                </form> */}
             </div>
-            <div className={`w-full flex-grow flex items-center w-auto ${addMenu ? '' : 'hidden'} block pt-6 lg:pt-0`} id="nav-content">
+            <div className={`${addMenu ? '' : 'hidden'}`} id="nav-content">
                 <EventAdd closePopup={() => setAddMenu(false)}></EventAdd>
             </div>
         </>
