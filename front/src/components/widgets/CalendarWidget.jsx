@@ -22,7 +22,11 @@ export const CalendarWidget = (object) => {
         startAccessor="start"
         defaultView="month"
         endAccessor="end"
-        style={{ height: 500 }}
+        style={{ flexGrow: 1,
+          height: 0,
+          minHeight: "600px", 
+        }}
+        className=""
         views = {{
           month:true,
           week:false

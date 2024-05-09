@@ -17,6 +17,10 @@ export default {
         "appsep2": "#A4AC95",
         "appbutton": "#508F5A",
         "apperror": "#AF685A",
+        "follets": "#87F542",
+        "llobatons": "ED1F1F",
+        "puputs": "C71FED",
+        "rangers": "F5E50C"
       },
       typography: ({ theme }) => ({
         appprose: {
