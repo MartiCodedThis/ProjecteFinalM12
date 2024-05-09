@@ -31,7 +31,7 @@ export const Header = () => {
 
     return (
         <>
-            <nav className="flex items-center justify-between flex-wrap *:text-apptext2 bg-appfg shadow-xl px-10 py-2 fixed w-full z-10 top-0">
+            <nav className="flex items-center justify-between flex-wrap *:text-apptext2 bg-appfg shadow-xl px-10 py-2 fixed w-full z-30 top-0">
                 <div className="flex items-center flex-shrink-0">
                     <a className="no-underline hover:no-underline" href="/">
                         <img className="object-cover object-center h-12 sm:h-16" src="../../static/web/headerlogo.png" alt="TCP Organitza"/>

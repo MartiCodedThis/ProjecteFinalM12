@@ -6,13 +6,13 @@ import useServicesContext from '../hooks/useServicesContext'
 export const PersonalCalendar = () => {
     const { services: { sessionService, eventService } } = useServicesContext()
 
-    const [addMenu, setaddMenu] = useState(false)
+    const [addMenu, setAddMenu] = useState(false)
     const [eventList, setEventList] = useState()
     const [refresh, setRefresh] = useState()
 
 
     const toggleNav = () => {
-        setaddMenu(!addMenu)
+        setAddMenu(!addMenu)
     }
     // Fix so it works with remembered sesh!!
     let token = sessionService.getToken()
@@ -92,7 +92,7 @@ export const PersonalCalendar = () => {
                 </form>
             </div>
             <div className={`w-full flex-grow flex items-center w-auto ${addMenu ? '' : 'hidden'} block pt-6 lg:pt-0`} id="nav-content">
-                <EventAdd></EventAdd>
+                <EventAdd closePopup={() => setAddMenu(false)}></EventAdd>
             </div>
         </>
     )
