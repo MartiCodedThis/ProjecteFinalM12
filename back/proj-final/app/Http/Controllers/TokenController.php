@@ -20,13 +20,30 @@ class TokenController extends Controller{
         return response()->json([
             "success" => true,
             "user"    => $request->user(),
-            "role"   => [$user->role_id],
+            "role"   => $user->role_id,
         ]);
     }
 
     public function list(Request $request)
     {
         $userList = User::all();
+        return response()->json([
+            "success" => true,
+            "userlist" => $userList
+        ]);
+    }
+    public function list_authorized(Request $request)
+    {
+        $userList = User::where('authorized', '1')->get();
+        return response()->json([
+            "success" => true,
+            "userlist" => $userList
+        ]);
+    }
+
+    public function list_unauthorized(Request $request)
+    {
+        $userList = User::where('authorized', '0')->get();
         return response()->json([
             "success" => true,
             "userlist" => $userList
@@ -149,7 +166,7 @@ class TokenController extends Controller{
     }
 
     public function authorize(Request $request){
-        $user = User::where('email', $request->input("email"))->first();
+        $user = User::where('id', $request->input("id"))->first();
         if($user){
             if($request->user()->cannot('authorizeUser', User::class)){
                 return response()->json([
@@ -185,7 +202,7 @@ class TokenController extends Controller{
     }
 
     public function unauthorize(Request $request){
-        $user = User::where('email', $request->input("email"))->first();
+        $user = User::where('id', $request->input("id"))->first();
         if($user){
             // Gate::authorize('authorizeUser', User::class);
             if($request->user()->cannot('authorizeUser', User::class)){

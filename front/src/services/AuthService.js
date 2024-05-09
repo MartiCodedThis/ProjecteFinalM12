@@ -122,4 +122,77 @@ export default class AuthService {
             return false
         }
     }
+
+    async listAuthUsers(token){
+        try{
+            const url = process.env.API_URL  + "/authlist"
+            const request = await fetch(url, {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    Authorization:`Bearer ${token}`,
+                },
+                method: "GET",
+            })
+            const response = await request.json()
+            if (response) {
+                return response
+            } else {
+                throw new Error("Ha sorgit un error al buscar els usuaris")
+            }
+        }
+        catch(error){
+            console.error('Error de cerca:' + error)
+            return false
+        }
+    }
+
+    async listUnauthUsers(token){
+        try{
+            const url = process.env.API_URL  + "/unauthlist"
+            const request = await fetch(url, {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    Authorization:`Bearer ${token}`,
+                },
+                method: "GET",
+            })
+            const response = await request.json()
+            if (response) {
+                return response
+            } else {
+                throw new Error("Ha sorgit un error al buscar els usuaris")
+            }
+        }
+        catch(error){
+            console.error('Error de cerca:' + error)
+            return false
+        }
+    }
+
+    async authorize(token, id){
+        try{
+            const url = process.env.API_URL  + "/authorize"
+            const request = await fetch(url, {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    Authorization:`Bearer ${token}`,
+                },
+                method: "POST",
+                body: { 'id' : id }
+            })
+            const response = await request.json()
+            if (response) {
+                return response
+            } else {
+                throw new Error("Ha sorgit un error al buscar els usuaris")
+            }
+        }
+        catch(error){
+            console.error('Error de cerca:' + error)
+            return false
+        }
+    }
 }

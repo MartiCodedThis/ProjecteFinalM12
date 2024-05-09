@@ -1,17 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import useServicesContext from '../../hooks/useServicesContext'
 import { XCircleIcon } from '@heroicons/react/24/outline'
 
-export const TaskAdd = ({ event_id, closePopup }) => {
-    const { services: { sessionService, taskService } } = useServicesContext()
+export const TaskAdd = (props) => {
+    const { services: { sessionService, taskService, authService } } = useServicesContext()
     const { register, handleSubmit, reset, formState: { errors } } = useForm()
     let token = sessionService.getToken()
+    const closePopup = props.closePopup
     const onSubmit = async (data) => {
         taskService.create(token, data)
         reset()
         closePopup()
     }
+    const [userList, setUserList] = useState([])
+   useEffect(()=>{
+        authService.listAuthUsers(token).then((e)=>{
+            setUserList(e.userlist)
+        })
+    },[])
+
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
@@ -59,8 +67,70 @@ export const TaskAdd = ({ event_id, closePopup }) => {
                         <input className='rounded-lg px-4 py-1 shadow-inner border border-appsep' type="date" {...register("date", { required: 'Has de seleccionar una data límit!' })} />
                         {errors.date && <p className="text-apperror">{errors.date.message}</p>}
                     </div>
+                    <div className='flex w-full flex-row mb-4' >
+                        <div className='px-4'>
+                            <label className='font-bold mb-1'>Branca</label>
+                            <div>
+                                <input type="radio" {...register("branca_id")} value="" />
+                                Cap branca
+                            </div>
+                            <div>
+                                <input type="radio" {...register("branca_id")} value="0" />
+                                Follets
+                            </div>
+                            <div>
+                                <input type="radio" {...register("branca_id")} value="1" />
+                                Llobatons
+                            </div>
+                            <div>
+                                <input type="radio" {...register("branca_id")} value="2" />
+                                Puputs
+                            </div>
+                            <div>
+                                <input type="radio" {...register("branca_id")} value="3" />
+                                Ràngers
+                            </div>
+                        </div>
+                        <div>
+                            <label className='font-bold mb-1'>Càrrec</label>
+                            <div>
+                                <input type="radio" {...register("carrec_id")} value="" />
+                                Cap càrrec
+                            </div>
+                            <div>
+                                <input type="radio" {...register("carrec_id")} value="0" />
+                                Equip d'Agrupament
+                            </div>
+                            <div>
+                                <input type="radio" {...register("carrec_id")} value="1" />
+                                Pedagògic
+                            </div>
+                            <div>
+                                <input type="radio" {...register("carrec_id")} value="2" />
+                                Tresoreria
+                            </div>
+                            <div>
+                                <input type="radio" {...register("carrec_id")} value="3" />
+                                Secretaria
+                            </div>
+                        </div>
+                        <div>
+                            <label className='font-bold mb-1'>Responsables: </label>
+                                {userList ?
+                                    userList.map((user)=>{
+                                            return( 
+                                                <>
+                                                    <input type="checkbox" {...register("responsables")} value={user.id}/> {user.name} |
+                                                </>               
+                                            )}) 
+                                : <p>Carregant usuaris...</p>}
+                        </div>
+                    </div>
+     
+                   
+                    <input type="hidden"  {...register("event_id")} value={props.event_id} ></input>
 
-                    <button type="submit" className='bg-appbutton text-white w-48 rounded-xl shadow-md my-4 px-6 py-3 font-bold'>Crea l'esdeveniment</button>
+                    <button type="submit" className='bg-appbutton text-white w-48 rounded-xl shadow-md my-4 px-6 py-3 font-bold'>Crea la tasca</button>
                 </form>
             </div>
         </div>

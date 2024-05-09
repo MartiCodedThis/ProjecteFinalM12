@@ -22,9 +22,9 @@ export default class TaskService {
             return false
         }
     }
-    async list(token){
+    async list(token, id){
         try {
-            const url = process.env.API_URL  + `/tasks/list`
+            const url = process.env.API_URL  + `/tasks/list/${id}`
             let request = await fetch(url, {
                 headers: {
                     Accept: "application/json",

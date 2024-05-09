@@ -15,10 +15,10 @@ use App\Models\User;
 
 class TaskController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, $id)
     {
         // Order and count
-        $taskList = Task::all();
+        $taskList = Task::where('event_id',$id)->get();
         
         return response()->json([
             "success" => true,
@@ -38,6 +38,54 @@ class TaskController extends Controller
             return response()->json([
                 "success" => false,
                 "message"    => "Task not found",
+            ],404);
+        }
+    }
+
+    public function userTasks(Request $request, $id){
+        $taskList = UserTask::where('user_id',$id)->get();
+        if($taskList){
+            return response()->json([
+                "success" => true,
+                "user_tasks" =>$taskList
+            ],200);
+        }
+        else{
+            return response()->json([
+                "success" => false,
+                "message"    => "User has no tasks",
+            ],404);
+        }
+    }
+
+    public function brancaTasks(Request $request, $id){
+        $taskList = BrancaTask::where('branca_id',$id)->get();
+        if($taskList){
+            return response()->json([
+                "success" => true,
+                "branca_tasks" =>$taskList
+            ],200);
+        }
+        else{
+            return response()->json([
+                "success" => false,
+                "message"    => "This branch has no tasks",
+            ],404);
+        }
+    }
+    
+    public function carrecTasks(Request $request, $id){
+        $taskList = CarrecTask::where('carrec_id',$id)->get();
+        if($taskList){
+            return response()->json([
+                "success" => true,
+                "carrec_tasks" =>$taskList
+            ],200);
+        }
+        else{
+            return response()->json([
+                "success" => false,
+                "message"    => "This charge has no tasks",
             ],404);
         }
     }

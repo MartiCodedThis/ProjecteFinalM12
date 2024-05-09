@@ -15,6 +15,8 @@ import { EventShow } from "./pages/events/EventShow.jsx"
 //Context
 import { UserContextProvider } from './contexts/UserContext.jsx'
 import { ServicesContextProvider } from './contexts/ServicesContext.jsx'
+import TaskShow from "./pages/tasks/TaskShow.jsx"
+import { Profile } from "./pages/Profile.jsx"
 
 function App() {
 
@@ -40,7 +42,9 @@ function App() {
             <Route path="/login" element={ <Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/calendar" element={<PersonalCalendar/>}/>
+            <Route path="/profile" element={ <Profile/> } />
             <Route path="/events/:id" element={<EventShow/>} />
+            <Route path="/tasks/:id" element={ <TaskShow/> } />
           </Routes>
         </Layout>
       </UserContextProvider>

@@ -12,24 +12,16 @@ export const EventShow = () => {
     let token = sessionService.getToken()
     const [event, setEvent] = useState()
     const [taskList, setTaskList] = useState()
-    var filteredTasks = []
     const [addTask, setAddTask] = useState(false)
 
-    useEffect(() => {
-        eventService.get(token, params.id).then((e) => {
+    useEffect(()=>{
+        eventService.get(token, params.id).then((e)=>{
             setEvent(e)
         })
-        taskService.list(token).then((t) => {
-            console.log(t)
-            t.map(task => {
-                if (task.event_id == params.id) {
-                    filteredTasks.push(task)
-                }
-            })
-            setTaskList(filteredTasks)
-            filteredTasks = []
+        taskService.list(token, params.id).then((t)=>{
+            setTaskList(t)
         })
-    }, [])
+    },[])
 
     const toggleNav = () => {
         setAddTask(!addTask)
@@ -49,7 +41,7 @@ export const EventShow = () => {
         <>
             {event ? <>
                 <div className="mb-12">
-                    <h2 className="text-3xl md:text-5xl font-bold mb-4">Informació de la tasca</h2>
+                    <h2 className="text-3xl md:text-5xl font-bold mb-4">Informació del event</h2>
                     <hr className="border-appsep mb-4"></hr>
                     <div className='flex flex-col bg-appfg justify-center rounded-2xl shadow-xl p-8 md:p-16 my-8 sm:my-16 mx-0 lg:mx-10'>
                             <h3 className="text-3xl font-bold mb-2">{event.name}</h3>
@@ -66,8 +58,8 @@ export const EventShow = () => {
                             })
                             : <p>Encara no hi ha cap tasca associada</p>}
                         <button id="nav-toggle" onClick={toggleNav} className='bg-appbutton self-center text-white w-48 rounded-xl shadow-md mt-4 px-6 py-3 font-bold'>Afegir tasca</button>  
-                        <div className={`${addTask ? '' : 'hidden'}`} id="nav-content">
-                            <TaskAdd closePopup={() => setAddTask(false)}></TaskAdd>
+                        <div className={`${addTask ? 'pt-10' : 'hidden'}`} id="nav-content">
+                            <TaskAdd event_id={event.id} closePopup={() => setAddTask(false)}></TaskAdd>
                         </div>
                     </div>
                 </div>

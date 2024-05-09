@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import useServicesContext from '../../hooks/useServicesContext';
 import { XCircleIcon } from '@heroicons/react/24/outline';
 import { Editor, EditorState, RichUtils, convertToRaw } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
+// import draftToHtml from 'draftjs-to-html';
 import 'draft-js/dist/Draft.css';
 
 function MyEditor({ editorState, setEditorState }) {
