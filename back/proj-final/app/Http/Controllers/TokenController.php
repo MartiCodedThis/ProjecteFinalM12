@@ -23,6 +23,15 @@ class TokenController extends Controller{
             "role"   => [$user->role_id],
         ]);
     }
+
+    public function list(Request $request)
+    {
+        $userList = User::all();
+        return response()->json([
+            "success" => true,
+            "userlist" => $userList
+        ]);
+    }
     
     public function login(Request $request)
     {

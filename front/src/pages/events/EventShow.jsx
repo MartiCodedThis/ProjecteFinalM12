@@ -49,7 +49,7 @@ export const EventShow = () => {
                         <svg className="fill-apptext2 hover:fill-apptext h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Add</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" /></svg>
                     </button>
                     <div className={`w-full flex-grow flex items-center w-auto ${isNavOpen ? '' : 'hidden'} block pt-6 lg:pt-0`} id="nav-content">
-                        <TaskAdd></TaskAdd>
+                        <TaskAdd event_id = {event.id}></TaskAdd>
                     </div>
                 </>
         

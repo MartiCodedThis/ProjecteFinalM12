@@ -98,4 +98,28 @@ export default class AuthService {
             return false
         }
     }
+
+    async listUsers(token){
+        try{
+            const url = process.env.API_URL  + "/userlist"
+            const request = await fetch(url, {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    Authorization:`Bearer ${token}`,
+                },
+                method: "GET",
+            })
+            const response = await request.json()
+            if (response) {
+                return response
+            } else {
+                throw new Error("Ha sorgit un error al buscar els usuaris")
+            }
+        }
+        catch(error){
+            console.error('Error de cerca:' + error)
+            return false
+        }
+    }
 }
