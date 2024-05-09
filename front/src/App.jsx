@@ -1,20 +1,20 @@
+//React
 import { Routes, Route, Navigate } from "react-router-dom"
 
+//Components
 import { Layout } from "./components/Layout.jsx"
 
+//Pages
 import { NotFound } from "./pages/NotFound.jsx"
 import { Home } from "./pages/Home.jsx"
-
 import { Login } from "./pages/auth/Login.jsx"
 import { Register } from "./pages/auth/Register.jsx"
-import { EventAdd } from "./pages/events/EventAdd.jsx"
+import { PersonalCalendar } from "./pages/PersonalCalendar.jsx"
+import { EventShow } from "./pages/events/EventShow.jsx"
 
-// import { CalendarWidget } from "./components/widgets/CalendarWidget.jsx"
-
+//Context
 import { UserContextProvider } from './contexts/UserContext.jsx'
 import { ServicesContextProvider } from './contexts/ServicesContext.jsx'
-import { PersonalCalendar } from "./pages/PersonalCalendar.jsx"
-
 
 function App() {
 
@@ -40,7 +40,7 @@ function App() {
             <Route path="/login" element={ <Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/calendar" element={<PersonalCalendar/>}/>
-            <Route path="/addevent" element ={ <EventAdd/> }/>
+            <Route path="/events/:id" element={<EventShow/>} />
           </Routes>
         </Layout>
       </UserContextProvider>

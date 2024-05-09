@@ -25,7 +25,7 @@ export const CalendarWidget = (object) => {
         style={{ height: 500 }}
         views = {{
           month:true,
-          week:false,
+          week:false
         }}
         onSelectEvent={handleEventClick}
       />

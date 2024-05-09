@@ -1,7 +1,7 @@
-export default class EventService {
-    async get(token, event_id){
+export default class TaskService {
+    async get(token, task_id){
         try {
-            const url = process.env.API_URL  + `/events/${event_id}`
+            const url = process.env.API_URL  + `/tasks/${task_id}`
             let request = await fetch(url, {
                 headers: {
                     Accept: "application/json",
@@ -12,19 +12,19 @@ export default class EventService {
             })
             const response = await request.json()
             if (response.success) {
-                return response.event
+                return response.task
             } else {
                 throw new Error(response.message)
             }
         } catch (error) {
-            console.log(`Error al cercar l'esdeveniment: ${error.message}`)
-            alert(`Error al cercar l'esdeveniment': ${error.message}`)
+            console.log(`Error al cercar la tasca: ${error.message}`)
+            alert(`Error al cercar la tasca': ${error.message}`)
             return false
         }
     }
     async list(token){
         try {
-            const url = process.env.API_URL  + "/events"
+            const url = process.env.API_URL  + `/tasks/list`
             let request = await fetch(url, {
                 headers: {
                     Accept: "application/json",
@@ -35,19 +35,19 @@ export default class EventService {
             })
             const response = await request.json()
             if (response.success) {
-                return response.events
+                return response.tasks
             } else {
                 throw new Error(response.message)
             }
         } catch (error) {
-            console.log(`Error al accedir als esdeveniments: ${error.message}`)
-            alert(`Error al accedir als esdeveniments': ${error.message}`)
+            console.log(`Error al accedir a les tasques: ${error.message}`)
+            alert(`Error al accedir a les tasques': ${error.message}`)
             return false
         }
     }
     async create(token, data){
         try {
-            const url = process.env.API_URL  + "/events/create"
+            const url = process.env.API_URL  + "/tasks/create"
             let request = await fetch(url, {
                 headers: {
                     Accept: "application/json",
@@ -59,12 +59,12 @@ export default class EventService {
             })
             const response = await request.json()
             if (response.success) {
-                return response.events
+                return response.tasks
             } else {
                 throw new Error(response.message)
             }
         } catch (error) {
-            console.log(`Error al crear l'esdeveniment: ${error.message}`)
+            console.log(`Error al crear la tasca: ${error.message}`)
             return false
         }
     }
