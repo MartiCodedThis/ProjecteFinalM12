@@ -19,21 +19,10 @@ class TaskController extends Controller
     {
         // Order and count
         $taskList = Task::all();
-
-        // Filter?
-        if ($search = $request->get('search')) {
-            if(!$taskList->where('description', 'like', "%{$search}%")){
-                return response()->json([
-                    "success" => false,
-                    "message"    => "Cap event correspon amb la teva cerca",
-                ],404);
-            }
-            $taskList->where('description', 'like', "%{$search}%");
-        }
         
         return response()->json([
             "success" => true,
-            "tasques"    =>$taskList,
+            "tasks"    =>$taskList,
         ],200);
     }
 

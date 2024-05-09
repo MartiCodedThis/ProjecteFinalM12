@@ -42,7 +42,7 @@ class EventController extends Controller
         else{
             return response()->json([
                 "success" => false,
-                "message"    => "Event not found",
+                "message"    => "Event not founddd",
             ],404);
         }
     }

@@ -23,6 +23,7 @@ Route::post('events/{event}', [EventController::class, 'update'])->middleware('a
 Route::delete('events/{event}', [EventController::class, 'delete'])->middleware('auth:sanctum');
 //Tasques routes
 Route::get('tasks/list', [TaskController::class, 'index'])->middleware('auth:sanctum');
+Route::get('tasks/list/{event_id}', [TaskController::class, 'index'])->middleware('auth:sanctum');
 Route::get('tasks/{task}', [TaskController::class, 'show'])->middleware('auth:sanctum');
 Route::post('tasks/create', [TaskController::class, 'create'])->middleware('auth:sanctum');
 Route::post('tasks/{task}', [TaskController::class, 'update'])->middleware('auth:sanctum');
