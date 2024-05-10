@@ -13,6 +13,7 @@ export const EventShow = () => {
     const [event, setEvent] = useState()
     const [taskList, setTaskList] = useState()
     const [addTask, setAddTask] = useState(false)
+    const [refresh, setRefresh] = useState()
 
     useEffect(()=>{
         eventService.get(token, params.id).then((e)=>{
@@ -21,7 +22,7 @@ export const EventShow = () => {
         taskService.list(token, params.id).then((t)=>{
             setTaskList(t)
         })
-    },[])
+    },[refresh])
 
     const toggleNav = () => {
         setAddTask(!addTask)
@@ -59,7 +60,7 @@ export const EventShow = () => {
                             : <p>Encara no hi ha cap tasca associada</p>}
                         <button id="nav-toggle" onClick={toggleNav} className='bg-appbutton self-center text-white w-48 rounded-xl shadow-md mt-4 px-6 py-3 font-bold'>Afegir tasca</button>  
                         <div className={`${addTask ? 'pt-10' : 'hidden'}`} id="nav-content">
-                            <TaskAdd event_id={event.id} closePopup={() => setAddTask(false)}></TaskAdd>
+                            <TaskAdd event_id={event.id} refresh={setRefresh} closePopup={() => setAddTask(false)}></TaskAdd>
                         </div>
                     </div>
                 </div>

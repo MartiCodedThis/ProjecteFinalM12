@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -98,6 +99,7 @@ class TokenController extends Controller{
        }
     
     public function register(Request $request){
+        Log::info($request);
             $data = $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
@@ -128,7 +130,7 @@ class TokenController extends Controller{
     public function branca(Request $request){
         $user = User::find($request->user()->id);
         if($user){
-            $branca = $request->get('branca');
+            $branca = $request->get('branca_id');
             $user->branca = $branca;
             $user->save();
             return response()->json([

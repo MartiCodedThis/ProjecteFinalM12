@@ -2,13 +2,13 @@ export default class AuthService {
     async register(data) {
         try {
             const url = process.env.API_URL  + "/register"
-            request = await fetch(url, {
+            const request = await fetch(url, {
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json"
                 },
                 method: "POST",
-                body: { name: data.username, email: data.email, password: data.password }
+                body: JSON.stringify({ name: data.name, email: data.email, password: data.password })
             })
             const response = await request.json()
             if (response.success) {
@@ -181,7 +181,7 @@ export default class AuthService {
                     Authorization:`Bearer ${token}`,
                 },
                 method: "POST",
-                body: { 'id' : id }
+                body: JSON.stringify({ 'id' : id })
             })
             const response = await request.json()
             if (response) {
@@ -192,6 +192,56 @@ export default class AuthService {
         }
         catch(error){
             console.error('Error de cerca:' + error)
+            return false
+        }
+    }
+    async unauthorize(token, id){
+        try{
+            const url = process.env.API_URL  + "/unauthorize"
+            const request = await fetch(url, {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    Authorization:`Bearer ${token}`,
+                },
+                method: "POST",
+                body: JSON.stringify({ 'id' : id })
+            })
+            const response = await request.json()
+            if (response) {
+                return response
+            } else {
+                throw new Error("Ha sorgit un error al buscar els usuaris")
+            }
+        }
+        catch(error){
+            console.error('Error de cerca:' + error)
+            return false
+        }
+    }
+
+    async branca(token, branca_id){
+        console.log(branca_id)
+        try{
+            const url = process.env.API_URL  + "/branca"
+            const request = await fetch(url, {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    Authorization:`Bearer ${token}`,
+                },
+                method: "POST",
+                body: JSON.stringify({ 'branca_id' : branca_id })
+            })
+            const response = await request.json()
+            if (response) {
+                return response
+            } else {
+                throw new Error("Ha sorgit un error al assignar la branca")
+            }
+        }
+        catch(error){
+            console.error('Error al assignar la branca:' + error)
             return false
         }
     }

@@ -50,7 +50,7 @@ function MyEditor({ editorState, setEditorState }) {
     );
 }
 
-export const EventAdd = ({ closePopup }) => {
+export const EventAdd = ({ closePopup }, refresh) => {
     const { services: { sessionService, eventService } } = useServicesContext();
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
     let token = sessionService.getToken();
@@ -65,6 +65,7 @@ export const EventAdd = ({ closePopup }) => {
         eventService.create(token, data);
         reset();
         closePopup();
+        refresh(false)
     };
 
     return (
@@ -88,7 +89,7 @@ export const EventAdd = ({ closePopup }) => {
                         <label className='font-bold mb-1'>Descripció</label>
                         <MyEditor editorState={editorState} setEditorState={setEditorState} />
                     </div>
-                    <div className='flex w-full flex-col mb-4'>
+                    {/* <div className='flex w-full flex-col mb-4'>
                         <label className='font-bold mb-1'>Visibilitat</label>
                         <div>
                             <label>
@@ -103,7 +104,7 @@ export const EventAdd = ({ closePopup }) => {
                             </label>
                         </div>
                         {errors.visibility && <p className="text-apperror">{errors.visibility.message}</p>}
-                    </div>
+                    </div> */}
                     <div className='flex w-full flex-col mb-4'>
                         <label className='font-bold mb-1'>Data</label>
                         <input className='rounded-lg px-4 py-1 shadow-inner border border-appsep' type="date" {...register("date", { required: 'Has de seleccionar una data!' })} />

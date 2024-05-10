@@ -9,7 +9,9 @@ export const TaskAdd = (props) => {
     let token = sessionService.getToken()
     const closePopup = props.closePopup
     const onSubmit = async (data) => {
-        taskService.create(token, data)
+        taskService.create(token, data).then(()=>{
+            props.refresh(true)
+        })
         reset()
         closePopup()
     }
@@ -64,7 +66,7 @@ export const TaskAdd = (props) => {
                     </div>
                     <div className='flex w-full flex-col mb-4'>
                         <label className='font-bold mb-1'>Data Límit</label>
-                        <input className='rounded-lg px-4 py-1 shadow-inner border border-appsep' type="date" {...register("date", { required: 'Has de seleccionar una data límit!' })} />
+                        <input className='rounded-lg px-4 py-1 shadow-inner border border-appsep' type="date" {...register("data_limit", { required: 'Has de seleccionar una data límit!' })} />
                         {errors.date && <p className="text-apperror">{errors.date.message}</p>}
                     </div>
                     <div className='flex w-full flex-row mb-4' >

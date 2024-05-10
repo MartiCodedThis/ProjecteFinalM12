@@ -9,7 +9,7 @@ export const PersonalCalendar = () => {
 
     const [addMenu, setAddMenu] = useState(false)
     const [eventList, setEventList] = useState()
-    const [refresh, setRefresh] = useState()
+    const [refresh, setRefresh] = useState(false)
     const { authToken } = useUserContext()
 
 
@@ -21,6 +21,7 @@ export const PersonalCalendar = () => {
     let eventArray = []
     //This is firing twice somehow
     useEffect(() => {
+        setRefresh(false)
         eventService.list(token).then((e) => {
             e.forEach(event => {
                 let a = {}
@@ -35,7 +36,7 @@ export const PersonalCalendar = () => {
             eventArray = []
         })
         console.log("eventArray has been loaded")
-    }, [])
+    }, [refresh])
 
 
     return (
@@ -96,7 +97,7 @@ export const PersonalCalendar = () => {
                 </form> */}
             </div>
             <div className={`${addMenu ? '' : 'hidden'}`} id="nav-content">
-                <EventAdd closePopup={() => setAddMenu(false)}></EventAdd>
+                <EventAdd refresh={setRefresh} closePopup={() => setAddMenu(false)}></EventAdd>
             </div>
         </>
     )

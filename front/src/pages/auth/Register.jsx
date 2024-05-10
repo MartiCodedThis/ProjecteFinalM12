@@ -16,7 +16,9 @@ export const Register = () => {
     const onSubmit = async (data) => {
         console.debug(data) 
         try {
-            
+            authService.register(data).then(()=>{
+                nav("/login")
+            })
         } catch (error) {
             console.debug(error)
             alert(error)
@@ -32,7 +34,7 @@ export const Register = () => {
                     <div className='flex w-full flex-col mb-4'>
                         <label className='font-bold mb-1'>Nom d'usuari</label>
                         <input className='rounded-lg px-4 py-1 shadow-inner border border-appsep'
-                            type="text" {...register("username", {
+                            type="text" {...register("name", {
                                 required: 'Nom d\'usuari obligatori'
                             })} />
                         {errors.username && <p className="text-apperror">{errors.username.message}</p>}
