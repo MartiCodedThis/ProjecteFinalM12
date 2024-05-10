@@ -7,6 +7,7 @@ const BrancaSelector = (props) => {
     const selectBranca=(branca_id)=>{
         authService.branca(token, branca_id).then(()=>{
             props.refresh(true)
+            props.closePopup(true)
         })
     }
   return (
