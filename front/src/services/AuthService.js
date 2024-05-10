@@ -245,4 +245,30 @@ export default class AuthService {
             return false
         }
     }
+
+    async carrec(token, carrec_id){
+        console.log(carrec_id)
+        try{
+            const url = process.env.API_URL  + "/carrec"
+            const request = await fetch(url, {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    Authorization:`Bearer ${token}`,
+                },
+                method: "POST",
+                body: JSON.stringify({ 'carrec_id' : carrec_id })
+            })
+            const response = await request.json()
+            if (response) {
+                return response
+            } else {
+                throw new Error("Ha sorgit un error al assignar el carrec")
+            }
+        }
+        catch(error){
+            console.error('Error al assignar el carrec:' + error)
+            return false
+        }
+    }
 }

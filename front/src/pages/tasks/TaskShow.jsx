@@ -1,12 +1,16 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useLocation } from 'react-router-dom'
+import useServicesContext from '../../hooks/useServicesContext'
 
 const TaskShow = () => {
     const location = useLocation()
     const task = location.state
     const { register, handleSubmit, reset, formState: { errors } } = useForm()
-
+    const {services: {taskService}} = useServicesContext()
+    let branca
+    let carrec
+    let responsables
 
   return (
     <div> {task.name}
