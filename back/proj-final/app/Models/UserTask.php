@@ -10,7 +10,8 @@ class UserTask extends Model
     use HasFactory;
     protected $fillable = [
         'task_id',
-        'user_id'
+        'user_id',
+        'user_name'
     ];
 
     public function responsable()

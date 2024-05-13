@@ -12,7 +12,7 @@ export default class TaskService {
             })
             const response = await request.json()
             if (response.success) {
-                return response.task
+                return response
             } else {
                 throw new Error(response.message)
             }
@@ -45,6 +45,29 @@ export default class TaskService {
             return false
         }
     }
+    async list_by_user(token, id){
+        try {
+            const url = process.env.API_URL  + `/tasks/user/${id}`
+            let request = await fetch(url, {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    Authorization:`Bearer ${token}`,
+                },
+                method: "GET",
+            })
+            const response = await request.json()
+            if (response.success) {
+                return response.user_tasks
+            } else {
+                throw new Error(response.message)
+            }
+        } catch (error) {
+            console.log(`Error al accedir a les tasques: ${error.message}`)
+            alert(`Error al accedir a les tasques': ${error.message}`)
+            return false
+        }
+    }
     async create(token, data){
         try {
             const url = process.env.API_URL  + "/tasks/create"
@@ -68,7 +91,27 @@ export default class TaskService {
             return false
         }
     }
-    async update(){
-
+    async update(token, id, data){
+        try {
+            const url = process.env.API_URL  + `/tasks/${id}`
+            let request = await fetch(url, {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    Authorization:`Bearer ${token}`,
+                },
+                method: "POST",
+                body: JSON.stringify(data),
+            })
+            const response = await request.json()
+            if (response.success) {
+                return response.tasks
+            } else {
+                throw new Error(response.message)
+            }
+        } catch (error) {
+            console.log(`Error al actualitzar la tasca: ${error.message}`)
+            return false
+        }
     }
 }

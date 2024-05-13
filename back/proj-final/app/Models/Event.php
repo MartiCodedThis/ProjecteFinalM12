@@ -16,6 +16,7 @@ class Event extends Model
         'visibility',
         'status',
         'author_id',
+        'author_name',
         'date',
         'branca',
         'carrec'

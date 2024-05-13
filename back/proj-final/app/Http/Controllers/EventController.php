@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Event;
+use App\Models\User;
 use Illuminate\Support\Facades\Log;
 
 class EventController extends Controller
@@ -24,7 +25,8 @@ class EventController extends Controller
             }
             $eventList->where('description', 'like', "%{$search}%");
         }
-        
+        $eventList = $eventList->sortByDesc('created_at')->values();
+        Log::info($eventList);
         return response()->json([
             "success" => true,
             "events"    =>$eventList,
@@ -52,7 +54,6 @@ class EventController extends Controller
         $request->validate([
             'name'=> 'required',
             'description'=> 'required',
-            'visibility'=> 'required',
             'date'=>'required'
         ]);
 
@@ -60,15 +61,18 @@ class EventController extends Controller
         $name = $request->get('name');
         $description = $request->get('description');
         $visibility  = $request->get('visibility');
-        $author_id = $request->user()->id; //auth()->user()->id
+        $author_id = $request->user()->id;
+        $user = User::find($author_id);
+        $author_name = $user->name;
         $date = $request->get('date');
 
         // Desar dades a BD
-        Log::debug("Saving place at DB...");
+        Log::info($author_name);
         $event = Event::create([
             'name'          => $name,
             'description'   => $description,
             'author_id'     => $author_id,
+            'author_name'   => $author_name,
             'visibility'    => $visibility,
             'status'        => 0,
             'date'          => $date,

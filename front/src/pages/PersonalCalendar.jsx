@@ -4,6 +4,7 @@ import { EventAdd } from '../components/widgets/EventAdd'
 import useServicesContext from '../hooks/useServicesContext'
 import useUserContext from '../hooks/useUserContext'
 
+
 export const PersonalCalendar = () => {
     const { services: { sessionService, storedSessionService, eventService } } = useServicesContext()
     const { remember } = useUserContext()
@@ -43,8 +44,6 @@ export const PersonalCalendar = () => {
             <div className="flex flex-row justify-center w-full mb-10">
                 <div className='text-xs md:text-base flex w-min-full md:w-min-96 bg-appfg justify-center divide-x divide-appsep2 rounded-2xl shadow-xl p-3 w-min-full *:flex *:h-full *:items-center *:justify-center *:md:min-w-48 *:text-center *:text-apptext2 *:inline-block *:no-underline *:px-8'>
                     <a href="/" className="hover:text-apptext">Pàg. principal</a>
-                    <a href="" className="hover:text-apptext">Branca</a>
-                    <a href="" className="hover:text-apptext">Càrrec</a>
                 </div>
             </div>
             <div>

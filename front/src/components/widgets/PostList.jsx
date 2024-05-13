@@ -6,7 +6,7 @@ import sanitizeHtml from 'sanitize-html';
 
 const ITEMS_PER_PAGE = 5
 
-export const PostList = () => {
+export const PostList = (props) => {
     const nav = useNavigate() 
 
     const [data, setData] = useState([])
@@ -60,21 +60,21 @@ export const PostList = () => {
         }
     }
 
-    const renderedData = data.slice(currentPage * ITEMS_PER_PAGE, (currentPage + 1) * ITEMS_PER_PAGE)
+    const renderedData = props.events
 
     return (
         <>
                 <div className="flex flex-col justify-center">
                     {renderedData.map(item => (
                         <div key={item.id} className="w-full p-4 mb-4 overflow-wrap break-word">
-                            <h3 className="text-3xl font-bold mb-2">Post</h3>
+                            <h3 className="text-3xl font-bold mb-2">{item.name}</h3>
                             <div className="flex w-full justify-between mb-4 *:text-sm *:italic *:text-apptext2">
-                                <p>Author</p>
-                                <p>Timestamp</p>
+                                <p>{item.author_name}</p>
+                                <p>{item.date}</p>
                             </div>
                             <div className="mb-4 prose prose-sm md:prose-base max-w-none prose-appprose prose-ul:list-disc"
-                            dangerouslySetInnerHTML={{ __html: prepareInnerHTML(truncateText("<ol><li>dsasdds</li></ol> <p>Quisque vel eros nec metus eleifend hendrerit. Phasellus blandit, orci iaculis molestie aliquam, dui arcu faucibus nunc, a fringilla libero mi at diam. Sed vel augue sollicitudin, tincidunt nibh non, vehicula libero. Proin posuere sodales purus eu consequat. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras placerat lorem nec pellentesque scelerisque. Nulla facilisi. Praesent eu vestibulum mauris. Donec congue nunc ac nunc suscipit laoreet.</p>")) }} />
-                            <button onClick={() => nav("/")} className='bg-appbutton text-white w-36 rounded-xl shadow-md py-2 font-bold hover:brightness-110 active:brightness-90'>Veure més</button>
+                            dangerouslySetInnerHTML={{ __html: prepareInnerHTML(truncateText(item.description)) }} />
+                            <button onClick={() => nav(`/events/${item.id}`)} className='bg-appbutton text-white w-36 rounded-xl shadow-md py-2 font-bold'>Veure més</button>
                         </div>
                     ))}
                 </div>
@@ -85,7 +85,7 @@ export const PostList = () => {
                     onPageChange={handlePageChange}
                     pageRangeDisplayed={1}
                     marginPagesDisplayed={2}
-                    pageCount={Math.ceil(data.length / ITEMS_PER_PAGE)}
+                    pageCount={Math.ceil(renderedData.length / ITEMS_PER_PAGE)}
 
                     renderOnZeroPageCount={null}
                     className='flex justify-center *:px-3 text-apptext2'

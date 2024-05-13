@@ -150,7 +150,8 @@ class TokenController extends Controller{
     public function carrec(Request $request){
         $user = User::find($request->user()->id);
         if($user){
-            $carrec = $request->get('carrec');
+            $carrec = $request->get('carrec_id');
+            Log::info($carrec);
             $user->carrec = $carrec;
             $user->save();
             return response()->json([

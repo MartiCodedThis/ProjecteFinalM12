@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('visibility');
             $table->string('status');
             $table->integer('author_id');
+            $table->integer('author_name');
             $table->datetime('date');
             $table->timestamps();
             $table->integer('branca_id')->nullable();

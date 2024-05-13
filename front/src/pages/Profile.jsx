@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import useServicesContext from '../hooks/useServicesContext'
 import BrancaSelector from '../components/widgets/BrancaSelector'
+import CarrecSelector from '../components/widgets/CarrecSelector'
 
 export const Profile = () => {
     const { services: { authService, sessionService } } = useServicesContext()
@@ -68,9 +69,8 @@ export const Profile = () => {
                             {user.branca >= 0 ? getBrancaName(user.branca) : <p>No tens cap branca assignada</p>}
                         </div>
                         <BrancaSelector refresh={setRefresh}></BrancaSelector>
-                        {user.carrec ?
-                            <p> {user.carrec} </p>
-                        : <></>}
+                        <h3 className='font-bold text-apptext2'>Carrec:</h3><p className='mb-4'>{user.carrec ? user.carrec : <> No tens cap carrec assignat </>}</p>
+                        <CarrecSelector refresh={setRefresh}></CarrecSelector>
                         {user.role_id == 1 ?
                             <>
                                 <hr className='border-appsep2 mb-8'></hr>

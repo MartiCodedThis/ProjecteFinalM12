@@ -28,10 +28,31 @@ class TaskController extends Controller
 
     public function show(Request $request, $id){
         $task = Task::find($id);
+        $responsibleUsers = UserTask::where('task_id',$id)->get();
+        $responsibleBranques = BrancaTask::where('task_id',$id)->get();
+        $responsibleCarrecs = CarrecTask::where('task_id',$id)->get();
+        if(!$responsibleUsers && !$responsibleBranques && !$responsibleUsers){
+            return response()->json([
+                "success" => false,
+                "message"    => "No one is assigned to this task",
+            ],404);
+        }
+        if(!$responsibleUsers){
+            $responsibleUsers = "No user has been assigned";
+        }
+        if(!$responsibleBranques){
+            $responsibleBranques = "No branch has been assigned";
+        }
+        if(!$responsibleCarrecs){
+            $responsibleCarrecs = "No administrative position has been assigned";
+        }
         if($task){
             return response()->json([
                 "success" => true,
-                "task"    =>$task
+                "task"    =>$task,
+                "users" =>$responsibleUsers,
+                "branca" => $responsibleBranques,
+                "carrec" => $responsibleCarrecs
             ],200);
         }
         else{
@@ -42,8 +63,74 @@ class TaskController extends Controller
         }
     }
 
-    public function userTasks(Request $request, $id){
-        $taskList = UserTask::where('user_id',$id)->get();
+    //No route created, show method also returns this
+    public function task_responsibles(Request $request, $task_id){
+        $responsibleUsers = UserTask::where('task_id',$task_id)->get();
+        $responsibleBranques = BrancaTask::where('task_id',$task_id)->get();
+        $responsibleCarrecs = CarrecTask::where('task_id',$task_id)->get();
+        if(!$responsibleUsers && !$responsibleBranques && !$responsibleUsers){
+            return response()->json([
+                "success" => false,
+                "message"    => "No one is assigned to this task",
+            ],404);
+        }
+        if(!$responsibleUsers){
+            $responsibleUsers = "No user has been assigned";
+        }
+        if(!$responsibleBranques){
+            $responsibleBranques = "No branch has been assigned";
+        }
+        if(!$responsibleCarrecs){
+            $responsibleCarrecs = "No administrative position has been assigned";
+        }
+        return response()->json([
+            "success" => true,
+            "user_tasks" =>$responsibleUsers,
+            "branca_tasks" => $responsibleBranques,
+            "carrec_tasks" => $responsibleCarrecs
+        ],200);
+    }
+
+    public function user_tasks(Request $request, $id){
+        $relationList = UserTask::where('user_id',$id)->get();
+        $user = User::find($id);
+
+        $taskList = [];
+        $ids = [];
+        foreach ($relationList as $relation) {
+            $task_id = $relation->task_id;
+            $ids[] = $task_id;
+            $task = Task::find($task_id);
+            if ($task) {
+                $taskList[] = $task;
+            }
+        }
+        if($user->carrec){
+            $carrecTasks = CarrecTask::where('carrec_id', $user->carrec_id)->get();
+            foreach ($carrecTasks as $relation){
+                $task_id = $relation->task_id;
+                if(!in_array($task_id, $ids)){
+                    $ids[] = $task_id;
+                    $task = Task::find($task_id);
+                    if ($task) {
+                        $taskList[] = $task;
+                    }
+                }
+            }
+        }
+        $brancaTasks = BrancaTask::where('branca_id', $user->branca_id)->get();
+        foreach ($brancaTasks as $relation) {
+            $task_id = $relation->task_id;
+            if(!in_array($task_id, $ids)){
+                $ids[] = $task_id;
+                $task = Task::find($task_id);
+                if ($task) {
+                    $taskList[] = $task;
+                }
+            }
+        }
+        $taskList = collect($taskList)->sortByDesc('data_limit')->values();
+
         if($taskList){
             return response()->json([
                 "success" => true,
@@ -58,7 +145,7 @@ class TaskController extends Controller
         }
     }
 
-    public function brancaTasks(Request $request, $id){
+    public function branca_tasks(Request $request, $id){
         $taskList = BrancaTask::where('branca_id',$id)->get();
         if($taskList){
             return response()->json([
@@ -74,7 +161,7 @@ class TaskController extends Controller
         }
     }
     
-    public function carrecTasks(Request $request, $id){
+    public function carrec_tasks(Request $request, $id){
         $taskList = CarrecTask::where('carrec_id',$id)->get();
         if($taskList){
             return response()->json([
@@ -158,9 +245,11 @@ class TaskController extends Controller
             Log::info($responsables);
             foreach ($responsables as $responsable) {
                 $newTask = new UserTask;
+                $user = User::find($responsable);
                 $relation = $newTask->create([
                     'task_id' => $task->id,
-                    'user_id' => $responsable
+                    'user_id' => $responsable,
+                    'user_name' => $user->name
                 ]);
                 array_push($relations, $relation);
             }
@@ -173,6 +262,7 @@ class TaskController extends Controller
     }
 
     public function update(Request $request, $id){
+        Log::info($request);
         $task = Task::find($id);
         $name = $request->get('name');
         $description = $request->get('description');
@@ -203,8 +293,10 @@ class TaskController extends Controller
         if (!empty($date)) {
             $task->data_limit = $date;
         }
-        if (!empty($status)) {
+        if ($status != null) {
+            Log::info($status);
             $task->status = $status;
+            Log::info($task->status);
         }
         if (!empty($branca_id)) {
             $taskExists = BrancaTask::where([
@@ -251,7 +343,7 @@ class TaskController extends Controller
             }
         }
         $task->save();
-        
+        Log::info($task);
         return response()->json([
             "success" => true,
             "task" => $task
