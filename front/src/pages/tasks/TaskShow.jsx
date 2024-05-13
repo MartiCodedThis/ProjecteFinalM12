@@ -1,3 +1,4 @@
+import { CheckCircleIcon } from '@heroicons/react/24/outline'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import useServicesContext from '../../hooks/useServicesContext'
@@ -84,7 +85,7 @@ const TaskShow = () => {
              <></>
             :            
             <p>La tasca no està associada a cap carrec</p> }
-          <button type='submit'>Guardar canvis</button>
+          <button type='submit' className='flex items-center gap-1 bg-appbutton text-white rounded-xl shadow-md my-4 px-6 py-3 font-bold hover:brightness-110 active:brightness-90'><CheckCircleIcon className='h-6 w-6'/>Guardar canvis</button>
         </form> 
       : <>Carregant...</>}
    

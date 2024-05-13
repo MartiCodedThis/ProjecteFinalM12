@@ -4,6 +4,7 @@ import useServicesContext from '../../hooks/useServicesContext'
 import { TaskBanner } from '../../components/widgets/TaskBanner'
 import { TaskAdd } from '../../components/widgets/TaskAdd'
 import sanitizeHtml from 'sanitize-html'
+import { PlusCircleIcon } from '@heroicons/react/24/outline'
 
 export const EventShow = () => {
     const { services: { sessionService, eventService, taskService } } = useServicesContext()
@@ -58,7 +59,8 @@ export const EventShow = () => {
                                 )
                             })
                             : <p>Encara no hi ha cap tasca associada</p>}
-                        <button id="nav-toggle" onClick={toggleNav} className='bg-appbutton self-center text-white w-48 rounded-xl shadow-md mt-4 px-6 py-3 font-bold'>Afegir tasca</button>  
+                            
+                        <button id="nav-toggle" onClick={toggleNav} className='flex items-center gap-1 bg-appbutton text-white rounded-xl shadow-md my-4 px-6 py-3 font-bold hover:brightness-110 active:brightness-90'><PlusCircleIcon className='h-6 w-6'/>Afegir tasca</button>  
                         <div className={`${addTask ? 'pt-10' : 'hidden'}`} id="nav-content">
                             <TaskAdd event_id={event.id} refresh={setRefresh} closePopup={() => setAddTask(false)}></TaskAdd>
                         </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import useServicesContext from '../../hooks/useServicesContext'
-import { XCircleIcon } from '@heroicons/react/24/outline'
+import { PlusCircleIcon, XCircleIcon } from '@heroicons/react/24/outline'
 
 export const TaskAdd = (props) => {
     const { services: { sessionService, taskService, authService } } = useServicesContext()
@@ -132,7 +132,7 @@ export const TaskAdd = (props) => {
                    
                     <input type="hidden"  {...register("event_id")} value={props.event_id} ></input>
 
-                    <button type="submit" className='bg-appbutton text-white w-48 rounded-xl shadow-md my-4 px-6 py-3 font-bold'>Crea la tasca</button>
+                    <button type="submit" className='flex items-center gap-1 bg-appbutton text-white rounded-xl shadow-md my-4 px-6 py-3 font-bold hover:brightness-110 active:brightness-90'><PlusCircleIcon className='h-6 w-6'/>Crea la tasca</button>
                 </form>
             </div>
         </div>

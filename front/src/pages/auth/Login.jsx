@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 import useUserContext from '../../hooks/useUserContext'
 import useServicesContext from '../../hooks/useServicesContext'
+import { ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/outline'
 
 export const Login = () => {
 
@@ -39,7 +40,7 @@ export const Login = () => {
             <div className='flex bg-appfg justify-center rounded-2xl shadow-xl p-16 my-16 mx-0 md:mx-20'>
                 <form className='flex flex-col items-center w-full md:w-2/3' onSubmit={handleSubmit(onSubmit)}>
                     <div className='flex w-full flex-col mb-4'>
-                        <label className='font-bold mb-1'>E-mail</label>
+                        <label className='font-bold text-apptext2 mb-1'>E-mail</label>
                         <input className='rounded-lg px-4 py-1 shadow-inner border border-appsep'
                             type="text" {...register("email", {
                                 required: 'Adreça d\'e-mail obligatòria',
@@ -51,7 +52,7 @@ export const Login = () => {
                         {errors.email && <p className="text-apperror">{errors.email.message}</p>}
                     </div>
                     <div className='flex w-full flex-col mb-4'>
-                        <label className='font-bold mb-1'>Contrasenya</label>
+                        <label className='font-bold text-apptext2 mb-1'>Contrasenya</label>
                         <input className='rounded-lg px-4 py-1 shadow-inner border border-appsep'
                             type="password"  {...register("password", {
                                 required: 'Contrasenya obligatòria',
@@ -63,11 +64,11 @@ export const Login = () => {
                         {errors.password && <p className="text-apperror">{errors.password.message}</p>}
                     </div>
                     <div className='w-full flex-col mb-4'>
-                        <input className='w-4 h-4 mr-1'
+                        <input className='w-4 h-4 mr-2'
                             type="checkbox"  {...register("remember")} />
-                        <label>Recorda la meva sessió</label>
+                        <label className='text-sm italic'>Recorda la meva sessió</label>
                     </div>
-                    <button type="submit" className='bg-appbutton text-white w-48 rounded-xl shadow-md my-4 px-6 py-3 font-bold hover:brightness-110 active:brightness-90'>Iniciar sessió</button>
+                    <button type="submit" className='flex items-center gap-1 bg-appbutton text-white rounded-xl shadow-md my-4 px-6 py-3 font-bold hover:brightness-110 active:brightness-90'><ArrowRightEndOnRectangleIcon className='h-6 w-6'/>Iniciar sessio</button>
                 </form>
             </div>
         </>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useServicesContext from '../../hooks/useServicesContext';
-import { XCircleIcon } from '@heroicons/react/24/outline';
+import { XCircleIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
 import { Editor, EditorState, RichUtils, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import 'draft-js/dist/Draft.css';
@@ -50,7 +50,7 @@ function MyEditor({ editorState, setEditorState }) {
     );
 }
 
-export const EventAdd = ({ closePopup }, refresh) => {
+export const EventAdd = ({ closePopup, refresh }) => {
     const { services: { sessionService, eventService } } = useServicesContext();
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
     let token = sessionService.getToken();
@@ -110,7 +110,7 @@ export const EventAdd = ({ closePopup }, refresh) => {
                         <input className='rounded-lg px-4 py-1 shadow-inner border border-appsep' type="date" {...register("date", { required: 'Has de seleccionar una data!' })} />
                         {errors.date && <p className="text-apperror">{errors.date.message}</p>}
                     </div>
-                    <button type="submit" className='bg-appbutton text-white w-48 rounded-xl shadow-md my-4 px-6 py-3 font-bold hover:brightness-110 active:brightness-90'>Crea l'esdeveniment</button>
+                    <button type="submit" className='flex items-center gap-1 bg-appbutton text-white rounded-xl shadow-md my-4 px-6 py-3 font-bold hover:brightness-110 active:brightness-90'><PlusCircleIcon className='h-6 w-6'/>Crea l'esdeveniment</button>
                 </form>
             </div>
         </div>

@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
 import useServicesContext from '../../hooks/useServicesContext'
+import { UsersIcon } from '@heroicons/react/24/outline'
 
 export const Register = () => {
 
@@ -72,7 +73,7 @@ export const Register = () => {
                             })} />
                         {errors.confirmPassword && <p className="text-apperror">{errors.confirmPassword.message}</p>}
                     </div>
-                    <button type="submit" className='bg-appbutton text-white w-48 rounded-xl shadow-md my-4 px-6 py-3 font-bold hover:brightness-110 active:brightness-90'>Enregistrar-se</button>
+                    <button type="submit" className='flex items-center gap-1 bg-appbutton text-white rounded-xl shadow-md my-4 px-6 py-3 font-bold hover:brightness-110 active:brightness-90'><UsersIcon className='h-6 w-6'/>Enregistrar-se</button>
                 </form>
             </div>
         </>
