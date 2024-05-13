@@ -74,7 +74,7 @@ export const PostList = () => {
                             </div>
                             <div className="mb-4 prose prose-sm md:prose-base max-w-none prose-appprose prose-ul:list-disc"
                             dangerouslySetInnerHTML={{ __html: prepareInnerHTML(truncateText("<ol><li>dsasdds</li></ol> <p>Quisque vel eros nec metus eleifend hendrerit. Phasellus blandit, orci iaculis molestie aliquam, dui arcu faucibus nunc, a fringilla libero mi at diam. Sed vel augue sollicitudin, tincidunt nibh non, vehicula libero. Proin posuere sodales purus eu consequat. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras placerat lorem nec pellentesque scelerisque. Nulla facilisi. Praesent eu vestibulum mauris. Donec congue nunc ac nunc suscipit laoreet.</p>")) }} />
-                            <button onClick={() => nav("/")} className='bg-appbutton text-white w-36 rounded-xl shadow-md py-2 font-bold'>Veure més</button>
+                            <button onClick={() => nav("/")} className='bg-appbutton text-white w-36 rounded-xl shadow-md py-2 font-bold hover:brightness-110 active:brightness-90'>Veure més</button>
                         </div>
                     ))}
                 </div>
@@ -88,7 +88,7 @@ export const PostList = () => {
                     pageCount={Math.ceil(data.length / ITEMS_PER_PAGE)}
 
                     renderOnZeroPageCount={null}
-                    className='flex justify-center *:px-3 text-apptext2 '
+                    className='flex justify-center *:px-3 text-apptext2'
                 />
 
         </>
