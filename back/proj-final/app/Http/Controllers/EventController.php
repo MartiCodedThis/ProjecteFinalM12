@@ -60,7 +60,6 @@ class EventController extends Controller
         // Obtenir dades del formulari
         $name = $request->get('name');
         $description = $request->get('description');
-        $visibility  = $request->get('visibility');
         $author_id = $request->user()->id;
         $user = User::find($author_id);
         $author_name = $user->name;
@@ -73,7 +72,6 @@ class EventController extends Controller
             'description'   => $description,
             'author_id'     => $author_id,
             'author_name'   => $author_name,
-            'visibility'    => $visibility,
             'status'        => 0,
             'date'          => $date,
         ]);
