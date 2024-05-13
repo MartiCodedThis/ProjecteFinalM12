@@ -18,9 +18,9 @@ export default {
         "appbutton": "#508F5A",
         "apperror": "#AF685A",
         "follets": "#87F542",
-        "llobatons": "ED1F1F",
-        "puputs": "C71FED",
-        "rangers": "F5E50C"
+        "llobatons": "#ED1F1F",
+        "puputs": "#C71FED",
+        "rangers": "#F5E50C"
       },
       typography: ({ theme }) => ({
         appprose: {
@@ -37,6 +37,6 @@ export default {
     },
   },
   plugins: [
-    // require('@tailwindcss/typography'),
+    require('@tailwindcss/typography'),
   ],
 }
