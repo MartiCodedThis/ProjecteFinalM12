@@ -60,7 +60,7 @@ export const Profile = () => {
             <div className='flex flex-col bg-appfg justify-center rounded-2xl shadow-xl p-8 md:p-16 my-8 sm:my-16 mx-0 lg:mx-10'>
                 {user ?
                     <>
-                        <h3 className='font-bold text-apptext2'>Nom d'usuari</h3>ç
+                        <h3 className='font-bold text-apptext2'>Nom d'usuari</h3>
                         <p className='mb-4'>{user.name}</p>
                         <h3 className='font-bold text-apptext2'>Adreça de correu:</h3>
                         <p className='mb-4'>{user.email}</p>
