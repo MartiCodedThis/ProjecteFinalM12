@@ -35,13 +35,12 @@ export const TasksView = () => {
                 </div>
                 <ReactPaginate
                     breakLabel="..."
-                    previousLabel={<ArrowLeftCircleIcon className="size-6" />}
-                    nextLabel={<ArrowRightCircleIcon className="size-6" />}
+                    previousLabel={<ArrowLeftCircleIcon className="size-6 hover:text-apptext" />}
+                    nextLabel={<ArrowRightCircleIcon className="size-6 hover:text-apptext" />}
                     onPageChange={handlePageChange}
                     pageRangeDisplayed={0}
                     marginPagesDisplayed={2}
                     pageCount={Math.ceil(data.length / ITEMS_PER_PAGE)}
-
                     renderOnZeroPageCount={null}
                     className='flex justify-center *:px-3'
                 />

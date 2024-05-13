@@ -72,7 +72,7 @@ export const Register = () => {
                             })} />
                         {errors.confirmPassword && <p className="text-apperror">{errors.confirmPassword.message}</p>}
                     </div>
-                    <button type="submit" className='bg-appbutton text-white w-48 rounded-xl shadow-md my-4 px-6 py-3 font-bold'>Enregistrar-se</button>
+                    <button type="submit" className='bg-appbutton text-white w-48 rounded-xl shadow-md my-4 px-6 py-3 font-bold hover:brightness-110 active:brightness-90'>Enregistrar-se</button>
                 </form>
             </div>
         </>

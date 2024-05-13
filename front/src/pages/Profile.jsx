@@ -35,6 +35,23 @@ export const Profile = () => {
             setRefresh(true)
         })
     }
+
+    function getBrancaName(brancaValue) {
+        switch(brancaValue) {
+            case 0:
+                return <button className='block min-w-32 my-4 rounded-xl shadow-md px-4 py-2 font-bold bg-follets text-apptext'>Follets</button>
+            case 1:
+                return <button className='min-w-32 my-4 rounded-xl shadow-md px-4 py-2 font-bold bg-llobatons text-white'>Llobatons</button>
+            case 2:
+                return <button className='min-w-32 my-4 rounded-xl shadow-md px-4 py-2 font-bold bg-puputs text-white'>Puputs</button>
+            case 3:
+                return <button className='min-w-32 my-4 rounded-xl shadow-md px-4 py-2 font-bold bg-rangers text-apptext'>Ràngers</button>
+            default:
+                return <button className='min-w-32 my-4 rounded-xl shadow-md px-4 py-2 font-bold bg-apperror text-white'>???</button>
+        }
+    }
+    
+
     return (
         <div className="mb-12">
             <h2 className="text-3xl md:text-5xl font-bold mb-4">Perfil d'usuari</h2>
@@ -42,9 +59,14 @@ export const Profile = () => {
             <div className='flex flex-col bg-appfg justify-center rounded-2xl shadow-xl p-8 md:p-16 my-8 sm:my-16 mx-0 lg:mx-10'>
                 {user ?
                     <>
-                        <h3 className='font-bold text-apptext2'>Nom d'usuari</h3><p className='mb-4'>{user.name}</p>
-                        <h3 className='font-bold text-apptext2'>Adreça de correu:</h3><p className='mb-4'>{user.email}</p>
-                        <h3 className='font-bold text-apptext2'>Branca:</h3><p className='mb-4'>{user.branca >= 0 ? user.branca : <> No tens cap branca assignada </>}</p>
+                        <h3 className='font-bold text-apptext2'>Nom d'usuari</h3>ç
+                        <p className='mb-4'>{user.name}</p>
+                        <h3 className='font-bold text-apptext2'>Adreça de correu:</h3>
+                        <p className='mb-4'>{user.email}</p>
+                        <h3 className='font-bold text-apptext2'>Branca:</h3>
+                        <div>
+                            {user.branca >= 0 ? getBrancaName(user.branca) : <p>No tens cap branca assignada</p>}
+                        </div>
                         <BrancaSelector refresh={setRefresh}></BrancaSelector>
                         {user.carrec ?
                             <p> {user.carrec} </p>
