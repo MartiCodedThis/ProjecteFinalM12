@@ -1,41 +1,41 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import useServicesContext from '../../hooks/useServicesContext';
-import { XCircleIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
-import { Editor, EditorState, RichUtils, convertToRaw } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
-import 'draft-js/dist/Draft.css';
+import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import useServicesContext from '../../hooks/useServicesContext'
+import { XCircleIcon, PlusCircleIcon } from '@heroicons/react/24/outline'
+import { Editor, EditorState, RichUtils, convertToRaw } from 'draft-js'
+import draftToHtml from 'draftjs-to-html'
+import 'draft-js/dist/Draft.css'
 
 function MyEditor({ editorState, setEditorState }) {
     const handleKeyCommand = (command) => {
-        const newState = RichUtils.handleKeyCommand(editorState, command);
+        const newState = RichUtils.handleKeyCommand(editorState, command)
         if (newState) {
-            setEditorState(newState);
-            return 'handled';
+            setEditorState(newState)
+            return 'handled'
         }
-        return 'not-handled';
-    };
+        return 'not-handled'
+    }
 
     // Function to toggle inline styles (bold, italic, underline, strikethrough)
     const toggleInlineStyle = (inlineStyle) => {
-        setEditorState(RichUtils.toggleInlineStyle(editorState, inlineStyle));
-    };
+        setEditorState(RichUtils.toggleInlineStyle(editorState, inlineStyle))
+    }
 
     // Function to toggle block styles (ordered/unordered lists)
     const toggleBlockType = (blockType) => {
-        setEditorState(RichUtils.toggleBlockType(editorState, blockType));
-    };
+        setEditorState(RichUtils.toggleBlockType(editorState, blockType))
+    }
     
     return (
         <div>
             {/* Format controls */}
             <div className='flex w-auto rounded-lg px-2 *:px-2 py-1 shadow-inner border border-appsep divide-x divide-appsep mb-2'>
-                <button className='font-bold' onClick={(e) => { e.preventDefault(); toggleInlineStyle('BOLD') }}>B</button>
-                <button className='italic' onClick={(e) => { e.preventDefault(); toggleInlineStyle('ITALIC') }}>I</button>
-                <button className='underline underline-offset-1 decoration-2' onClick={(e) => { e.preventDefault(); toggleInlineStyle('UNDERLINE') }}>U</button>
-                <button className='line-through decoration-2' onClick={(e) => { e.preventDefault(); toggleInlineStyle('STRIKETHROUGH') }}>S</button>
-                <button onClick={(e) => { e.preventDefault(); toggleBlockType('unordered-list-item') }}>Llista</button>
-                <button onClick={(e) => { e.preventDefault(); toggleBlockType('ordered-list-item') }}>Llista ordenada</button>
+                <button className='font-bold' onClick={(e) => { e.preventDefault(); toggleInlineStyle('BOLD'); }}>B</button>
+                <button className='italic' onClick={(e) => { e.preventDefault(); toggleInlineStyle('ITALIC'); }}>I</button>
+                <button className='underline underline-offset-1 decoration-2' onClick={(e) => { e.preventDefault(); toggleInlineStyle('UNDERLINE'); }}>U</button>
+                <button className='line-through decoration-2' onClick={(e) => { e.preventDefault(); toggleInlineStyle('STRIKETHROUGH'); }}>S</button>
+                <button onClick={(e) => { e.preventDefault(); toggleBlockType('unordered-list-item'); }}>Llista</button>
+                <button onClick={(e) => { e.preventDefault(); toggleBlockType('ordered-list-item'); }}>Llista ordenada</button>
             </div>
             {/* Draft.js editor */}
             <div className={"rounded-lg px-4 py-1 shadow-inner border border-appsep bg-white h-40 overflow-y-auto"}>
@@ -47,26 +47,26 @@ function MyEditor({ editorState, setEditorState }) {
             </div>
             
         </div>
-    );
+    )
 }
 
 export const EventAdd = ({ closePopup, refresh }) => {
-    const { services: { sessionService, eventService } } = useServicesContext();
-    const { register, handleSubmit, reset, formState: { errors } } = useForm();
-    let token = sessionService.getToken();
+    const { services: { sessionService, eventService } } = useServicesContext()
+    const { register, handleSubmit, reset, formState: { errors } } = useForm()
+    let token = sessionService.getToken()
 
-    const [editorState, setEditorState] = useState(EditorState.createEmpty()); // Define editorState here
+    const [editorState, setEditorState] = useState(EditorState.createEmpty())
 
     const onSubmit = async (data) => {
-        const contentState = editorState.getCurrentContent();
-        const rawContentState = convertToRaw(contentState);
-        const descriptionHTML = draftToHtml(rawContentState);
-        data.description = descriptionHTML;
-        eventService.create(token, data);
-        reset();
-        closePopup();
-        refresh(false)
-    };
+        const contentState = editorState.getCurrentContent()
+        const rawContentState = convertToRaw(contentState)
+        const descriptionHTML = draftToHtml(rawContentState)
+        data.description = descriptionHTML
+        eventService.create(token, data)
+        reset()
+        closePopup()
+        refresh(true)
+    }
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
@@ -114,5 +114,5 @@ export const EventAdd = ({ closePopup, refresh }) => {
                 </form>
             </div>
         </div>
-    );
-};
+    )
+}

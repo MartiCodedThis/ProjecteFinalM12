@@ -31,7 +31,7 @@ export const TaskAdd = (props) => {
                         <XCircleIcon className="size-6" />
                     </button>
                 </div>
-                <form className='flex flex-col items-center w-full' onSubmit={handleSubmit(onSubmit)}>
+                <form className='flex flex-col items-center w-full overflow-y-auto' onSubmit={handleSubmit(onSubmit)}>
                     <div className='flex w-full flex-col mb-4'>
                         <label className='font-bold mb-1'>Nom</label>
                         <input className='rounded-lg px-4 py-1 shadow-inner border border-appsep'
@@ -50,16 +50,14 @@ export const TaskAdd = (props) => {
                     </div>
                     <div className='flex w-full flex-col mb-4'>
                         <label className='font-bold mb-1'>Visibilitat</label>
-                        <div>
+                        <div className='flex gap-5'>
                             <label>
-                                <input type="radio" {...register("visibility", { required: 'Selecciona qui pot veure aquest esdeveniment' })} value="0" />
-                                Només els responsables veuran la tasca
+                                <input className="mr-1" type="radio" {...register("visibility", { required: 'Selecciona qui pot veure aquest esdeveniment' })} value="0" />
+                                Només responsables
                             </label>
-                        </div>
-                        <div>
                             <label>
-                                <input type="radio" {...register("visibility", { required: 'Selecciona qui pot veure aquest esdeveniment' })} value="1" />
-                                Tothom podrà veure la tasca
+                                <input className="mr-1" type="radio" {...register("visibility", { required: 'Selecciona qui pot veure aquest esdeveniment' })} value="1" />
+                                Tothom
                             </label>
                         </div>
                         {errors.visibility && <p className="text-apperror">{errors.visibility.message}</p>}
@@ -69,9 +67,9 @@ export const TaskAdd = (props) => {
                         <input className='rounded-lg px-4 py-1 shadow-inner border border-appsep' type="date" {...register("data_limit", { required: 'Has de seleccionar una data límit!' })} />
                         {errors.date && <p className="text-apperror">{errors.date.message}</p>}
                     </div>
-                    <div className='flex w-full flex-row mb-4' >
-                        <div className='px-4'>
-                            <label className='font-bold mb-1'>Branca</label>
+                    <div className='flex w-full flex-col mb-4' >
+                        <label className='font-bold mb-1'>Branca</label>
+                        <div className='flex gap-1 flex-wrap'>
                             <div>
                                 <input type="radio" {...register("branca_id")} value="" />
                                 Cap branca
@@ -93,8 +91,10 @@ export const TaskAdd = (props) => {
                                 Ràngers
                             </div>
                         </div>
-                        <div>
-                            <label className='font-bold mb-1'>Càrrec</label>
+                    </div>
+                    <div className='flex w-full flex-col mb-4' >
+                        <label className='font-bold mb-1'>Càrrec</label>
+                        <div className='flex gap-1 flex-wrap'>
                             <div>
                                 <input type="radio" {...register("carrec_id")} value="" />
                                 Cap càrrec

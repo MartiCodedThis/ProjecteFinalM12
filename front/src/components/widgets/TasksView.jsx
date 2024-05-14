@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { ArrowLeftCircleIcon, ArrowRightCircleIcon } from '@heroicons/react/24/outline'
 import ReactPaginate from 'react-paginate'
 import { TaskBanner } from './TaskBanner'
@@ -13,29 +13,33 @@ export const TasksView = (props) => {
     }
 
     const renderedData = props.tasks
+    const offset = currentPage * ITEMS_PER_PAGE
+    const currentItems = renderedData.slice(offset, offset + ITEMS_PER_PAGE)
+    const pageCount = Math.ceil(renderedData.length / ITEMS_PER_PAGE)
 
     return (
         <>
-            
-                <div className="flex flex-col justify-center mb-7">
-                    {renderedData.map(item => (
-                        <TaskBanner task = {item}></TaskBanner>
-                    ))}
-                </div>
-                <ReactPaginate
-                    breakLabel="..."
-                    previousLabel={<ArrowLeftCircleIcon className="size-6 hover:text-apptext" />}
-                    nextLabel={<ArrowRightCircleIcon className="size-6 hover:text-apptext" />}
-                    onPageChange={handlePageChange}
-                    pageRangeDisplayed={0}
-                    marginPagesDisplayed={2}
-                    pageCount={Math.ceil(renderedData.length / ITEMS_PER_PAGE)}
-
-                    renderOnZeroPageCount={null}
-                    className='flex justify-center *:px-3'
-                />
-
+            {renderedData.length > 0 ? (
+                <>
+                    <div className="flex flex-col justify-center mb-7">
+                        {currentItems.map(item => (
+                            <TaskBanner key={item.id} task={item} />
+                        ))}
+                    </div>
+                    <ReactPaginate
+                        breakLabel="..."
+                        previousLabel={<ArrowLeftCircleIcon className="size-6 hover:text-apptext" />}
+                        nextLabel={<ArrowRightCircleIcon className="size-6 hover:text-apptext" />}
+                        onPageChange={handlePageChange}
+                        pageRangeDisplayed={5}
+                        marginPagesDisplayed={2}
+                        pageCount={pageCount}
+                        containerClassName='flex justify-center *:px-3'
+                    />
+                </>
+            ) : (
+                <p>No hi ha cap tasca.</p>
+            )}
         </>
     )
-
 }
