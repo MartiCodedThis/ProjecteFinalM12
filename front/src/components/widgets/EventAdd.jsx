@@ -65,7 +65,7 @@ export const EventAdd = ({ closePopup, refresh }) => {
         eventService.create(token, data);
         reset();
         closePopup();
-        refresh(false)
+        refresh(true)
     };
 
     return (
