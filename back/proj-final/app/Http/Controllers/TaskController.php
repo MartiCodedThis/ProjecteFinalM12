@@ -145,8 +145,9 @@ class TaskController extends Controller
         }
     }
 
-    public function branca_tasks(Request $request, $id){
-        $taskList = BrancaTask::where('branca_id',$id)->get();
+    public function branca_tasks(Request $request){
+        $user = $request->user();
+        $taskList = BrancaTask::where('branca_id',$user->branca)->get();
         if($taskList){
             return response()->json([
                 "success" => true,
@@ -213,23 +214,25 @@ class TaskController extends Controller
 
         Log::info($task);
 
-        $branca_id = $request->get('branca_id');
+        $branques = $request->get('branca_id');
         $carrec_id = $request->get('carrec_id');
         $responsables = $request->get('responsables');
-        if(!$branca_id && !$carrec_id && !$responsables){
+        if(!$branques && !$carrec_id && !$responsables){
             return response()->json([
                 "success" => false,
                 "message"    => "There must be at least one responsible entity",
             ],400);
         }
         $relations = [];
-        if($branca_id){
-            $newTask = new BrancaTask;
-            $relation = $newTask->create([
-                'task_id' => $task->id,
-                'branca_id' => $branca_id
-            ]);
-            array_push($relations, $relation);
+        if($branques){
+            foreach($branques as $branca_id){
+                $newTask = new BrancaTask;
+                $relation = $newTask->create([
+                    'task_id' => $task->id,
+                    'branca_id' => $branca_id
+                ]);
+                array_push($relations, $relation);
+            }
         }
 
         if($carrec_id){
@@ -242,7 +245,6 @@ class TaskController extends Controller
         }
 
         if($responsables){
-            Log::info($responsables);
             foreach ($responsables as $responsable) {
                 $newTask = new UserTask;
                 $user = User::find($responsable);

@@ -9,10 +9,10 @@ const TaskShow = () => {
     const {services: {taskService, sessionService}} = useServicesContext()
     const [task, setTask] = useState()
     const [responsibles, setResponsibles] = useState()
-    const [branca, setBranca] = useState()
+    const [branques, setBranques] = useState([])
     const [carrec, setCarrec] = useState()
     const [refresh, setRefresh] = useState(false)
-    const branques = {
+    const branques_keys = {
       0: "Follets",
       1: "Llobatons",
       2: "Puputs",
@@ -28,14 +28,17 @@ const TaskShow = () => {
     const params = useParams()
     useEffect(()=>{
       taskService.get(token,params.id).then((response)=>{
-        console.log(response)
         setTask(response.task)
         setResponsibles(response.users)
-        if(response.branca.length > 0){
-          let branca_id = response.branca[0].branca_id
-          if(branca_id in branques){
-            setBranca(branques[branca_id])
-          }
+        if(response.branca.length > 0){ 
+          let aux = []
+          response.branca.map((b)=>{
+            console.log(b.branca_id)
+            if(b.branca_id in branques_keys){
+              aux.push(branques_keys[b.branca_id])
+            }
+          })
+          setBranques(aux)
         }
         if(response.carrec.length > 0){
           let carrec_id = response.carrec.carrec_id
@@ -77,8 +80,15 @@ const TaskShow = () => {
                 })}
            </>
             : <p>No hi ha usuaris assignats com a responsables</p>}
-            {branca ? 
-             <>{branca}</>
+            <p>Branques:</p>
+            {branques ? 
+             <>{
+              branques.map((b)=>{
+                return(
+                  <> {b} </>
+                )
+              })
+             }</>
             :            
             <p>La tasca no està associada a cap branca</p> }
             {carrec ? 

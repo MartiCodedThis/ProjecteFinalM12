@@ -17,6 +17,7 @@ import { UserContextProvider } from './contexts/UserContext.jsx'
 import { ServicesContextProvider } from './contexts/ServicesContext.jsx'
 import TaskShow from "./pages/tasks/TaskShow.jsx"
 import { Profile } from "./pages/Profile.jsx"
+import { BrancaCalendar } from "./pages/BrancaCalendar.jsx"
 
 function App() {
 
@@ -45,6 +46,7 @@ function App() {
             <Route path="/profile" element={ <Profile/> } />
             <Route path="/events/:id" element={<EventShow/>} />
             <Route path="/tasks/:id" element={ <TaskShow/> } />
+            <Route path="/branca" element={ <BrancaCalendar/> }/>
           </Routes>
         </Layout>
       </UserContextProvider>

@@ -69,7 +69,7 @@ export const Profile = () => {
                             {user.branca >= 0 ? getBrancaName(user.branca) : <p>No tens cap branca assignada</p>}
                         </div>
                         <BrancaSelector refresh={setRefresh}></BrancaSelector>
-                        <h3 className='font-bold text-apptext2'>Carrec:</h3><p className='mb-4'>{user.carrec ? user.carrec : <> No tens cap carrec assignat </>}</p>
+                        <h3 className='font-bold text-apptext2'>Carrec:</h3><p className='mb-4'>{user.carrec >= 0 ? user.carrec : <> No tens cap carrec assignat </>}</p>
                         <CarrecSelector refresh={setRefresh}></CarrecSelector>
                         {user.role_id == 1 ?
                             <>
