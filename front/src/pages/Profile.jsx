@@ -69,7 +69,7 @@ export const Profile = () => {
 
     return (
         <div className="mb-12">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4">Perfil d'usuari</h2>
+             <h2 className="text-3xl md:text-4xl font-bold mb-4">Perfil d'usuari</h2>
             <hr className="border-appsep mb-4"></hr>
             <div className='flex flex-col bg-appfg justify-center rounded-2xl shadow-xl p-8 md:p-16 my-8 sm:my-16 mx-0 lg:mx-10'>
                 {user ?
@@ -83,8 +83,8 @@ export const Profile = () => {
                             {user.branca >= 0 ? getBrancaName(user.branca) : <p>No tens cap branca assignada</p>}
                         </div>
                         <BrancaSelector refresh={setRefresh}></BrancaSelector>
-                        <h3 className='font-bold text-apptext2'>Carrec:</h3>
-                        <div>{user.carrec ? getCarrecName(user.carrec) : <> No tens cap carrec assignat </>}</div>
+                        <h3 className='font-bold text-apptext2'>Càrrec:</h3>
+                        <div>{user.carrec ? getCarrecName(user.carrec) : <> No tens cap càrrec assignat </>}</div>
                         <CarrecSelector refresh={setRefresh}></CarrecSelector>
                         {user.role_id == 1 ?
                             <>

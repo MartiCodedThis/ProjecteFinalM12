@@ -12,7 +12,7 @@ const CarrecSelector = (props) => {
     }
   return (
     <div className='mb-4'>
-    <p>Selecciona el teu carrec:</p>
+    <p>Selecciona el teu càrrec:</p>
     <div className="flex flex-wrap *:min-w-32 gap-2 my-2 *:rounded-xl *:shadow-md *:px-4 *:py-2 *:font-bold">
         <button className="bg-emerald-300 text-apptext hover:brightness-110 active:brightness-90" onClick={()=>selectCarrec(0)} >EA</button>
         <button className="bg-orange-700 text-white hover:brightness-110 active:brightness-90" onClick={()=>selectCarrec(1)}>Peda</button>

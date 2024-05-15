@@ -35,9 +35,9 @@ export const Login = () => {
 
     return (
         <>
-            <h2 className="text-5xl font-bold mb-4">Iniciar sessió</h2>
-            <hr className="border-appsep mb-4"></hr>
-            <div className='flex bg-appfg justify-center rounded-2xl shadow-xl p-16 my-16 mx-0 md:mx-20'>
+             <h2 className="text-3xl md:text-4xl font-bold mb-4">Iniciar sessió</h2>
+            <hr className="border-appsep md:mb-4"></hr>
+            <div className='flex bg-appfg justify-center rounded-2xl shadow-xl p-16 my-10 md:my-16 mx-0 md:mx-20'>
                 <form className='flex flex-col items-center w-full md:w-2/3' onSubmit={handleSubmit(onSubmit)}>
                     <div className='flex w-full flex-col mb-4'>
                         <label className='font-bold text-apptext2 mb-1'>E-mail</label>

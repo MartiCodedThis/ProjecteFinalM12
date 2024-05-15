@@ -49,7 +49,7 @@ export const BrancaCalendar = () => {
                 </div>
             </div>
             <div>
-                <h2 className="text-3xl md:text-5xl font-bold mb-4">Tasques de la branca</h2>
+                 <h2 className="text-3xl md:text-4xl font-bold mb-4">Tasques de la branca</h2>
                 <hr className="border-appsep mb-4"></hr>
             </div>
             <div className='flex flex-col bg-appfg justify-center rounded-2xl shadow-xl p-8 md:p-16 my-8 sm:my-16 mx-0 lg:mx-10 text-apptext2'>
