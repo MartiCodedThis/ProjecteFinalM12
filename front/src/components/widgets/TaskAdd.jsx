@@ -71,23 +71,19 @@ export const TaskAdd = (props) => {
                         <label className='font-bold mb-1'>Branca</label>
                         <div className='flex gap-1 flex-wrap'>
                             <div>
-                                <input type="radio" {...register("branca_id")} value="" />
-                                Cap branca
-                            </div>
-                            <div>
-                                <input type="radio" {...register("branca_id")} value="0" />
+                                <input type="checkbox" {...register("branca_id")} value="0" />
                                 Follets
                             </div>
                             <div>
-                                <input type="radio" {...register("branca_id")} value="1" />
+                                <input type="checkbox" {...register("branca_id")} value="1" />
                                 Llobatons
                             </div>
                             <div>
-                                <input type="radio" {...register("branca_id")} value="2" />
+                                <input type="checkbox" {...register("branca_id")} value="2" />
                                 Puputs
                             </div>
                             <div>
-                                <input type="radio" {...register("branca_id")} value="3" />
+                                <input type="checkbox" {...register("branca_id")} value="3" />
                                 Ràngers
                             </div>
                         </div>

@@ -68,6 +68,31 @@ export default class TaskService {
             return false
         }
     }
+
+    async list_by_branca(token, id){
+        try {
+            const url = process.env.API_URL  + `/tasks/branca/${id}`
+            let request = await fetch(url, {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    Authorization:`Bearer ${token}`,
+                },
+                method: "GET",
+            })
+            const response = await request.json()
+            if (response.success) {
+                console.log(response)
+                return response.branca_tasks
+            } else {
+                throw new Error(response.message)
+            }
+        } catch (error) {
+            console.log(`Error al accedir a les tasques: ${error.message}`)
+            alert(`Error al accedir a les tasques': ${error.message}`)
+            return false
+        }
+    }
     async create(token, data){
         try {
             const url = process.env.API_URL  + "/tasks/create"
