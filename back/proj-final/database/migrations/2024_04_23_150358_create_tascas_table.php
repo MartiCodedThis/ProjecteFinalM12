@@ -21,16 +21,6 @@ return new class extends Migration
             $table->integer('event_id');
             $table->string('data_limit');
             $table->timestamps();
-
-
-            $table->foreign('author_id')
-                ->references('id')->on('users')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-             $table->foreign('event_id')
-                ->references('id')->on('events')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
         });
     }
     /**

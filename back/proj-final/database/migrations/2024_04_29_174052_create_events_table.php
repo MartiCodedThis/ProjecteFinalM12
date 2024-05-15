@@ -17,15 +17,11 @@ return new class extends Migration
             $table->string('description');
             $table->string('status');
             $table->integer('author_id');
-            $table->integer('author_name');
+            $table->string('author_name');
             $table->datetime('date');
             $table->timestamps();
             $table->integer('branca_id')->nullable();
             $table->integer('carrec_id')->nullable();
-            $table->foreign('author_id')
-                ->references('id')->on('users')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
         });
     }
 

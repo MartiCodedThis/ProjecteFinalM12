@@ -5,12 +5,15 @@ import { useNavigate } from 'react-router-dom'
 import BrancaSelector from "../components/widgets/BrancaSelector"
 import useServicesContext from "../hooks/useServicesContext"
 import { useEffect, useState } from "react"
+import useUserContext from "../hooks/useUserContext"
 
 
 
 export const Home = () => {
     const nav = useNavigate()
     const { services: { authService, sessionService, eventService, taskService} } = useServicesContext()
+    // const { user, setUser, authToken, setAuthToken, remember, setRemember } = useUserContext()
+
     var authToken = sessionService.getToken()
     const [user,setUser] =  useState()
     const [selectBranca, setSelectBranca] = useState(false)
@@ -28,15 +31,18 @@ export const Home = () => {
                 setSelectBranca(true)
             }
             taskService.list_by_user(authToken, u.user.id).then((list)=>{
-                setTaskList(list)
+                setTaskList(list) 
             })
             eventService.list(authToken).then((e) => {
                 setEventList(e)
             })
         })
+        if(authToken == null || !authToken){
+            nav("/login")   
+        }
     }, [refresh])
 
-    
+   
     return (
         <>
             {user ? <>
