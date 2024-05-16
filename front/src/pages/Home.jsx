@@ -19,6 +19,9 @@ export const Home = () => {
     const [refresh, setRefresh] = useState(false)
     const [taskList, setTaskList] = useState()
     const [eventList, setEventList] = useState()
+    const [weekly, setWeekly] = useState()
+    const [allTasks, setAllTasks] = useState([])
+    const [weekTasks, setWeekTasks] = useState([])
 
     function isThisWeek(d) {
         // start and end of this week
@@ -34,6 +37,24 @@ export const Home = () => {
         }
       }
 
+    function onlyThisWeek(t){
+        var weeklyTasks = []
+        t.map((task)=>{
+            if(isThisWeek(task.data_limit)){
+                weeklyTasks.push(task)
+            }
+        })
+        return weeklyTasks
+    }
+    function toggleWeekly(){
+        if(weekly){
+            setTaskList(allTasks)
+        }
+        else{
+            setTaskList(weekTasks)
+        }
+        setWeekly(!weekly)
+    }
     useEffect(() => {
         authService.getUser(authToken).then((u) => {
             if (authToken == null || !authToken) {
@@ -44,13 +65,11 @@ export const Home = () => {
                 setSelectBranca(true)
             }
             taskService.list_by_user(authToken, u.user.id).then((list) => {
-                var weeklyTasks = []
-                list.map((task)=>{
-                    if(isThisWeek(task.data_limit)){
-                        weeklyTasks.push(task)
-                    }
-                })
-                setTaskList(weeklyTasks)
+                setAllTasks(list)
+                let week = onlyThisWeek(list)
+                setWeekTasks(week)
+                setWeekly(true)
+                setTaskList(week)
             })
             eventService.list(authToken).then((e) => {
                 setEventList(e)
@@ -83,9 +102,15 @@ export const Home = () => {
             </>
                 : <></>}
             <div className="mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">Tasques setmanals</h2>
+                {weekly ? 
+                    <h2 className="text-2xl md:text-3xl font-bold mb-4">Tasques setmanals</h2>
+                :
+                    <h2 className="text-2xl md:text-3xl font-bold mb-4">Totes les teves tasques</h2>
+                }
                 <hr className="border-appsep mb-4"></hr>
                 <div className='flex flex-col bg-appfg justify-center rounded-2xl shadow-xl p-8 md:p-16 my-8 sm:my-16 mx-0 lg:mx-10 *:text-apptext2'>
+                    {weekly  ? <button className="pb-6" onClick={(()=>toggleWeekly())}>Mostra totes</button> : <button className="pb-6" onClick={(()=>toggleWeekly())}>Mostra aquesta setmana</button> }
+                    
                     {taskList ?
                         <TasksView tasks={taskList} />
                         :
