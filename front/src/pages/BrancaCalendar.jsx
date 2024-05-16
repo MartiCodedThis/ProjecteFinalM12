@@ -26,14 +26,15 @@ export const BrancaCalendar = () => {
         console.log("TOken:" + token)
         if (token) {
             taskService.list_by_branca(token).then((events) => {
+                console.log(events)
                 const updatedEventList = events.map(event => ({
                     id: event.id,
                     title: event.name,
                     start: event.date,
                     end: event.date,
-                    allDay: true
+                    allDay: true,
+                    isTask: true
                 }));
-                console.log(updatedEventList)
                 setTaskList(updatedEventList);
             }).catch(error => {
                 console.error('Error fetching events:', error);
@@ -52,7 +53,7 @@ export const BrancaCalendar = () => {
                  <h2 className="text-3xl md:text-4xl font-bold mb-4">Tasques de la branca</h2>
                 <hr className="border-appsep mb-4"></hr>
             </div>
-            {taskList.lenght > 0 ? <></> : <p>La teva branca no té tasques actualment</p> }
+            {taskList ? <></> : <p>La teva branca no té tasques actualment</p> }
             <div className='flex flex-col bg-appfg justify-center rounded-2xl shadow-xl p-8 md:p-16 my-8 sm:my-16 mx-0 lg:mx-10 text-apptext2'>
                 <p className='block lg:hidden'>Fes scroll per navegar el calendari.</p>
                 <div className='overflow-auto'>

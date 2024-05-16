@@ -1,8 +1,16 @@
-import { Editor, RichUtils } from 'draft-js'
-
+import React, { useEffect } from 'react'
+import { Editor, RichUtils, EditorState, convertFromRaw, convertToRaw } from 'draft-js'
+import { stateFromHTML } from 'draft-js-import-html'
 import 'draft-js/dist/Draft.css'
 
 export const RichTextEditor = ({ editorState, setEditorState, value }) => {
+    useEffect(() => {
+        if (value) {
+            const contentState = stateFromHTML(value)
+            setEditorState(EditorState.createWithContent(contentState))
+        }
+    }, [value, setEditorState]);
+
     const handleKeyCommand = (command) => {
         const newState = RichUtils.handleKeyCommand(editorState, command)
         if (newState) {
@@ -10,38 +18,33 @@ export const RichTextEditor = ({ editorState, setEditorState, value }) => {
             return 'handled'
         }
         return 'not-handled'
-    }
+    };
 
-    // Function to toggle inline styles (bold, italic, underline, strikethrough)
     const toggleInlineStyle = (inlineStyle) => {
-        setEditorState(RichUtils.toggleInlineStyle(editorState, inlineStyle))
-    }
+        setEditorState(RichUtils.toggleInlineStyle(editorState, inlineStyle));
+    };
 
-    // Function to toggle block styles (ordered/unordered lists)
     const toggleBlockType = (blockType) => {
         setEditorState(RichUtils.toggleBlockType(editorState, blockType))
     }
-    
+
     return (
         <div>
-            {/* Format controls */}
-            <div className='flex w-auto rounded-lg px-2 *:px-2 py-1 shadow-inner border border-appsep divide-x divide-appsep mb-2'>
-                <button className='font-bold' onClick={(e) => { e.preventDefault(); toggleInlineStyle('BOLD'); }}>B</button>
-                <button className='italic' onClick={(e) => { e.preventDefault(); toggleInlineStyle('ITALIC'); }}>I</button>
-                <button className='underline underline-offset-1 decoration-2' onClick={(e) => { e.preventDefault(); toggleInlineStyle('UNDERLINE'); }}>U</button>
-                <button className='line-through decoration-2' onClick={(e) => { e.preventDefault(); toggleInlineStyle('STRIKETHROUGH'); }}>S</button>
-                <button onClick={(e) => { e.preventDefault(); toggleBlockType('unordered-list-item'); }}>Llista</button>
-                <button onClick={(e) => { e.preventDefault(); toggleBlockType('ordered-list-item'); }}>Llista ordenada</button>
+            <div className='flex w-auto rounded-lg px-2 *:px-5 py-1 border border-appsep2 text-apptext2 divide-x divide-appsep2 mb-2'>
+                <button className='font-bold hover:text-apptext' onClick={(e) => { e.preventDefault(); toggleInlineStyle('BOLD'); }}>B</button>
+                <button className='italic hover:text-apptext' onClick={(e) => { e.preventDefault(); toggleInlineStyle('ITALIC'); }}>I</button>
+                <button className='underline underline-offset-1 decoration-2 hover:text-apptext' onClick={(e) => { e.preventDefault(); toggleInlineStyle('UNDERLINE'); }}>U</button>
+                <button className='line-through decoration-2 hover:text-apptext' onClick={(e) => { e.preventDefault(); toggleInlineStyle('STRIKETHROUGH'); }}>S</button>
+                <button className='hover:text-apptext' onClick={(e) => { e.preventDefault(); toggleBlockType('unordered-list-item'); }}>Llista</button>
+                <button className='hover:text-apptext' onClick={(e) => { e.preventDefault(); toggleBlockType('ordered-list-item'); }}>Llista ordenada</button>
             </div>
-            {/* Draft.js editor */}
-            <div className={"rounded-lg px-4 py-1 shadow-inner border border-appsep bg-white h-40 overflow-y-auto"}>
+                <div className={"rounded-lg px-4 py-1 shadow-inner border border-appsep2 bg-white h-40 overflow-y-auto"}>
                 <Editor
                     editorState={editorState}
                     onChange={setEditorState}
-                    handleKeyCommand={handleKeyCommand} 
+                    handleKeyCommand={handleKeyCommand}
                 />
             </div>
-            
         </div>
     )
 }

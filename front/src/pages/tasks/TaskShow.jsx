@@ -6,16 +6,20 @@ import { useParams } from 'react-router-dom'
 import { EditorState, convertToRaw } from 'draft-js'
 import draftToHtml from 'draftjs-to-html'
 import { RichTextEditor } from '../../components/widgets/RichTextEditor'
+import { stateFromHTML } from 'draft-js-import-html'
 
 const TaskShow = () => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm()
+
   const { services: { taskService, sessionService } } = useServicesContext()
+
   const [task, setTask] = useState()
   const [responsibles, setResponsibles] = useState()
   const [branques, setBranques] = useState([])
   const [carrec, setCarrec] = useState()
   const [refresh, setRefresh] = useState(false)
   const [editorState, setEditorState] = useState(EditorState.createEmpty())
+
   const branques_keys = {
     0: "Follets",
     1: "Llobatons",
@@ -30,6 +34,7 @@ const TaskShow = () => {
   }
   let token = sessionService.getToken()
   const params = useParams()
+
   useEffect(() => {
     taskService.get(token, params.id).then((response) => {
       setTask(response.task)
@@ -37,7 +42,6 @@ const TaskShow = () => {
       if (response.branca.length > 0) {
         let aux = []
         response.branca.map((b) => {
-          console.log(b.branca_id)
           if (b.branca_id in branques_keys) {
             aux.push(branques_keys[b.branca_id])
           }
@@ -50,14 +54,28 @@ const TaskShow = () => {
           setCarrec(carrecs[carrec_id])
         }
       }
+
+      if (response.task.description) {
+        const contentState = stateFromHTML(response.task.description)
+        setEditorState(EditorState.createWithContent(contentState))
+      }
+
       setRefresh(false)
     })
   }, [refresh])
+
   const onSubmit = async (data) => {
+    // Convert editor state to HTML
+    const contentState = editorState.getCurrentContent()
+    const rawContentState = convertToRaw(contentState)
+    const descriptionHTML = draftToHtml(rawContentState)
+    data.description = descriptionHTML
+
     taskService.update(token, params.id, data).then(() => {
       setRefresh(true)
     })
   }
+
   return (
     <>
       {task ?
@@ -69,46 +87,58 @@ const TaskShow = () => {
 
               <form onSubmit={handleSubmit(onSubmit)}>
                 <h3 className="text-3xl font-bold mb-2">{task.name}</h3>
-                <p className="flex w-full justify-between mb-4 text-sm italic text-apptext2">Finalitza a {task.data_limit}</p>
-                {responsibles ?
-                  <> <h4 className='font-bold text-apptext2'>Persones responsables: </h4>
-                    {responsibles.map((user) => {
-                      return (
-                        <> {user.user_name} </>
-                      )
-                    })}
-                  </>
-                  : <p>No hi ha usuaris assignats com a responsables.</p>}
-                <h4 className='font-bold text-apptext2'>Branques associades:</h4>
-                {branques.lenght > 0 ?
-                  <>{
-                    branques.map((b) => {
-                      return (
-                        <> {b} </>
-                      )
-                    })
-                  }</>
-                  :
-                  <p>La tasca no està associada a cap branca.</p>}
-                <h4 className='font-bold text-apptext2'>Càrrecs associats:</h4>
-                {carrec ?
-                  <></>
-                  :
-                  <p>La tasca no està associada a cap càrrec.</p>}
-                <RichTextEditor editorState={editorState} setEditorState={setEditorState} />
-                <input className='rounded-lg px-4 py-1 shadow-inner border border-appsep' type="text" {...register("description")} defaultValue={task.description} />
-                {task.status == 2 ? <p>Aquesta tasca està fora de termini!!!</p> :
-                  <></>}
-                {task.status == 1 ?
+                <div className='w-full xl:w-3/4'>
+                  <p className="flex w-full justify-between mb-4 text-sm italic text-apptext2">Finalitza: {task.data_limit}</p>
+                  {responsibles ?
+                    <div className='mb-4'>
+                      <h4 className='font-bold text-apptext2'>Persones responsables: </h4>
+                      {responsibles.map((user) => {
+                        return (
+                          <React.Fragment key={user.id}> {user.user_name} </React.Fragment>
+                        )
+                      })}
+                    </div>
+                    : <p>No hi ha usuaris assignats com a responsables.</p>}
+                  <div className="flex w-full justify-between mb-4">
+                    <div>
+                      <h4 className='font-bold text-apptext2'>Branques associades:</h4>
+                      {branques.length > 0 ?
+                        <>{
+                          branques.map((b, index) => {
+                            return (
+                              <React.Fragment key={index}> {b} </React.Fragment>
+                            )
+                          })
+                        }</>
+                        :
+                        <p>La tasca no està associada a cap branca.</p>}
+                    </div>
+                    <div>
+                      <h4 className='font-bold text-apptext2'>Càrrecs associats:</h4>
+                      {carrec ?
+                        <React.Fragment>{carrec}</React.Fragment>
+                        :
+                        <p>La tasca no està associada a cap càrrec.</p>}
+                    </div>
+                    {errors.description && <p className="text-apperror">{errors.description.message}</p>}
+                    {task.status === 2 ? <p>Aquesta tasca està fora de termini!!!</p> :
+                      null}
+                  </div>
+                </div>
+                <div className='mb-4'>
+                  <RichTextEditor editorState={editorState} setEditorState={setEditorState} />
+                </div>
+                {task.status === 1 ?
                   <>
                     <p>Tasca completada!</p>
-                    <input type="checkbox" value="0" {...register("status")} /> Marca com a pendent
+                    <input type="checkbox" value="0" className='w-4 h-4 mr-2' {...register("status")} />
+                    <label className='text-sm italic'>Marca com a pendent</label>
                   </>
                   :
                   <>
-                    <input type="checkbox" value="1" {...register("status")} /> Marca com a completada
+                    <input type="checkbox" value="1" className='w-4 h-4 mr-2' {...register("status")} />
+                    <label className='text-sm italic'>Marca com a completada</label>
                   </>}
-
                 <button type='submit' className='flex items-center gap-1 bg-appbutton text-white rounded-xl shadow-md my-4 px-6 py-3 font-bold hover:brightness-110 active:brightness-90'><CheckCircleIcon className='h-6 w-6' />Guardar canvis</button>
               </form>
             </div>

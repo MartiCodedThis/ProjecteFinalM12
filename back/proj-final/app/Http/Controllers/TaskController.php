@@ -147,7 +147,14 @@ class TaskController extends Controller
 
     public function branca_tasks(Request $request){
         $user = $request->user();
-        $taskList = BrancaTask::where('branca_id',$user->branca)->get();
+        $relationList = BrancaTask::where('branca_id',$user->branca)->get();
+        foreach ($relationList as $relation) {
+            $task_id = $relation->task_id;
+            $task = Task::find($task_id);
+            if ($task) {
+                $taskList[] = $task;
+            }
+        }
         if($taskList){
             return response()->json([
                 "success" => true,

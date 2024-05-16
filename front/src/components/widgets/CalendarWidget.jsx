@@ -12,7 +12,13 @@ export const CalendarWidget = (object) => {
   }, [object.eventList])
   const nav = useNavigate()
   const handleEventClick = event => {
-    nav(`/events/${event.id}`)
+    console.log(event)
+    if(event.isTask){
+      nav(`/tasks/${event.id}`)
+    }
+    else{
+      nav(`/events/${event.id}`)
+    }
   }
   return (
     <div className="min-w-[900px]">
