@@ -4,7 +4,6 @@ import { CheckBadgeIcon, ExclamationTriangleIcon, ClockIcon, EllipsisHorizontalC
 // import {EllipsisHorizontalCircleIcon} from '@heroicons/react/24/outline'
 export const TaskBanner = (object) => {
   let task = object.task
-  console.log(task)
   let nav = useNavigate()
 
   const getStatus = (status) => {

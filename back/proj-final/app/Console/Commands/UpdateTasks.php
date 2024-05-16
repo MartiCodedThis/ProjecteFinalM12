@@ -29,7 +29,11 @@ class UpdateTasks extends Command
         $tasks = Task::all();
         foreach($tasks as $task){
             if($task->status == 0){
-                
+                $now = new \DateTime();
+                if($task->data_limit < $now){
+                    $task->status = 2;
+                    $task->save();
+                }
             }
         }
     }

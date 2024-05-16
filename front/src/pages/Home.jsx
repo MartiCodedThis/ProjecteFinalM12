@@ -6,6 +6,7 @@ import BrancaSelector from "../components/widgets/BrancaSelector"
 import useServicesContext from "../hooks/useServicesContext"
 import { useEffect, useState } from "react"
 import useUserContext from "../hooks/useUserContext"
+import moment from 'moment'
 
 
 
@@ -19,6 +20,20 @@ export const Home = () => {
     const [taskList, setTaskList] = useState()
     const [eventList, setEventList] = useState()
 
+    function isThisWeek(d) {
+        // start and end of this week
+        var thisWeek = [moment().utc().startOf('week').toDate(),
+                        moment().utc().endOf('week').toDate()];
+        //transforma la data en un objecte date per comparar
+        var day = new Date(d)
+        if(day >= thisWeek[0] && day <= thisWeek[1]){
+            return true
+        }
+        else{
+            return false
+        }
+      }
+
     useEffect(() => {
         authService.getUser(authToken).then((u) => {
             if (authToken == null || !authToken) {
@@ -29,7 +44,13 @@ export const Home = () => {
                 setSelectBranca(true)
             }
             taskService.list_by_user(authToken, u.user.id).then((list) => {
-                setTaskList(list)
+                var weeklyTasks = []
+                list.map((task)=>{
+                    if(isThisWeek(task.data_limit)){
+                        weeklyTasks.push(task)
+                    }
+                })
+                setTaskList(weeklyTasks)
             })
             eventService.list(authToken).then((e) => {
                 setEventList(e)

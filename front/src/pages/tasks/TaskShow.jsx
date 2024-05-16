@@ -63,8 +63,8 @@ const TaskShow = () => {
       {task ?
         <>
           <div className="mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Informació de la tasca</h2>
-            <hr className="border-appsep mb-4"></hr>
+            {/* <h2 className="text-3xl md:text-4xl font-bold mb-4">Informació de la tasca</h2>
+            <hr className="border-appsep mb-4"></hr> */}
             <div className='flex flex-col bg-appfg justify-center rounded-2xl shadow-xl p-16 my-10 md:my-16 mx-0 md:mx-20'>
 
               <form onSubmit={handleSubmit(onSubmit)}>
@@ -79,8 +79,8 @@ const TaskShow = () => {
                     })}
                   </>
                   : <p>No hi ha usuaris assignats com a responsables.</p>}
-                <h4 className='font-bold text-apptext2'>Branques asociades:</h4>
-                {branques ?
+                <h4 className='font-bold text-apptext2'>Branques associades:</h4>
+                {branques.lenght > 0 ?
                   <>{
                     branques.map((b) => {
                       return (
@@ -90,7 +90,7 @@ const TaskShow = () => {
                   }</>
                   :
                   <p>La tasca no està associada a cap branca.</p>}
-                <h4 className='font-bold text-apptext2'>Càrrecs asociats:</h4>
+                <h4 className='font-bold text-apptext2'>Càrrecs associats:</h4>
                 {carrec ?
                   <></>
                   :

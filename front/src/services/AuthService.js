@@ -67,7 +67,6 @@ export default class AuthService {
                 throw new Error(response.message)
             }
         } catch (error) {
-            console.log(`Error d'autenticació: ${error.message}`)
             alert(`Error d'autenticació: ${error.message}`)
             return false
         }
