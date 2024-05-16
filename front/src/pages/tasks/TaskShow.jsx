@@ -67,8 +67,8 @@ const TaskShow = () => {
       {task ?
         <>
           <div className="mb-12">
-            {/* <h2 className="text-3xl md:text-4xl font-bold mb-4">Informació de la tasca</h2>
-            <hr className="border-appsep mb-4"></hr> */}
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Informació de la tasca</h2>
+            <hr className="border-appsep mb-4"></hr>
             <div className='flex flex-col bg-appfg justify-center rounded-2xl shadow-xl p-16 my-10 md:my-16 mx-0 md:mx-20'>
 
               <form onSubmit={handleSubmit(onSubmit)}>
@@ -77,7 +77,7 @@ const TaskShow = () => {
                   <p className="flex w-full justify-between mb-4 text-sm italic text-apptext2">Finalitza: {task.data_limit}</p>
                   {responsibles ?
                     <div className='mb-4'>
-                      <h4 className='font-bold text-apptext2'>Persones responsables: </h4>
+                      <h4 className='font-bold text-apptext2'>Persones responsables</h4>
                       {responsibles.map((user) => {
                         return (
                           <React.Fragment key={user.id}> {user.user_name} </React.Fragment>
@@ -87,8 +87,8 @@ const TaskShow = () => {
                     : <p>No hi ha usuaris assignats com a responsables.</p>}
                   <div className="flex w-full justify-between mb-4">
                     <div>
-                      <h4 className='font-bold text-apptext2'>Branques asociades:</h4>
-                      {branques ?
+                      <h4 className='font-bold text-apptext2'>Branques asociades</h4>
+                      {branques.length > 0 ?
                         <div className='flex w-full flex-wrap gap-2 pt-2 justify-center sm:justify-start'>{
                           branques.map((b, index) => {
                             return (
@@ -100,7 +100,7 @@ const TaskShow = () => {
                         <p>La tasca no està associada a cap branca.</p>}
                     </div>
                     <div className='pl-4'>
-                      <h4 className='font-bold text-apptext2'>Càrrecs asociats:</h4>
+                      <h4 className='font-bold text-apptext2'>Càrrecs asociats</h4>
                       {carrec ?
                         <React.Fragment>{carrec}</React.Fragment>
                         :
@@ -112,6 +112,7 @@ const TaskShow = () => {
                   </div>
                 </div>
                 <div className='my-4'>
+                  <h4 className='font-bold text-apptext2 mb-2'>Descripció</h4>
                   <RichTextEditor editorState={editorState} setEditorState={setEditorState} />
                 </div>
                 {task.status === 1 ?

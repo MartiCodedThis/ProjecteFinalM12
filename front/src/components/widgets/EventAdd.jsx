@@ -20,6 +20,7 @@ export const EventAdd = ({ closePopup, refresh }) => {
         data.description = descriptionHTML
         eventService.create(token, data)
         reset()
+        setEditorState(EditorState.createEmpty())
         closePopup()
         refresh(true)
     }

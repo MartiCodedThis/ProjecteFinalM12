@@ -49,12 +49,12 @@ export const Profile = () => {
                         <p className='mb-4'>{user.name}</p>
                         <h3 className='font-bold text-apptext2'>Adreça de correu:</h3>
                         <p className='mb-4'>{user.email}</p>
-                        <h3 className='font-bold text-apptext2'>Branca:</h3>
+                        <h3 className='font-bold text-apptext2 mb-1'>Branca</h3>
                         <div className='mb-4'>
                             {user.branca >= 0 ? getBrancaName(user.branca) : <p>No tens cap branca assignada</p>}
                         </div>
                         <BrancaSelector refresh={setRefresh}></BrancaSelector>
-                        <h3 className='font-bold text-apptext2'>Càrrec:</h3>
+                        <h3 className='font-bold text-apptext2 mb-1'>Càrrec</h3>
                         <div className='mb-4'>{user.carrec ? getCarrecName(user.carrec) : <> No tens cap càrrec assignat </>}</div>
                         <CarrecSelector refresh={setRefresh}></CarrecSelector>
                         {user.role_id == 1 ?
