@@ -1,80 +1,66 @@
-import { CheckCircleIcon } from '@heroicons/react/24/outline'
-import React, { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import useServicesContext from '../../hooks/useServicesContext'
-import { useParams } from 'react-router-dom'
-import { EditorState, convertToRaw } from 'draft-js'
-import draftToHtml from 'draftjs-to-html'
-import { RichTextEditor } from '../../components/widgets/RichTextEditor'
-import { stateFromHTML } from 'draft-js-import-html'
+import { CheckCircleIcon } from '@heroicons/react/24/outline';
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import useServicesContext from '../../hooks/useServicesContext';
+import { useParams } from 'react-router-dom';
+import { EditorState, convertToRaw } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
+import { RichTextEditor } from '../../components/widgets/RichTextEditor';
+import { stateFromHTML } from 'draft-js-import-html';
+import { getBrancaName, getCarrecName } from '../../components/widgets/BadgeShow';
 
 const TaskShow = () => {
-  const { register, handleSubmit, reset, formState: { errors } } = useForm()
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const { services: { taskService, sessionService } } = useServicesContext();
 
-  const { services: { taskService, sessionService } } = useServicesContext()
+  const [task, setTask] = useState();
+  const [responsibles, setResponsibles] = useState();
+  const [branques, setBranques] = useState([]);
+  const [carrec, setCarrec] = useState();
+  const [refresh, setRefresh] = useState(false);
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
-  const [task, setTask] = useState()
-  const [responsibles, setResponsibles] = useState()
-  const [branques, setBranques] = useState([])
-  const [carrec, setCarrec] = useState()
-  const [refresh, setRefresh] = useState(false)
-  const [editorState, setEditorState] = useState(EditorState.createEmpty())
-
-  const branques_keys = {
-    0: "Follets",
-    1: "Llobatons",
-    2: "Puputs",
-    3: "Rangers"
-  }
-  const carrecs = {
-    0: "EA",
-    1: "Peda",
-    2: "Treso",
-    3: "Secre"
-  }
-  let token = sessionService.getToken()
-  const params = useParams()
+  let token = sessionService.getToken();
+  const params = useParams();
 
   useEffect(() => {
     taskService.get(token, params.id).then((response) => {
-      setTask(response.task)
-      setResponsibles(response.users)
+      setTask(response.task);
+      setResponsibles(response.users);
       if (response.branca.length > 0) {
-        let aux = []
+        let aux = [];
         response.branca.map((b) => {
-          if (b.branca_id in branques_keys) {
-            aux.push(branques_keys[b.branca_id])
-          }
-        })
-        setBranques(aux)
+            aux.push(b.branca_id);
+        });
+        setBranques(aux);
       }
       if (response.carrec.length > 0) {
-        let carrec_id = response.carrec.carrec_id
-        if (carrec_id in carrecs) {
-          setCarrec(carrecs[carrec_id])
-        }
+        let carrec_id = response.carrec.carrec_id;
+          setCarrec(carrec_id);
       }
 
       if (response.task.description) {
-        const contentState = stateFromHTML(response.task.description)
-        setEditorState(EditorState.createWithContent(contentState))
+        const contentState = stateFromHTML(response.task.description);
+        setEditorState(EditorState.createWithContent(contentState));
       }
 
-      setRefresh(false)
-    })
-  }, [refresh])
+      setRefresh(false);
+    });
+  }, [refresh]);
 
   const onSubmit = async (data) => {
     // Convert editor state to HTML
-    const contentState = editorState.getCurrentContent()
-    const rawContentState = convertToRaw(contentState)
-    const descriptionHTML = draftToHtml(rawContentState)
-    data.description = descriptionHTML
+    const contentState = editorState.getCurrentContent();
+    const rawContentState = convertToRaw(contentState);
+    const descriptionHTML = draftToHtml(rawContentState);
+    data.description = descriptionHTML;
 
+    // Update the task
     taskService.update(token, params.id, data).then(() => {
-      setRefresh(true)
-    })
-  }
+      reset({ status: false });
+      setRefresh(true);
+    });
+  };
 
   return (
     <>
@@ -95,26 +81,26 @@ const TaskShow = () => {
                       {responsibles.map((user) => {
                         return (
                           <React.Fragment key={user.id}> {user.user_name} </React.Fragment>
-                        )
+                        );
                       })}
                     </div>
                     : <p>No hi ha usuaris assignats com a responsables.</p>}
                   <div className="flex w-full justify-between mb-4">
                     <div>
-                      <h4 className='font-bold text-apptext2'>Branques associades:</h4>
-                      {branques.length > 0 ?
-                        <>{
+                      <h4 className='font-bold text-apptext2'>Branques asociades:</h4>
+                      {branques ?
+                        <div className='flex w-full flex-wrap gap-2 pt-2 justify-center sm:justify-start'>{
                           branques.map((b, index) => {
                             return (
-                              <React.Fragment key={index}> {b} </React.Fragment>
-                            )
+                              <React.Fragment key={index}>{getBrancaName(b)}</React.Fragment>
+                            );
                           })
-                        }</>
+                        }</div>
                         :
                         <p>La tasca no està associada a cap branca.</p>}
                     </div>
-                    <div>
-                      <h4 className='font-bold text-apptext2'>Càrrecs associats:</h4>
+                    <div className='pl-4'>
+                      <h4 className='font-bold text-apptext2'>Càrrecs asociats:</h4>
                       {carrec ?
                         <React.Fragment>{carrec}</React.Fragment>
                         :
@@ -125,12 +111,12 @@ const TaskShow = () => {
                       null}
                   </div>
                 </div>
-                <div className='mb-4'>
+                <div className='my-4'>
                   <RichTextEditor editorState={editorState} setEditorState={setEditorState} />
                 </div>
                 {task.status === 1 ?
                   <>
-                    <p>Tasca completada!</p>
+                    <p className='text-appbutton font-bold'>Tasca completada!</p>
                     <input type="checkbox" value="0" className='w-4 h-4 mr-2' {...register("status")} />
                     <label className='text-sm italic'>Marca com a pendent</label>
                   </>
@@ -147,7 +133,7 @@ const TaskShow = () => {
         : <>Carregant...</>}
 
     </>
-  )
-}
+  );
+};
 
-export default TaskShow
+export default TaskShow;

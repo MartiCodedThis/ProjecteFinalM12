@@ -56,9 +56,9 @@ export const EventShow = () => {
                         <h3 className="font-bold text-lg">Tasques</h3>
                         <hr className="border-appsep2 mb-4"></hr>
                         {taskList ?
-                            taskList.map((task) => {
+                            taskList.map((task, id) => {
                                 return (
-                                    <TaskBanner task={task}></TaskBanner>
+                                    <TaskBanner key={id} task={task}></TaskBanner>
                                 )
                             })
                         : <p>Encara no hi ha cap tasca associada</p>}

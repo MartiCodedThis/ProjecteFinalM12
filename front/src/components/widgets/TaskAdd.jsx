@@ -115,11 +115,11 @@ export const TaskAdd = (props) => {
                         <div>
                             <label className='font-bold mb-1'>Responsables: </label>
                                 {userList ?
-                                    userList.map((user)=>{
+                                    userList.map((user, id)=>{
                                             return( 
-                                                <>
+                                                <React.Fragment key={(id)}>
                                                     <input type="checkbox" {...register("responsables")} value={user.id}/> {user.name} |
-                                                </>               
+                                                </React.Fragment>               
                                             )}) 
                                 : <p>Carregant usuaris...</p>}
                         </div>

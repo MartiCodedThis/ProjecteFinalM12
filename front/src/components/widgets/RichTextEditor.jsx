@@ -30,7 +30,7 @@ export const RichTextEditor = ({ editorState, setEditorState, value }) => {
 
     return (
         <div>
-            <div className='flex w-auto rounded-lg px-2 *:px-5 py-1 border border-appsep2 text-apptext2 divide-x divide-appsep2 mb-2'>
+            <div className='flex w-auto rounded-lg px-2 *:px-2 sm:*:px-5 py-1 border border-appsep2 text-apptext2 divide-x divide-appsep2 mb-2'>
                 <button className='font-bold hover:text-apptext' onClick={(e) => { e.preventDefault(); toggleInlineStyle('BOLD'); }}>B</button>
                 <button className='italic hover:text-apptext' onClick={(e) => { e.preventDefault(); toggleInlineStyle('ITALIC'); }}>I</button>
                 <button className='underline underline-offset-1 decoration-2 hover:text-apptext' onClick={(e) => { e.preventDefault(); toggleInlineStyle('UNDERLINE'); }}>U</button>
