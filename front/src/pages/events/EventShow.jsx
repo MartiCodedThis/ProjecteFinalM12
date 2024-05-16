@@ -47,7 +47,10 @@ export const EventShow = () => {
                     <hr className="border-appsep mb-4"></hr>
                     <div className='flex flex-col bg-appfg justify-center rounded-2xl shadow-xl p-16 my-10 md:my-16 mx-0 md:mx-20'>
                         <h3 className="text-3xl font-bold mb-2">{event.name}</h3>
-                        <p className="flex w-full justify-between mb-4 text-sm italic text-apptext2">{event.date}</p>
+                        <div className="flex w-full justify-between mb-4 *:text-sm *:italic *:text-apptext2">
+                            <p>{event.author_name}</p>
+                            <p>{event.date}</p>
+                        </div>
                         <div className="mb-4 prose prose-sm md:prose-base max-w-none prose-appprose prose-ul:list-disc"
                             dangerouslySetInnerHTML={{ __html: prepareInnerHTML(event.description) }} />
                         <h3 className="font-bold text-lg">Tasques</h3>
@@ -58,19 +61,17 @@ export const EventShow = () => {
                                     <TaskBanner task={task}></TaskBanner>
                                 )
                             })
-                            : <p>Encara no hi ha cap tasca associada</p>}
-
-                        <button id="nav-toggle" onClick={toggleNav} className='flex items-center gap-1 bg-appbutton text-white rounded-xl shadow-md my-4 px-6 py-3 font-bold hover:brightness-110 active:brightness-90'><PlusCircleIcon className='h-6 w-6' />Afegir tasca</button>
+                        : <p>Encara no hi ha cap tasca associada</p>}
+                        <div>
+                            <button id="nav-toggle" onClick={toggleNav} className='flex items-center gap-1 bg-appbutton text-white rounded-xl shadow-md my-4 px-6 py-3 font-bold hover:brightness-110 active:brightness-90'><PlusCircleIcon className='h-6 w-6' />Afegir tasca</button>
+                        </div>
                         <div className={`${addTask ? 'pt-10' : 'hidden'}`} id="nav-content">
                             <TaskAdd event_id={event.id} refresh={setRefresh} closePopup={() => setAddTask(false)}></TaskAdd>
                         </div>
                     </div>
                 </div>
             </>
-
-                : <p className='text-lg font-bold'>Carregant event, espera un moment...</p>}
-
-
+            : <p className='text-lg font-bold'>Carregant event, espera un moment...</p>}
         </>
 
     )
