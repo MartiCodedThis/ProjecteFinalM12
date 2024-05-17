@@ -1,0 +1,32 @@
+.custom-calendar .rbc-toolbar {
+  @apply border border-appsep2 p-2 rounded-lg *:text-apptext2;
+}
+
+.custom-calendar .rbc-btn-group * {
+  @apply bg-appfg font-bold text-apptext2 border border-appsep2 py-2 px-6 rounded-lg *:text-apptext2;
+}
+
+.custom-calendar .rbc-btn-group *:focus,
+.custom-calendar .rbc-btn-group *:active {
+  @apply outline-none shadow-none;
+}
+
+.custom-calendar .rbc-month-view {
+  @apply bg-appfg text-apptext2 border border-appsep2 p-2 rounded-lg;
+}
+
+.custom-calendar .rbc-day-bg {
+  @apply bg-appfg text-apptext2;
+}
+
+.custom-calendar .rbc-today {
+  @apply bg-stone-100 text-apptext2 rounded-lg;
+}
+
+.custom-calendar .rbc-off-range-bg {
+  @apply bg-appfg brightness-90 text-apptext2 rounded-lg;
+}
+
+.custom-calendar .rbc-event {
+  @apply bg-appbutton text-white rounded-lg hover:brightness-110 active:brightness-90 shadow-md;
+}
