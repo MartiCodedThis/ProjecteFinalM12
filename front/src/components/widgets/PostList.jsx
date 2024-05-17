@@ -12,15 +12,6 @@ export const PostList = (props) => {
     const [data, setData] = useState([])
     const [currentPage, setCurrentPage] = useState(0)
 
-    const fetchDataFromDB = async () => {
-        const data = [...Array(100).keys()].map((i) => ({ id: i }))
-        setData(data)
-    }
-
-    useEffect(() => {
-        fetchDataFromDB()
-    }, [])
-
     const handlePageChange = ({ selected }) => {
         setCurrentPage(selected)
     }
@@ -95,7 +86,7 @@ export const PostList = (props) => {
                 </>
             ) : (
                 <>
-                    <p>No hi ha cap post per llegir.</p>
+                    <p className='text-apptext2'>No hi ha cap post per llegir.</p>
                 </>
             )}
 

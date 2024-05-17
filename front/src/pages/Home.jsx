@@ -4,16 +4,18 @@ import { TasksView } from "../components/widgets/TasksView"
 import { useNavigate } from 'react-router-dom'
 import BrancaSelector from "../components/widgets/BrancaSelector"
 import useServicesContext from "../hooks/useServicesContext"
-import { useEffect, useState } from "react"
 import useUserContext from "../hooks/useUserContext"
+import { useEffect, useState } from "react"
 import moment from 'moment'
 
 
 
 export const Home = () => {
     const nav = useNavigate()
-    const { services: { authService, sessionService, eventService, taskService } } = useServicesContext()
-    var authToken = sessionService.getToken()
+    const { services: { authService, storedSessionService, sessionService, eventService, taskService } } = useServicesContext()
+    const { remember } = useUserContext()
+    let session =  remember ? storedSessionService : sessionService
+    var authToken = session.getToken()
     const [user, setUser] = useState()
     const [selectBranca, setSelectBranca] = useState(false)
     const [refresh, setRefresh] = useState(false)
@@ -58,7 +60,13 @@ export const Home = () => {
     useEffect(() => {
         authService.getUser(authToken).then((u) => {
             if (authToken == null || !authToken) {
+                let logout = authService.logout(authToken)
+                if (logout) {
+                session.clearToken()
+                session.clearUser()
+                setUser(null)
                 nav("/login")
+                }
             }
             setUser(u.user)
             if (!u.user.branca && u.user.role_id != 1) {
