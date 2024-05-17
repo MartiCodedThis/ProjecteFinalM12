@@ -27,6 +27,7 @@ const TaskShow = () => {
     taskService.get(token, params.id).then((response) => {
       setTask(response.task);
       setResponsibles(response.users);
+      console.log(response)
       if (response.branca.length > 0) {
         let aux = [];
         response.branca.map((b) => {
