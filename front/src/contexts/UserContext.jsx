@@ -7,6 +7,7 @@ export const UserContextProvider = ({ children }) => {
   const { services: {storedSessionService, sessionService}} = useServicesContext()
   const [authToken, setAuthToken] = useState("")
   const [user, setUser] = useState("")
+  const [branca, setBranca] = useState("")
   const [remember, setRemember] = useState(null)
 
   let sessionToken = sessionService.getToken()
@@ -34,7 +35,7 @@ export const UserContextProvider = ({ children }) => {
   }, [] )
 
   return (
-    <UserContext.Provider value={{ authToken, setAuthToken, user, setUser, remember, setRemember }}>
+    <UserContext.Provider value={{ authToken, setAuthToken, branca, setBranca, user, setUser, remember, setRemember }}>
       {children}
     </UserContext.Provider>
   )

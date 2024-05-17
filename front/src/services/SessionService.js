@@ -22,4 +22,15 @@ export default class SessionService {
   clearUser() {
     sessionStorage.removeItem('user');
   }
+
+  setBranca(branca){
+    sessionStorage.setItem('branca_id', branca)
+  }
+  getBranca() {
+    return sessionStorage.getItem('branca_id');
+  }
+
+  clearUser() {
+    sessionStorage.removeItem('branca_id');
+  }
 }

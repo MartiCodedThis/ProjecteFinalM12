@@ -12,7 +12,7 @@ export const Login = () => {
     const nav = useNavigate()
 
     const { services: { authService, sessionService, storedSessionService } } = useServicesContext()
-    const { setUser, authToken, setAuthToken, remember, setRemember } = useUserContext()
+    const { setUser, authToken, setAuthToken, remember, setRemember, setBranca } = useUserContext()
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm()
 
@@ -24,8 +24,9 @@ export const Login = () => {
             setAuthToken(token)
             session.setToken(token)
             let response = await authService.getUser(token)
-            
+            console.log(response)
             setUser(response.user.name)
+            sessionService.setBranca(response.user.branca)
             session.setUser(response.user.name)
             
             nav("/")

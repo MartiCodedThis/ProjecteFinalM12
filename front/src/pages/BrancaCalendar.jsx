@@ -3,27 +3,29 @@ import { CalendarWidget } from '../components/widgets/CalendarWidget'
 import { EventAdd } from '../components/widgets/EventAdd'
 import useServicesContext from '../hooks/useServicesContext'
 import useUserContext from '../hooks/useUserContext'
+import { TasksView } from '../components/widgets/TasksView'
 
 
 export const BrancaCalendar = () => {
     const { services: { sessionService, storedSessionService, taskService } } = useServicesContext()
-    const { remember } = useUserContext()
+    const { remember, user } = useUserContext()
     const [addMenu, setAddMenu] = useState(false)
     const [taskList, setTaskList] = useState()
+    const [formattedList, setFormattedList]= useState()
     const [refresh, setRefresh] = useState(false)
 
     let session =  remember ? storedSessionService : sessionService
-    
+    let branca = sessionService.getBranca()
     const toggleNav = () => {
         setAddMenu(!addMenu)
     }
     // Fix so it works with remembered sesh!!
     let token = session.getToken()
-    let user = session.getUser()
-
+    
     useEffect(() => {
-        if (token && user.branca_id) {
-            taskService.list_by_branca(token, user.branca_id).then((events) => {
+        if (token && branca) {
+            taskService.list_by_branca(token, branca).then((events) => {
+                setTaskList(events)
                 if(events){
                     const updatedEventList = events.map(event => ({
                         id: event.id,
@@ -34,10 +36,10 @@ export const BrancaCalendar = () => {
                         isTask: true
                     }));
                     if(updatedEventList){
-                        setTaskList(updatedEventList)
+                        setFormattedList(updatedEventList)
                     }
                     else{
-                        setTaskList([])
+                        setFormattedList([])
                     }
                 } 
             }).catch(error => {
@@ -58,13 +60,17 @@ export const BrancaCalendar = () => {
                 <hr className="border-appsep mb-4"></hr>
             </div>
             {
-                user.branca_id ? <>
+                branca ? <>
+                <div className='bg-appfg rounded-2xl shadow-xl p-8 my-8 sm:my-16 mx-0 lg:mx-10 *:text-apptext2'>
+                    {taskList ? <>
+                        <TasksView tasks={taskList} ></TasksView>
+                    </> : <p>La teva branca no té tasques actualment</p> }
+                </div>
                 
-                {taskList ? <></> : <p>La teva branca no té tasques actualment</p> }
                 <div className='flex flex-col bg-appfg justify-center rounded-2xl shadow-xl p-8 md:p-16 my-8 sm:my-16 mx-0 lg:mx-10 text-apptext2'>
                     <p className='block lg:hidden'>Fes scroll per navegar el calendari.</p>
                     <div className='overflow-auto'>
-                        {taskList ? <CalendarWidget eventList={taskList} ></CalendarWidget> : <p className='text-md font-bold'>Buscant les tasques, espera un moment...</p>}
+                        {taskList ? <CalendarWidget eventList={formattedList} ></CalendarWidget> : <p className='text-md font-bold'>Buscant les tasques, espera un moment...</p>}
                     </div>
                 </div>
                 </>
