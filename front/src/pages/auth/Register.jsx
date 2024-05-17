@@ -60,6 +60,10 @@ export const Register = () => {
                                 minLength: {
                                     value: 8,
                                     message: 'La contrasenya ha de tenir almenys 8 caràcters'
+                                },
+                                pattern: {
+                                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])/,
+                                    message: 'La contrasenya ha d\'incloure una lletra majúscula, una lletra minúscula, un número i un caràcter especial'
                                 }
                             })} />
                         {errors.password && <p className="text-apperror">{errors.password.message}</p>}
