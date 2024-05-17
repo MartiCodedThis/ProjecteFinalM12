@@ -59,10 +59,6 @@ export const Home = () => {
         setWeekly(!weekly)
     }
     useEffect(() => {
-        console.log(storedSessionService.getToken(), "stored")
-        console.log(sessionService.getToken(), "not stored")
-        console.log(authToken, "user context")
-
         if(storedSessionService.getToken()){
             token = storedSessionService.getToken()
             sessionService.setToken(token)
@@ -75,7 +71,6 @@ export const Home = () => {
                 token = sessionService.getToken()
             }
         }
-        console.log(token)
         if(token == null || !token){
             nav("/login")   
         }

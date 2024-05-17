@@ -15,13 +15,12 @@ export const Register = () => {
     const password = watch("password")  // Watch the password field
 
     const onSubmit = async (data) => {
-        console.debug(data)
         try {
             authService.register(data).then(() => {
                 nav("/login")
             })
         } catch (error) {
-            console.debug(error)
+
             alert(error)
         }
     }

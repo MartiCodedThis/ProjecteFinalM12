@@ -12,7 +12,6 @@ export const CalendarWidget = (object) => {
   }, [object.eventList])
   const nav = useNavigate()
   const handleEventClick = event => {
-    console.log(event)
     if(event.isTask){
       nav(`/tasks/${event.id}`)
     }

@@ -17,10 +17,8 @@ export const Login = () => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm()
 
     const onSubmit = async (data) => {
-        console.debug(data)
         let token = await authService.login(data)
         if (token) {
-            console.log(data.remember)
             if(data.remember){
                 setRemember(true)
                 sessionService.clearToken()

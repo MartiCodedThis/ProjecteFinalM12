@@ -220,7 +220,6 @@ export default class AuthService {
     }
 
     async branca(token, branca_id){
-        console.log(branca_id)
         try{
             const url = process.env.API_URL  + "/branca"
             const request = await fetch(url, {
@@ -246,7 +245,6 @@ export default class AuthService {
     }
 
     async carrec(token, carrec_id){
-        console.log(carrec_id)
         try{
             const url = process.env.API_URL  + "/carrec"
             const request = await fetch(url, {

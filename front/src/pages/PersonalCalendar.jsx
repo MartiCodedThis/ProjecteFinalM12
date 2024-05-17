@@ -21,7 +21,6 @@ export const PersonalCalendar = () => {
     let token = session.getToken()
 
     useEffect(() => {
-        console.log("TOken:" + token)
         if (token) {
             eventService.list(token).then((events) => {
                 const updatedEventList = events.map(event => ({
@@ -31,7 +30,6 @@ export const PersonalCalendar = () => {
                     end: event.date,
                     allDay: true
                 }));
-                console.log(updatedEventList)
                 setEventList(updatedEventList);
             }).catch(error => {
                 console.error('Error fetching events:', error);

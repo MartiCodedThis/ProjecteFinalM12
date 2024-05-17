@@ -20,13 +20,10 @@ export const BrancaCalendar = () => {
     // Fix so it works with remembered sesh!!
     let token = session.getToken()
     let user = session.getUser()
-    console.log(user)
 
     useEffect(() => {
-        console.log("TOken:" + token)
         if (token) {
             taskService.list_by_branca(token).then((events) => {
-                console.log(events)
                 const updatedEventList = events.map(event => ({
                     id: event.id,
                     title: event.name,

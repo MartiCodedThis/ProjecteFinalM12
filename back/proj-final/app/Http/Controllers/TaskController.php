@@ -29,7 +29,6 @@ class TaskController extends Controller
     public function show(Request $request, $id){
         $task = Task::find($id);
         $responsibleUsers = UserTask::where('task_id',$id)->get();
-        Log::info($responsibleUsers);
         $responsibleBranques = BrancaTask::where('task_id',$id)->get();
         $responsibleCarrecs = CarrecTask::where('task_id',$id)->get();
         if(!$responsibleUsers && !$responsibleBranques && !$responsibleUsers){
@@ -220,8 +219,6 @@ class TaskController extends Controller
             'data_limit'    => $date,
         ]);
 
-        Log::info($task);
-
         $branques = $request->get('branca_id');
         $carrec_id = $request->get('carrec_id');
         $responsables[] = $request->get('responsables');
@@ -252,7 +249,6 @@ class TaskController extends Controller
             array_push($relations, $relation);
         }
 
-        Log::info($responsables);
         if($responsables){
             foreach ($responsables as $responsable) {
                 $newTask = new UserTask;
@@ -273,7 +269,6 @@ class TaskController extends Controller
     }
 
     public function update(Request $request, $id){
-        Log::info($request);
         $task = Task::find($id);
         $name = $request->get('name');
         $description = $request->get('description');
@@ -305,9 +300,7 @@ class TaskController extends Controller
             $task->data_limit = $date;
         }
         if ($status != null) {
-            Log::info($status);
             $task->status = $status;
-            Log::info($task->status);
         }
         if (!empty($branca_id)) {
             $taskExists = BrancaTask::where([
@@ -354,7 +347,6 @@ class TaskController extends Controller
             }
         }
         $task->save();
-        Log::info($task);
         return response()->json([
             "success" => true,
             "task" => $task
