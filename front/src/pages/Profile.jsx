@@ -9,7 +9,7 @@ import useUserContext from '../hooks/useUserContext'
 
 export const Profile = () => {
     const { services: { authService, sessionService } } = useServicesContext()
-    const { user, setUser } = useUserContext()
+    const [user, setUser] = useState()
     const [unauthorizedUsers, setUnauthorizedUsers] = useState([])
     const [authorizedUsers, setAuthorizedUsers] = useState([])
     const [refresh, setRefresh] = useState(false)
