@@ -13,10 +13,11 @@ import moment from 'moment'
 export const Home = () => {
     const nav = useNavigate()
     const { services: { authService, storedSessionService, sessionService, eventService, taskService } } = useServicesContext()
-    const { remember } = useUserContext()
-    let session =  remember ? storedSessionService : sessionService
-    var authToken = session.getToken()
-    const [user, setUser] = useState()
+    const { user, setUser, authToken, setAuthToken, remember, setRemember } = useUserContext()
+    let token
+    
+    // var authToken = sessionService.getToken()
+    // const [user, setUser] = useState()
     const [selectBranca, setSelectBranca] = useState(false)
     const [refresh, setRefresh] = useState(false)
     const [taskList, setTaskList] = useState()
@@ -58,34 +59,42 @@ export const Home = () => {
         setWeekly(!weekly)
     }
     useEffect(() => {
-        authService.getUser(authToken).then((u) => {
-            if (authToken == null || !authToken) {
-                let logout = authService.logout(authToken)
-                if (logout) {
-                session.clearToken()
-                session.clearUser()
-                setUser(null)
-                nav("/login")
-                }
+        console.log(storedSessionService.getToken(), "stored")
+        console.log(sessionService.getToken(), "not stored")
+        console.log(authToken, "user context")
+
+        if(storedSessionService.getToken()){
+            token = storedSessionService.getToken()
+            sessionService.setToken(token)
+        }
+        else{
+            if(authToken){
+                token = authToken
             }
+            else{
+                token = sessionService.getToken()
+            }
+        }
+        console.log(token)
+        if(token == null || !token){
+            nav("/login")   
+        }
+        authService.getUser(token).then((u) => {
             setUser(u.user)
             if (!u.user.branca && u.user.role_id != 1) {
                 setSelectBranca(true)
             }
-            taskService.list_by_user(authToken, u.user.id).then((list) => {
+            taskService.list_by_user(token, u.user.id).then((list) => {
                 setAllTasks(list)
                 let week = onlyThisWeek(list)
                 setWeekTasks(week)
                 setWeekly(true)
                 setTaskList(week)
             })
-            eventService.list(authToken).then((e) => {
+            eventService.list(token).then((e) => {
                 setEventList(e)
             })
         })
-        if(authToken == null || !authToken){
-            nav("/login")   
-        }
     }, [refresh])
 
    

@@ -21,8 +21,16 @@ export const Login = () => {
         let token = await authService.login(data)
         if (token) {
             console.log(data.remember)
-            let session = data.remember ? storedSessionService : sessionService
+            if(data.remember){
+                setRemember(true)
+                sessionService.clearToken()
+            }
+            else{
+                setRemember(false)
+            }
+            let session = data.remember ? storedSessionService  : sessionService
             setAuthToken(token)
+            
             session.setToken(token)
             let response = await authService.getUser(token)
             
