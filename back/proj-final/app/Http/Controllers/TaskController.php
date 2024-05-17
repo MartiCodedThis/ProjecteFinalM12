@@ -29,6 +29,7 @@ class TaskController extends Controller
     public function show(Request $request, $id){
         $task = Task::find($id);
         $responsibleUsers = UserTask::where('task_id',$id)->get();
+        Log::info($responsibleUsers);
         $responsibleBranques = BrancaTask::where('task_id',$id)->get();
         $responsibleCarrecs = CarrecTask::where('task_id',$id)->get();
         if(!$responsibleUsers && !$responsibleBranques && !$responsibleUsers){
@@ -223,7 +224,7 @@ class TaskController extends Controller
 
         $branques = $request->get('branca_id');
         $carrec_id = $request->get('carrec_id');
-        $responsables = $request->get('responsables');
+        $responsables[] = $request->get('responsables');
         if(!$branques && !$carrec_id && !$responsables){
             return response()->json([
                 "success" => false,
@@ -251,6 +252,7 @@ class TaskController extends Controller
             array_push($relations, $relation);
         }
 
+        Log::info($responsables);
         if($responsables){
             foreach ($responsables as $responsable) {
                 $newTask = new UserTask;
