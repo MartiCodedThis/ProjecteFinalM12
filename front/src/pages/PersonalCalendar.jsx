@@ -4,7 +4,6 @@ import { EventAdd } from '../components/widgets/EventAdd'
 import useServicesContext from '../hooks/useServicesContext'
 import useUserContext from '../hooks/useUserContext'
 
-
 export const PersonalCalendar = () => {
     const { services: { sessionService, storedSessionService, eventService } } = useServicesContext()
     const { remember } = useUserContext()
@@ -49,7 +48,7 @@ export const PersonalCalendar = () => {
                 <hr className="border-appsep mb-4"></hr>
             </div>
             <div className='flex flex-col bg-appfg justify-center rounded-2xl shadow-xl p-8 md:p-16 my-8 sm:my-16 mx-0 lg:mx-10 text-apptext2'>
-                <p className='block lg:hidden'>Fes scroll per navegar el calendari.</p>
+                <p className='block lg:hidden mb-4'>Fes scroll per navegar el calendari.</p>
                 <div className='overflow-auto'>
                     {eventList ? <CalendarWidget eventList={eventList} ></CalendarWidget> : <p className='text-md font-bold'>Carregant events, espera un moment...</p>}
                 </div>

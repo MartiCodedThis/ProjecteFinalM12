@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
-import "react-big-calendar/lib/css/react-big-calendar.css"
 import { useNavigate } from 'react-router-dom'
+import "react-big-calendar/lib/css/react-big-calendar.css"
+import './calendar.css'
 
 export const CalendarWidget = (object) => {
   let localizer = momentLocalizer(moment)
@@ -20,7 +21,7 @@ export const CalendarWidget = (object) => {
     }
   }
   return (
-    <div className="min-w-[900px]">
+    <div className="min-w-[1200px] custom-calendar">
       <Calendar
         localizer={localizer}
         events={eventList}
@@ -30,7 +31,7 @@ export const CalendarWidget = (object) => {
         style={{
           flexGrow: 1,
           height: 0,
-          minHeight: "600px",
+          minHeight: "700px",
         }}
         views={{
           month: true,
