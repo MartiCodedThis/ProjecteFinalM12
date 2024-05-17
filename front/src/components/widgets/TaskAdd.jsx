@@ -21,14 +21,6 @@ export const TaskAdd = (props) => {
         const descriptionHTML = draftToHtml(rawContentState);
         data.description = descriptionHTML;
 
-        if (!data.responsables || data.responsables.length === 0) {
-            setError('responsables', {
-                type: 'manual',
-                message: 'Cal seleccionar almenys un responsable'
-            });
-            return;
-        }
-
         taskService.create(token, data).then(() => {
             props.refresh(true);
         });

@@ -82,14 +82,12 @@ export default class TaskService {
             })
             const response = await request.json()
             if (response.success) {
-                console.log(response)
                 return response.branca_tasks
             } else {
                 throw new Error(response.message)
             }
         } catch (error) {
             console.log(`Error al accedir a les tasques: ${error.message}`)
-            alert(`Error al accedir a les tasques': ${error.message}`)
             return false
         }
     }

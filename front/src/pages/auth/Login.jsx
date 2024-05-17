@@ -32,7 +32,7 @@ export const Login = () => {
             session.setToken(token)
             let response = await authService.getUser(token)
             
-            setUser(response.user.name)
+            setUser(response.user)
             session.setUser(response.user.name)
             
             nav("/")

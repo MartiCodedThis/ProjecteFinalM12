@@ -32,7 +32,12 @@ export const BrancaCalendar = () => {
                     allDay: true,
                     isTask: true
                 }));
-                setTaskList(updatedEventList);
+                if(updatedEventList){
+                    setTaskList(updatedEventList)
+                }
+                else{
+                    setTaskList([])
+                }
             }).catch(error => {
                 console.error('Error fetching events:', error);
             });
@@ -54,7 +59,7 @@ export const BrancaCalendar = () => {
             <div className='flex flex-col bg-appfg justify-center rounded-2xl shadow-xl p-8 md:p-16 my-8 sm:my-16 mx-0 lg:mx-10 text-apptext2'>
                 <p className='block lg:hidden'>Fes scroll per navegar el calendari.</p>
                 <div className='overflow-auto'>
-                    {taskList ? <CalendarWidget eventList={taskList} ></CalendarWidget> : <p className='text-md font-bold'>Carregant events, espera un moment...</p>}
+                    {taskList ? <CalendarWidget eventList={taskList} ></CalendarWidget> : <p className='text-md font-bold'>Buscant les tasques, espera un moment...</p>}
                 </div>
             </div>
         </>
