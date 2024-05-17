@@ -3,13 +3,19 @@ import useServicesContext from '../hooks/useServicesContext'
 import BrancaSelector from '../components/widgets/BrancaSelector'
 import CarrecSelector from '../components/widgets/CarrecSelector'
 import { getBrancaName, getCarrecName } from '../components/widgets/BadgeShow'
+import { Cog6ToothIcon } from '@heroicons/react/24/solid'
+import useUserContext from '../hooks/useUserContext'
+
 
 export const Profile = () => {
     const { services: { authService, sessionService } } = useServicesContext()
-    const [user, setUser] = useState(null)
+    const { user, setUser } = useUserContext()
     const [unauthorizedUsers, setUnauthorizedUsers] = useState([])
     const [authorizedUsers, setAuthorizedUsers] = useState([])
     const [refresh, setRefresh] = useState(false)
+    const [selectBranca, setSelectBranca] = useState(false)
+    const [selectCarrec, setSelectCarrec] = useState(false)
+
 
     let token = sessionService.getToken()
     useEffect(() => {
@@ -37,6 +43,13 @@ export const Profile = () => {
             setRefresh(true)
         })
     }
+    
+    const toggleSelectBranca = ()=>{
+        setSelectBranca(!selectBranca)
+    }
+    const toggleSelectCarrec = ()=>{
+        setSelectCarrec(!selectCarrec)
+    }
 
     return (
         <div className="mb-12">
@@ -49,14 +62,25 @@ export const Profile = () => {
                         <p className='mb-4'>{user.name}</p>
                         <h3 className='font-bold text-apptext2'>Adreça de correu:</h3>
                         <p className='mb-4'>{user.email}</p>
-                        <h3 className='font-bold text-apptext2 mb-1'>Branca</h3>
+                        <div className='flex flex-row justify-between'>
+                            <h3 className='font-bold text-apptext2 mb-1'>Branca</h3>
+                            <button onClick={(()=>{toggleSelectBranca()})}> <Cog6ToothIcon className='h-6 w-6'></Cog6ToothIcon> </button>
+                        </div>
                         <div className='mb-4'>
                             {user.branca >= 0 ? getBrancaName(user.branca) : <p>No tens cap branca assignada</p>}
                         </div>
-                        <BrancaSelector refresh={setRefresh}></BrancaSelector>
-                        <h3 className='font-bold text-apptext2 mb-1'>Càrrec</h3>
-                        <div className='mb-4'>{user.carrec ? getCarrecName(user.carrec) : <> No tens cap càrrec assignat </>}</div>
-                        <CarrecSelector refresh={setRefresh}></CarrecSelector>
+                        {selectBranca ?                         
+                            <BrancaSelector refresh={setRefresh}></BrancaSelector>
+                        : <></> }
+                        <div className='flex flex-row justify-between'>
+                            <h3 className='font-bold text-apptext2 mb-1'>Càrrec</h3>
+                            <button onClick={(()=>{toggleSelectCarrec()})}><Cog6ToothIcon className='h-6 w-6'></Cog6ToothIcon> </button>
+                        </div>
+                        <div className='mb-4'>{user.carrec >= 0 ? 
+                        getCarrecName(user.carrec) : <> No tens cap càrrec assignat </>}</div>
+                        {selectCarrec ?                         
+                            <CarrecSelector refresh={setRefresh}></CarrecSelector>
+                        : <></> }
                         {user.role_id == 1 ?
                             <>
                                 <hr className='border-appsep2 mb-8'></hr>
