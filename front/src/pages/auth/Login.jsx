@@ -62,14 +62,6 @@ export const Login = () => {
                         <input className='rounded-lg px-4 py-1 shadow-inner border border-appsep'
                             type="password"  {...register("password", {
                                 required: 'Contrasenya obligatòria',
-                                minLength: {
-                                    value: 8,
-                                    message: 'La contrasenya ha de tenir almenys 8 caràcters'
-                                },
-                                pattern: {
-                                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])/,
-                                    message: 'La contrasenya ha d\'incloure una lletra majúscula, una lletra minúscula, un número i un caràcter especial'
-                                }
                             })} />
                         {errors.password && <p className="text-apperror">{errors.password.message}</p>}
                     </div>
