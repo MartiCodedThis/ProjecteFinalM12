@@ -19,16 +19,9 @@ export const Login = () => {
     const onSubmit = async (data) => {
         let token = await authService.login(data)
         if (token) {
-            if(data.remember){
-                setRemember(true)
-                sessionService.clearToken()
-            }
-            else{
-                setRemember(false)
-            }
-            let session = data.remember ? storedSessionService  : sessionService
+            console.log(data.remember)
+            let session = data.remember ? storedSessionService : sessionService
             setAuthToken(token)
-            
             session.setToken(token)
             let response = await authService.getUser(token)
             
