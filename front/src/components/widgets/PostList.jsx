@@ -55,7 +55,7 @@ export const PostList = (props) => {
 
     return (
         <>
-            {data.length > 0 ? (
+            {renderedData.length > 0 ? (
                 <>
                     <div className="flex flex-col justify-center">
                         {renderedData.map(item => (
