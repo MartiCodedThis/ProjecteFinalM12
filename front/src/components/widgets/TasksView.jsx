@@ -7,7 +7,7 @@ const ITEMS_PER_PAGE = 5
 
 export const TasksView = (props) => {
     const [currentPage, setCurrentPage] = useState(0)
-
+    console.log(props)
     const handlePageChange = ({ selected }) => {
         setCurrentPage(selected)
     }

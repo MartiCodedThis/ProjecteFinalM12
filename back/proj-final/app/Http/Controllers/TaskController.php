@@ -94,14 +94,15 @@ class TaskController extends Controller
     public function user_tasks(Request $request, $id){
         $relationList = UserTask::where('user_id',$id)->get();
         $user = User::find($id);
-
         $taskList = [];
         $ids = [];
+
         foreach ($relationList as $relation) {
             $task_id = $relation->task_id;
             $ids[] = $task_id;
             $task = Task::find($task_id);
             if ($task) {
+                
                 $taskList[] = $task;
             }
         }
@@ -222,7 +223,7 @@ class TaskController extends Controller
 
         $branques = $request->get('branca_id');
         $carrec_id = $request->get('carrec_id');
-        $responsables[] = $request->get('responsables');
+        $responsables = $request->get('responsables');
         if(!$branques && !$carrec_id && !$responsables){
             return response()->json([
                 "success" => false,
@@ -251,6 +252,8 @@ class TaskController extends Controller
         }
 
         if($responsables){
+            Log::info($responsables);
+
             foreach ($responsables as $responsable) {
                 $newTask = new UserTask;
                 $user = User::find($responsable);

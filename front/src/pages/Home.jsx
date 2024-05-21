@@ -78,6 +78,7 @@ export const Home = () => {
                 setWeekTasks(week)
                 setWeekly(true)
                 setTaskList(week)
+                console.log(list)
             })
             eventService.list(authToken).then((e) => {
                 setEventList(e)

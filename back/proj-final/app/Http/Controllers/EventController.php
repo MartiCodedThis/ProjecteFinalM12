@@ -26,7 +26,6 @@ class EventController extends Controller
             $eventList->where('description', 'like', "%{$search}%");
         }
         $eventList = $eventList->sortByDesc('created_at')->values();
-        Log::info($eventList);
         return response()->json([
             "success" => true,
             "events"    =>$eventList,
@@ -66,7 +65,6 @@ class EventController extends Controller
         $date = $request->get('date');
 
         // Desar dades a BD
-        Log::info($author_name);
         $event = Event::create([
             'name'          => $name,
             'description'   => $description,
